@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f8dfe14d8c22441bcf0bb92c08df43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueBox: {fileID: 919066122}
   textLabel: {fileID: 1327942618}
   testDialogue: {fileID: 11400000, guid: 0eb29d8efc5bf1c44b44a3543e508fe5, type: 2}
 --- !u!1 &405487916
