@@ -26,7 +26,7 @@ public class DialogueUI : MonoBehaviour
 	
 	private IEnumerator StepThroughDialogue(DialogueObject dialogueObject)
 	{
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(1);
 		
 		foreach (string dialogue in dialogueObject.Dialogue)
 		{
