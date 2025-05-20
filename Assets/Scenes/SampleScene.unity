@@ -1106,8 +1106,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 2
+  runSpeed: 7.5
   jumpHeight: 1
   gravityValue: -9.81
+  maxRunTime: 5
+  runCooldown: 5
 --- !u!1 &2100118562
 GameObject:
   m_ObjectHideFlags: 0

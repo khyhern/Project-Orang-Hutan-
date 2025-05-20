@@ -47,4 +47,9 @@ public class InputManager : MonoBehaviour
     public bool PlayerJumpedThisFrame(){
      return playerControls.Player.Jump.triggered;
     }
+	
+	 public bool IsRunning()
+    {
+        return playerControls.Player.Run.IsPressed();
+    }
 }
