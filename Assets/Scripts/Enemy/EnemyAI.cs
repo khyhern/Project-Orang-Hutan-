@@ -6,8 +6,7 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] LayerMask whatIsGround, whatIsPlayer;
-    [SerializeField] private Transform _enemySight;
+    [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsThis;
     [SerializeField] private Transform _enemyAttackPoint;
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private float _walkPointRange;
@@ -16,6 +15,7 @@ public class EnemyAI : MonoBehaviour
     private Transform _player;
     private NavMeshAgent _enemy;
     private float _speed;
+    private Vector3 dirToPlayer;
 
     // Patrolling
     private Vector3 _walkPoint;
@@ -28,6 +28,7 @@ public class EnemyAI : MonoBehaviour
 
     // States
     private bool _playerInSightRange, _playerInAttackRange;
+    private bool _smtgInSightRange;
     #endregion
 
     private void Start()
@@ -40,7 +41,22 @@ public class EnemyAI : MonoBehaviour
     private void Update()
     {
         // Check for sight and attack ranges
-        _playerInSightRange = Physics.CheckSphere(_enemySight.position, _sightRange, whatIsPlayer);
+        dirToPlayer = _player.position - transform.position;
+        Ray ray = new Ray(transform.position, dirToPlayer.normalized);
+        if (Physics.Raycast(ray, out RaycastHit hit, _sightRange, whatIsThis))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                _playerInSightRange = true;
+            }
+            else
+            {
+                Debug.Log("player not here");
+                _playerInSightRange = false;
+            }
+        }
+       
+
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
         if (!_playerInSightRange && !_playerInAttackRange) Patroling();
         if (_playerInSightRange && !_playerInAttackRange) ChasePlayer();
@@ -107,11 +123,8 @@ public class EnemyAI : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (_enemySight != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(_enemySight.position, _sightRange);
-        }
+        Debug.DrawRay(transform.position, dirToPlayer.normalized * _sightRange, Color.green);
+        
         if (_enemyAttackPoint != null)
         {
             Gizmos.color = Color.red;
