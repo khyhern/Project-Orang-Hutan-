@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     private PlayerConditions _conditions;
     private Vector3 _velocity;
     private float _gravity = -9.81f;
+    [HideInInspector] public bool isCarryingFriend = false;
+    [HideInInspector] public float carryingSpeed = 2.5f;
+    private float _defaultMoveSpeed = 5f;
     #endregion
 
     private void Start()
@@ -64,8 +67,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetSpeed()
     {
-        _moveSpeed = 5f;
+        if (isCarryingFriend)
+            _moveSpeed = carryingSpeed;
+        else
+            _moveSpeed = _defaultMoveSpeed;
+
         _conditions.IsSprinting = false;
+        Debug.Log("Player move speed reset to: " + _moveSpeed);
     }
 
     private void CheckSprint()
@@ -85,5 +93,11 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
     #endregion
+
+    public void SetMoveSpeed(float newSpeed)
+    {
+        _moveSpeed = newSpeed;
+        Debug.Log("Player move speed set to: " + _moveSpeed);
+    }
 
 }
