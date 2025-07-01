@@ -6,4 +6,11 @@ public class PlayerConditions
 {
     // Conditions
     public bool IsGrounded { get; set; }
+    public bool IsSprinting { get; set; }
+
+    public void Reset()
+    {
+        IsSprinting = false;
+    }
+
 }

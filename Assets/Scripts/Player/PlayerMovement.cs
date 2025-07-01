@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _stamina;
+    [SerializeField] private float _maxStamina = 50f;
 
     #region Internal
     private CharacterController _controller;
@@ -18,11 +20,21 @@ public class PlayerMovement : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         _conditions = new PlayerConditions();
+        _stamina = _maxStamina;
+        UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
     }
 
     private void Update()
     {
-       _conditions.IsGrounded = _controller.isGrounded;
+        _conditions.IsGrounded = _controller.isGrounded;
+        CheckSprint();
+
+        // No stamina no sprint
+        if (_stamina == 0f)
+        {
+            ResetSpeed();
+        }
+
     }
 
     #region Movement
@@ -43,16 +55,35 @@ public class PlayerMovement : MonoBehaviour
         
         _controller.Move(_velocity * Time.deltaTime);     
     }
-
+    #region Sprinting
     public void Sprint()
     {
-        _moveSpeed *= 2f; 
+        _conditions.IsSprinting = true;
+        _moveSpeed *= 2.5f; 
     }
 
     public void ResetSpeed()
     {
         _moveSpeed = 5f;
+        _conditions.IsSprinting = false;
     }
+
+    private void CheckSprint()
+    {
+        if (_conditions.IsSprinting)
+        {
+            _stamina -= 25f * Time.deltaTime;
+        }
+        else
+        {
+            _stamina += 2f * Time.deltaTime;
+        }
+
+        _stamina = Mathf.Clamp(_stamina, 0f, 50f);
+        
+        UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
+    }
+    #endregion
     #endregion
 
 }

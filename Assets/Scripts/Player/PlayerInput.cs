@@ -18,6 +18,7 @@ public class PlayerInput : MonoBehaviour
     {
         _playerMovement.MovePlayer(InputSystem.actions.FindAction("Move").ReadValue<Vector2>());
         _playerLook.Look(InputSystem.actions.FindAction("Look").ReadValue<Vector2>());
+
     }
 
     private void OnSprint(InputAction.CallbackContext obj)
