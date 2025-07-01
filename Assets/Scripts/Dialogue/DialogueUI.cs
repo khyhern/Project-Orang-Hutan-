@@ -11,9 +11,12 @@ public class DialogueUI : MonoBehaviour
 	[SerializeField] private bool autoPlay = true;
 	
 	private TypeWriterEffect typewriterEffect;
+	
+	private RoadLooper roadLooper;
 
     private void Start()
     {
+		roadLooper = FindObjectOfType<RoadLooper>();
         typewriterEffect = GetComponent<TypeWriterEffect>();
 		CloseDialogueBox();
 		ShowDialogue(testDialogue);
@@ -51,7 +54,7 @@ public class DialogueUI : MonoBehaviour
             }
         }
 		
-		CloseDialogueBox();
+		//CloseDialogueBox();
 	}
 	
 	private void CloseDialogueBox()
@@ -60,10 +63,17 @@ public class DialogueUI : MonoBehaviour
 		textLabel.text = string.Empty;
 	}
 	
-	    private void OnLastSentenceStart()
+	private void OnLastSentenceStart()
     {
-        // Example: spawn a GameObject or trigger some logic
         Debug.Log("Last sentence started!");
-        // Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
+
+		if (roadLooper != null)
+		{
+			roadLooper.StopLoopingAndSpawnFinal();
+		}
+		else
+		{
+			Debug.LogWarning("RoadLooper not found!");
+		}
     }
 }
