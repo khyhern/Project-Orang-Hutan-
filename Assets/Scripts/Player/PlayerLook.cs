@@ -22,11 +22,11 @@ public class PlayerLook : MonoBehaviour
         float mouseX = input.x;
         float mouseY = input.y;
 
-        _rotationX -= (mouseY * Time.deltaTime) * _ySensitivity;
+        _rotationX -= (mouseY * _ySensitivity) * Time.deltaTime;
         _rotationX = Mathf.Clamp(_rotationX, -80f, 80f);
 
         _camera.transform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
 
-        transform.Rotate(Vector3.up * (mouseX * Time.deltaTime) * _xSensitivity);
+        transform.Rotate(Vector3.up * (mouseX * _xSensitivity) * Time.deltaTime);
     }
 }

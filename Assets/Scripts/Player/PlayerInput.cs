@@ -14,13 +14,9 @@ public class PlayerInput : MonoBehaviour
         _playerLook = GetComponent<PlayerLook>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         _playerMovement.MovePlayer(InputSystem.actions.FindAction("Move").ReadValue<Vector2>());
-    }
-
-    private void LateUpdate()
-    {
         _playerLook.Look(InputSystem.actions.FindAction("Look").ReadValue<Vector2>());
     }
 
