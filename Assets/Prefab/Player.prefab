@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2460812111917582703}
   - component: {fileID: 5785964759183966224}
   - component: {fileID: 2043100233557337795}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -139,6 +139,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 5
+  _stamina: 50
+  _maxStamina: 50
 --- !u!114 &2043100233557337795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,7 +167,7 @@ GameObject:
   - component: {fileID: 3330189230558702392}
   - component: {fileID: 5076137095689003886}
   - component: {fileID: 6103207534526092015}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
