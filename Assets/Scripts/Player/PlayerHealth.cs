@@ -3,11 +3,29 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public List<BodyPartHealth> bodyParts = new();
+    public static PlayerHealth Instance { get; private set; }
+
+    [Header("Universal Player Health")]
+    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int currentHealth;
+
+    [Header("Per-Body-Part Health")]
+    [SerializeField] private List<BodyPartHealth> bodyParts = new();
 
     private void Awake()
     {
-        InitializeBodyParts();
+        // Singleton setup
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        currentHealth = maxHealth;
+
+        if (bodyParts == null || bodyParts.Count == 0)
+            InitializeBodyParts();
     }
 
     private void InitializeBodyParts()
@@ -15,23 +33,42 @@ public class PlayerHealth : MonoBehaviour
         bodyParts.Clear();
         foreach (BodyPart part in System.Enum.GetValues(typeof(BodyPart)))
         {
-            bodyParts.Add(new BodyPartHealth(part, 100)); // Default 100 HP
+            bodyParts.Add(new BodyPartHealth(part, 100));
         }
     }
 
     public void DamagePart(BodyPart part, int amount)
     {
-        BodyPartHealth partHealth = GetBodyPart(part);
-        if (partHealth != null)
+        GetBodyPart(part)?.ApplyDamage(amount);
+    }
+
+    public void BandageLimb(BodyPart part)
+    {
+        GetBodyPart(part)?.Bandage();
+    }
+
+    public void DamagePlayer(int amount)
+    {
+        if (IsDead()) return;
+
+        currentHealth = Mathf.Max(currentHealth - amount, 0);
+        Debug.Log($"Player took {amount} global damage. Current HP: {currentHealth}");
+
+        if (IsDead())
         {
-            partHealth.ApplyDamage(amount);
+            Debug.Log("Player has died.");
+            // TODO: trigger death logic
         }
+    }
+
+    public bool IsDead()
+    {
+        return currentHealth <= 0 || IsPartDestroyed(BodyPart.Head);
     }
 
     public bool IsPartDestroyed(BodyPart part)
     {
-        var partHealth = GetBodyPart(part);
-        return partHealth != null && partHealth.IsDestroyed;
+        return GetBodyPart(part)?.IsDestroyed ?? false;
     }
 
     public BodyPartHealth GetBodyPart(BodyPart part)
@@ -39,9 +76,32 @@ public class PlayerHealth : MonoBehaviour
         return bodyParts.Find(p => p.part == part);
     }
 
-    public bool IsPlayerDead()
+    public float GetMovementSpeedMultiplier()
     {
-        // Customize death condition
-        return IsPartDestroyed(BodyPart.Head) || IsPartDestroyed(BodyPart.Torso);
+        int brokenLegs = 0;
+        int brokenArms = 0;
+
+        if (IsPartDestroyed(BodyPart.LeftLeg)) brokenLegs++;
+        if (IsPartDestroyed(BodyPart.RightLeg)) brokenLegs++;
+        if (IsPartDestroyed(BodyPart.LeftArm)) brokenArms++;
+        if (IsPartDestroyed(BodyPart.RightArm)) brokenArms++;
+
+        if (brokenLegs == 2 && brokenArms == 2) return 0.1f;
+        if (brokenLegs == 2 && brokenArms >= 1) return 0.25f;
+        if (brokenLegs == 2) return 0.4f;
+        if (brokenLegs == 1) return 0.7f;
+
+        return 1f;
+    }
+
+    public int CountActiveBleedingLimbs()
+    {
+        int count = 0;
+        foreach (var part in bodyParts)
+        {
+            if (part.part == BodyPart.Head) continue;
+            if (part.IsDestroyed && part.isBleeding) count++;
+        }
+        return count;
     }
 }

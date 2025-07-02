@@ -40,8 +40,15 @@ public class PlayerMovement : MonoBehaviour
     #region Movement
     public void MovePlayer(Vector2 input)
     {
+        float speedMultiplier = 1f;
+
+        if (PlayerHealth.Instance != null)
+        {
+            speedMultiplier = PlayerHealth.Instance.GetMovementSpeedMultiplier();
+        }
+
         Vector3 moveDir = new Vector3(input.x, 0, input.y);
-        _controller.Move(transform.TransformDirection(moveDir) * _moveSpeed * Time.deltaTime);
+        _controller.Move(transform.TransformDirection(moveDir) * _moveSpeed * speedMultiplier * Time.deltaTime);
 
         ApplyGravity();
     }
