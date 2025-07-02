@@ -6,6 +6,8 @@ public class RoadLooper : MonoBehaviour
 {
     [SerializeField]
     GameObject[] sectionsPrefabs;
+	
+	[SerializeField] GameObject finalPrefab;
 
     [SerializeField]
     int poolSize = 20;
@@ -20,6 +22,7 @@ public class RoadLooper : MonoBehaviour
 
     const float sectionLength = 78f;
     float nextSpawnX;
+	bool isLooping = true;
 
     void Start()
     {
@@ -46,6 +49,8 @@ public class RoadLooper : MonoBehaviour
 
     void Update()
     {
+		if (!isLooping) return;
+		 
         // If the player has moved past the first road section, recycle it
         if (activeSections.Count > 0)
         {
@@ -83,5 +88,22 @@ public class RoadLooper : MonoBehaviour
         Debug.LogWarning("No available inactive sections in pool!");
         // Just return something to avoid crash
         return sectionsPool[0];
+    }
+	
+    public void StopLoopingAndSpawnFinal()
+    {
+        isLooping = false;
+
+        if (finalPrefab != null)
+        {
+            float roadY = 19f;
+            Vector3 finalPosition = new Vector3(nextSpawnX, roadY, playerCarTransform.position.z + 7);
+            Instantiate(finalPrefab, finalPosition, Quaternion.identity);
+            Debug.Log("Final prefab spawned.");
+        }
+        else
+        {
+            Debug.LogWarning("Final prefab not assigned!");
+        }
     }
 }

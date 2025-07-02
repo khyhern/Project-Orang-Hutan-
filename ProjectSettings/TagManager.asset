@@ -14,9 +14,9 @@ TagManager:
   - UI
   - Player
   - LevelComponents
-  - 
-  - 
-  - 
+  - Friend
+  - Savepoint
+  - Interactable
   - 
   - 
   - 
