@@ -339,7 +339,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 223388289}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -1159,7 +1159,7 @@ MonoBehaviour:
   interactDistance: 2
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1024
   interactText: {fileID: 1777968147}
   interactKey: 101
   playerCamera: {fileID: 1968577636}
@@ -1284,7 +1284,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1016087069}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: -- Interactables --
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1427,7 +1427,7 @@ GameObject:
   - component: {fileID: 1212976189}
   - component: {fileID: 1212976188}
   - component: {fileID: 1212976192}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Key 0001020
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1579,7 +1579,7 @@ GameObject:
   - component: {fileID: 1539675546}
   - component: {fileID: 1539675545}
   - component: {fileID: 1539675544}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Door 9837423
   m_TagString: Untagged
   m_Icon: {fileID: 0}
