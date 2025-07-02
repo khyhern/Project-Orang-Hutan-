@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: 2460812111917582703}
   - component: {fileID: 5785964759183966224}
   - component: {fileID: 2043100233557337795}
+  - component: {fileID: 502767012597847529}
+  - component: {fileID: 4521565102155875776}
+  - component: {fileID: 6528606074165607876}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -141,6 +144,8 @@ MonoBehaviour:
   _moveSpeed: 5
   _stamina: 50
   _maxStamina: 50
+  isCarryingFriend: 0
+  carryingSpeed: 2.5
 --- !u!114 &2043100233557337795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +160,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _xSensitivity: 20
   _ySensitivity: 20
+--- !u!114 &502767012597847529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5513326400140857618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd2c2c2ddb69ee543aca4511260b4160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  bodyParts: []
+--- !u!114 &4521565102155875776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5513326400140857618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d20f1acd8ae224c8805af60dc3c114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6528606074165607876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5513326400140857618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68d7077570f86040a4b9e473627b935, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bleedInterval: 2
 --- !u!1 &7130634751569772680
 GameObject:
   m_ObjectHideFlags: 0
