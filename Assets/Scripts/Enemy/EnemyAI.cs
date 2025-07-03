@@ -28,7 +28,6 @@ public class EnemyAI : MonoBehaviour
 
     // States
     private bool _playerInSightRange, _playerInAttackRange;
-    private bool _smtgInSightRange;
     #endregion
 
     private void Start()
@@ -73,7 +72,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         Vector3 distanceToWalkPoint = transform.position - _walkPoint;
-        if (distanceToWalkPoint.magnitude < 1f)
+        if (distanceToWalkPoint.magnitude < 1.5f)
         {
             _walkPointSet = false;
         }
@@ -95,7 +94,7 @@ public class EnemyAI : MonoBehaviour
     private void ChasePlayer()
     {
         _enemy.SetDestination(_player.position);
-        _enemy.speed = _speed * 2f;
+        _enemy.speed = _speed * 3f;
         Debug.Log("Chasing Player");
     }
 

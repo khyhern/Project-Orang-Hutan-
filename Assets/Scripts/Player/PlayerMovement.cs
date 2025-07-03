@@ -98,13 +98,15 @@ public class PlayerMovement : MonoBehaviour
         
         UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
     }
-    #endregion
-    #endregion
+   
 
     public void SetMoveSpeed(float newSpeed)
     {
         _moveSpeed = newSpeed;
         Debug.Log("Player move speed set to: " + _moveSpeed);
     }
+
+    #endregion
+    #endregion
 
 }
