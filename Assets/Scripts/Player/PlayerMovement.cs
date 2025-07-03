@@ -12,11 +12,13 @@ public class PlayerMovement : MonoBehaviour
     #region Internal
     private CharacterController _controller;
     private PlayerConditions _conditions;
+    private Animator _animator;
     private Vector3 _velocity;
     private float _gravity = -9.81f;
     [HideInInspector] public bool isCarryingFriend = false;
     [HideInInspector] public float carryingSpeed = 2.5f;
     private float _defaultMoveSpeed = 5f;
+    
 
     public PlayerConditions Conditions => _conditions;
     #endregion
@@ -26,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _conditions = new PlayerConditions();
         _stamina = _maxStamina;
+        _animator = GetComponent<Animator>();
         UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
     }
 
@@ -39,12 +42,21 @@ public class PlayerMovement : MonoBehaviour
         {
             ResetSpeed();
         }
-
     }
 
     #region Movement
     public void MovePlayer(Vector2 input)
     {
+        if (input != Vector2.zero)
+        {
+            //PlayWalkSFX();
+            _animator.SetBool("Walk", true);
+        }
+        else
+        {
+            _animator.SetBool("Walk", false);
+        }
+
         float speedMultiplier = 1f;
 
         if (PlayerHealth.Instance != null)
@@ -107,6 +119,15 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Player move speed set to: " + _moveSpeed);
     }
 
+    #endregion
+    #region Move SFX
+    public void PlayWalkSFX()
+    {
+        if (_conditions.IsGrounded && _conditions.IsSprinting == false)
+        {
+            AudioManager.Instance.PlaySFXWalk();
+        }
+    }
     #endregion
     #endregion
 

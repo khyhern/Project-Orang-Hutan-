@@ -25,10 +25,9 @@ public class AudioManager : Singleton<AudioManager>
         _bgm.Play();    
     }
 
-    public void PlaySFXWalk(AudioClip clip)
+    public void PlaySFXWalk()
     {
-        Debug.Log("Walk");
-        _sfxWalking.clip = clip;
-        _sfxWalking.Play();
+        _sfxWalking.pitch = Random.Range(0.9f, 1.1f);
+        _sfxWalking.PlayOneShot(Walking);
     }
 }
