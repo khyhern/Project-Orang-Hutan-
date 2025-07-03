@@ -49,11 +49,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (input != Vector2.zero)
         {
-            //PlayWalkSFX();
+            _conditions.IsWalking = true;
             _animator.SetBool("Walk", true);
         }
         else
         {
+            _conditions.IsWalking = false;
             _animator.SetBool("Walk", false);
         }
 
@@ -123,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
     #region Move SFX
     public void PlayWalkSFX()
     {
-        if (_conditions.IsGrounded && _conditions.IsSprinting == false)
+        if (_conditions.IsGrounded && _conditions.IsSprinting == false && _conditions.IsWalking)
         {
             AudioManager.Instance.PlaySFXWalk();
         }

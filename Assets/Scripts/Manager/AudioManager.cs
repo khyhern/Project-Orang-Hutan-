@@ -27,7 +27,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PlaySFXWalk()
     {
-        _sfxWalking.pitch = Random.Range(0.9f, 1.1f);
+        _sfxWalking.pitch = Random.Range(0.7f, 1f);
         _sfxWalking.PlayOneShot(Walking);
     }
 }

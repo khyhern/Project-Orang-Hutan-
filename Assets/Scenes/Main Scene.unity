@@ -899,7 +899,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -3354,7 +3354,7 @@ MonoBehaviour:
   _sfxWalking: {fileID: 884425320}
   _sfx: {fileID: 1280911579}
   Bgm: {fileID: 8300000, guid: dd5d81b525adf3d4bac0d212bd37a62a, type: 3}
-  Walking: {fileID: 8300000, guid: 28509b48562621b4a957feab772b32da, type: 3}
+  Walking: {fileID: 8300000, guid: b8b30d6c31d2e7848ad28e67fc5fec5c, type: 3}
 --- !u!4 &1117276257
 Transform:
   m_ObjectHideFlags: 0
