@@ -76,7 +76,7 @@ public class EnemyAI : MonoBehaviour
         {
             _walkPointSet = false;
         }
-        Debug.Log("Patrolling");
+        _enemy.speed = _speed;
     }
 
     private void SearchWalkPoint()
@@ -88,14 +88,13 @@ public class EnemyAI : MonoBehaviour
         {
             _walkPointSet = true;
         }
-        _enemy.speed = _speed;
+        
     }
 
     private void ChasePlayer()
     {
         _enemy.SetDestination(_player.position);
         _enemy.speed = _speed * 3f;
-        Debug.Log("Chasing Player");
     }
 
     private void AttackPlayer()
@@ -111,8 +110,6 @@ public class EnemyAI : MonoBehaviour
             _alreadyAttacked = true;
             Invoke(nameof(ResetAttack), _timeBetweenAttacks);
         }
-
-        Debug.Log("Attacking Player");
     }
 
     private void ResetAttack()

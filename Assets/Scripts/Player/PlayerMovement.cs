@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool isCarryingFriend = false;
     [HideInInspector] public float carryingSpeed = 2.5f;
     private float _defaultMoveSpeed = 5f;
+
+    public PlayerConditions Conditions => _conditions;
     #endregion
 
     private void Start()
@@ -52,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = new Vector3(input.x, 0, input.y);
         _controller.Move(transform.TransformDirection(moveDir) * _moveSpeed * speedMultiplier * Time.deltaTime);
-
         ApplyGravity();
     }
     private void ApplyGravity()

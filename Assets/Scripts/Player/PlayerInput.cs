@@ -18,7 +18,6 @@ public class PlayerInput : MonoBehaviour
     {
         _playerMovement.MovePlayer(InputSystem.actions.FindAction("Move").ReadValue<Vector2>());
         _playerLook.Look(InputSystem.actions.FindAction("Look").ReadValue<Vector2>());
-
     }
 
     private void OnSprint(InputAction.CallbackContext obj)
@@ -34,7 +33,7 @@ public class PlayerInput : MonoBehaviour
     private void OnEnable()
     {
         InputSystem.actions.FindAction("Sprint").started += OnSprint;
-        InputSystem.actions.FindAction("Sprint").canceled += OnWalk; 
+        InputSystem.actions.FindAction("Sprint").canceled += OnWalk;
     }
 
     private void OnDisable()
