@@ -5518,6 +5518,7 @@ GameObject:
   - component: {fileID: 1829039575}
   - component: {fileID: 1829039579}
   - component: {fileID: 1829039578}
+  - component: {fileID: 1829039580}
   m_Layer: 0
   m_Name: Murderer
   m_TagString: Untagged
@@ -5617,6 +5618,7 @@ MonoBehaviour:
   _sightRange: 7
   _attackRange: 1
   _walkPointRange: 20
+  _searchRange: 2
 --- !u!195 &1829039579
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -5639,6 +5641,29 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &1829039580
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829039573}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1837237070
 GameObject:
   m_ObjectHideFlags: 0

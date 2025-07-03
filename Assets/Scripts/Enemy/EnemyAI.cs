@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour, IHear
 {
     [Header("Settings")]
     [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsThis;
     [SerializeField] private Transform _enemyAttackPoint;
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private float _walkPointRange;
+    [SerializeField] private float _searchRange;
 
     #region Internal
     private Transform _player;
     private NavMeshAgent _enemy;
     private float _speed;
     private Vector3 dirToPlayer;
+
+    // Searching
+    private Vector3 _searchPoint;
+    private bool _searchPointSet;
+    private bool _searching;
 
     // Patrolling
     private Vector3 _walkPoint;
@@ -57,9 +63,10 @@ public class EnemyAI : MonoBehaviour
        
 
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
-        if (!_playerInSightRange && !_playerInAttackRange) Patroling();
+        if (!_playerInSightRange && !_playerInAttackRange && !_searching) Patroling();
         if (_playerInSightRange && !_playerInAttackRange) ChasePlayer();
         if (_playerInAttackRange && _playerInSightRange) AttackPlayer();
+        if (_searching) SearchPlayer();
     }
 
     private void Patroling()
@@ -97,6 +104,36 @@ public class EnemyAI : MonoBehaviour
         _enemy.speed = _speed * 3f;
     }
 
+    private void SearchPlayer()
+    {
+        if (!_searchPointSet) SearchPlayerPoint();
+
+        if (_searchPointSet)
+        {
+            _enemy.SetDestination(_searchPoint);
+        }
+        
+        Vector3 distanceToSearchPoint = transform.position - _searchPoint;
+        Debug.Log("Distance to search point: " + distanceToSearchPoint.magnitude);
+        if (distanceToSearchPoint.magnitude < 1.5f)
+        {
+            _searchPointSet = false;
+            _searching = false;
+        }
+        _enemy.speed = _speed;
+    }
+
+    private void SearchPlayerPoint()
+    {
+        float randomZ = Random.Range(-_searchRange, _searchRange);
+        float randomX = Random.Range(-_searchRange, _searchRange);
+        _searchPoint = new Vector3(_player.position.x + randomX, _player.position.y, _player.position.z + randomZ);
+        if (Physics.Raycast(_searchPoint, -transform.up, 2f, whatIsGround))
+        {
+            _searchPointSet = true;
+        }
+    }
+
     private void AttackPlayer()
     {
         _enemy.SetDestination(transform.position);
@@ -126,5 +163,13 @@ public class EnemyAI : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(_enemyAttackPoint.position, _attackRange);
         }
+    }
+
+    public void RespondToSound(Sound sound)
+    {
+        
+        Debug.Log("Enemy heard sound: " + sound);
+        
+        _searching = true;
     }
 }

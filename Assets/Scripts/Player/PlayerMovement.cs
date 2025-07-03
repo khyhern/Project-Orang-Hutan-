@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -127,7 +128,16 @@ public class PlayerMovement : MonoBehaviour
         if (_conditions.IsGrounded && _conditions.IsSprinting == false && _conditions.IsWalking)
         {
             AudioManager.Instance.PlaySFXWalk();
+            var sound = new Sound(transform.position, 10f);
+
+            Sounds.MakeSound(sound);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, 10f);
     }
     #endregion
     #endregion
