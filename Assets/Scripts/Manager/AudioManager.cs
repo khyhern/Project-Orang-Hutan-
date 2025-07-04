@@ -7,7 +7,7 @@ public class AudioManager : Singleton<AudioManager>
     [Header("Audio Sources")]
     [SerializeField] private AudioSource _bgm;
     [SerializeField] private AudioSource _sfxWalking;
-    [SerializeField] private AudioSource _sfx;
+    [SerializeField] private AudioSource _sfxSeeEnemy;
     [SerializeField] private AudioSource _sfxHeartBeat;
 
     [Header("Audio Clips")]
@@ -16,9 +16,12 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip HeartBeat;
     public AudioClip MurdererCome;
 
+    private bool firstPlay = true;
+
     private void Start()
     {
         PlayBGM(Bgm);
+        PlayHeartBeat();
     }
 
     private void PlayBGM(AudioClip clip)
@@ -28,9 +31,24 @@ public class AudioManager : Singleton<AudioManager>
         _bgm.Play();    
     }
 
-    public void PlaySFX(AudioClip clip)
+    private void PlayHeartBeat()
     {
-        _sfx.PlayOneShot(clip);
+        _sfxHeartBeat.clip = HeartBeat;
+        _sfxHeartBeat.Play();
+    }
+
+    public void PlaySFXseeEnemy()
+    {
+        if (!firstPlay) return;
+        firstPlay = false;
+        _sfxSeeEnemy.PlayOneShot(MurdererCome);
+        StartCoroutine(SeeEnemyCountDown());
+    }
+
+    private IEnumerator SeeEnemyCountDown()
+    {
+        yield return new WaitForSeconds(60f);
+        firstPlay = true;
     }
 
     public void PlaySFXWalk()
@@ -39,16 +57,19 @@ public class AudioManager : Singleton<AudioManager>
         _sfxWalking.PlayOneShot(Walking);
     }
 
-    public void PlaySFXHearBeat()
+    public void IncreaseVolumeHB()
     {
-        if (_sfxHeartBeat.isPlaying) return;
-        _sfxHeartBeat.clip = HeartBeat;
-        _sfxHeartBeat.loop = true;
-        _sfxHeartBeat.Play();
+        if (_sfxHeartBeat.volume < 0.8f)
+        {
+            _sfxHeartBeat.volume += 0.1f * Time.deltaTime;
+        }
     }
 
-    public void StopSFXHearBeat()
+    public void DecreaseVolumeHB()
     {
-        _sfxHeartBeat.Stop();
+        if (_sfxHeartBeat.volume >= 0.1f)
+        {
+            _sfxHeartBeat.volume -= 0.1f * Time.deltaTime;
+        }
     }
 }

@@ -18,11 +18,11 @@ public class PlayerHear : MonoBehaviour
     {
         if (Physics.CheckSphere(transform.position, hearingRange, whatIsEnemy))
         {          
-            AudioManager.Instance.PlaySFXHearBeat();
+            AudioManager.Instance.IncreaseVolumeHB();
         }
         else
         {
-            AudioManager.Instance.StopSFXHearBeat();
+            AudioManager.Instance.DecreaseVolumeHB();
         }
     }
 
