@@ -9,6 +9,7 @@ public class FlashlightItem : Interactable
 
     public override void Interact()
     {
+        InventoryManager.Instance.SetFlashlightExists(true);
         Debug.Log("Flashlight pickup collected.");
         Destroy(gameObject);
     }

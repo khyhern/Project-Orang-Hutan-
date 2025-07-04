@@ -6,6 +6,8 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
 
+    public bool flashlightExists { get; private set; } = false;
+
     private List<string> keyItems = new List<string>();
 
     [Header("Flashlight")]
@@ -37,13 +39,17 @@ public class InventoryManager : MonoBehaviour
         flashlightPrefab = prefab;
     }
 
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (flashlightExists  && Input.GetKeyDown(KeyCode.Alpha1))
         {
             TrySpawnFlashlight();
         }
+    }
+
+    public void SetFlashlightExists(bool value)
+    {
+        flashlightExists = value;
     }
 
     void TrySpawnFlashlight()
@@ -65,7 +71,7 @@ public class InventoryManager : MonoBehaviour
             controller.Activate();
         }
 
-        Debug.Log("Flashlight spawned.");
+        Debug.Log("Flashlight equipped.");
     }
 }
 

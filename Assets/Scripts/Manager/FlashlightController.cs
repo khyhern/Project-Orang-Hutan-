@@ -65,7 +65,7 @@ public class FlashlightController : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
 
         // Optionally apply X-axis correction if flashlight model is tilted
-        targetRotation *= Quaternion.Euler(90f, 0f, 0f); // Adjust this if needed
+        targetRotation *= Quaternion.Euler(90f, -4f, 0f); // Adjust this if needed
 
         transform.rotation = targetRotation;
     }
