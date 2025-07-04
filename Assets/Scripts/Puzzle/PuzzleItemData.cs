@@ -4,5 +4,8 @@ using UnityEngine;
 public class PuzzleItemData : ScriptableObject
 {
     public string itemName;
-    public GameObject prefab; // For future instantiation if needed
+    public Sprite icon;
+    public GameObject prefab;
+    [TextArea] public string description;
+    public bool isCombinable;
 }

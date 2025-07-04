@@ -1,35 +1,44 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 {
+    [Tooltip("The item this slot expects to receive.")]
     public string expectedItemName;
+
+    [Tooltip("Reference to the puzzle manager that owns this slot.")]
     public PuzzleManager manager;
+
     private PuzzleItemData placedItem;
 
     public void Interact()
     {
         if (placedItem != null)
         {
-            Debug.Log("Slot already filled.");
+            Debug.Log("[PuzzleSlot] Slot already filled.");
             return;
         }
 
-        var inventory = InventorySystem.Instance;
-        var items = inventory.GetAllItems();
-
-        if (items.Count == 0)
+        var selectedItem = InventoryUI.Instance.GetSelectedItem();
+        if (selectedItem == null)
         {
-            Debug.Log("Inventory is empty.");
+            Debug.Log("[PuzzleSlot] No item selected in inventory.");
             return;
         }
 
-        // Just use the first item
-        PuzzleItemData chosenItem = items[0];
-        placedItem = chosenItem;
-        inventory.RemoveItem(chosenItem);
+        if (!InventorySystem.Instance.HasItem(selectedItem))
+        {
+            Debug.Log("[PuzzleSlot] Selected item is no longer in inventory.");
+            return;
+        }
 
-        Debug.Log($"Placed {chosenItem.itemName} into slot expecting {expectedItemName}");
-        manager.CheckPuzzleState();
+        placedItem = selectedItem;
+        InventorySystem.Instance.RemoveItem(selectedItem);
+        InventoryUI.Instance.RefreshDisplay();
+
+        Debug.Log($"[PuzzleSlot] Placed {selectedItem.itemName} into slot expecting {expectedItemName}");
+
+        manager?.CheckPuzzleState();
     }
 
     public string GetPlacedItemName() => placedItem?.itemName;
