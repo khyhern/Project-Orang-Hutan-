@@ -19,6 +19,7 @@ public class EnemyAI : MonoBehaviour, IHear
     private Vector3 dirToPlayer;
 
     // Searching
+    private Vector3 _soundPos;
     private Vector3 _searchPoint;
     private bool _searchPointSet;
     private bool _searching;
@@ -63,10 +64,10 @@ public class EnemyAI : MonoBehaviour, IHear
        
 
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
+        if (_searching && !_playerInSightRange) SearchSound();
         if (!_playerInSightRange && !_playerInAttackRange && !_searching) Patroling();
         if (_playerInSightRange && !_playerInAttackRange) ChasePlayer();
-        if (_playerInAttackRange && _playerInSightRange) AttackPlayer();
-        if (_searching) SearchPlayer();
+        if (_playerInAttackRange && _playerInSightRange) AttackPlayer(); 
     }
 
     private void Patroling()
@@ -101,12 +102,12 @@ public class EnemyAI : MonoBehaviour, IHear
     private void ChasePlayer()
     {
         _enemy.SetDestination(_player.position);
-        _enemy.speed = _speed * 3f;
+        _enemy.speed = _speed * 2.5f;
     }
 
-    private void SearchPlayer()
+    private void SearchSound()
     {
-        if (!_searchPointSet) SearchPlayerPoint();
+        if (!_searchPointSet) SearchSoundPoint();
 
         if (_searchPointSet)
         {
@@ -114,7 +115,7 @@ public class EnemyAI : MonoBehaviour, IHear
         }
         
         Vector3 distanceToSearchPoint = transform.position - _searchPoint;
-        Debug.Log("Distance to search point: " + distanceToSearchPoint.magnitude);
+        Debug.Log("Finding sound");
         if (distanceToSearchPoint.magnitude < 1.5f)
         {
             _searchPointSet = false;
@@ -123,11 +124,11 @@ public class EnemyAI : MonoBehaviour, IHear
         _enemy.speed = _speed;
     }
 
-    private void SearchPlayerPoint()
+    private void SearchSoundPoint()
     {
         float randomZ = Random.Range(-_searchRange, _searchRange);
         float randomX = Random.Range(-_searchRange, _searchRange);
-        _searchPoint = new Vector3(_player.position.x + randomX, _player.position.y, _player.position.z + randomZ);
+        _searchPoint = new Vector3(_soundPos.x + randomX, _soundPos.y, _soundPos.z + randomZ);
         if (Physics.Raycast(_searchPoint, -transform.up, 2f, whatIsGround))
         {
             _searchPointSet = true;
@@ -169,7 +170,9 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         
         Debug.Log("Enemy heard sound: " + sound);
-        
+
+        _searchPointSet = false;
         _searching = true;
+        _soundPos = sound.Pos;
     }
 }
