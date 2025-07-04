@@ -552,7 +552,7 @@ GameObject:
   - component: {fileID: 186321296}
   - component: {fileID: 186321295}
   - component: {fileID: 186321294}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2249,6 +2249,134 @@ Transform:
   - {fileID: 787634503}
   m_Father: {fileID: 1536040249}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &756233697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 756233698}
+  - component: {fileID: 756233699}
+  m_Layer: 0
+  m_Name: SFX - HeartBeat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &756233698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756233697}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1117276257}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &756233699
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756233697}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1.3
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 190
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &775015676
 GameObject:
   m_ObjectHideFlags: 0
@@ -3381,6 +3509,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4882850247107332362, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: hearingRange
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882850247107332362, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: whatIsEnemy.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
     - target: {fileID: 5149424561190231939, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3886,8 +4024,10 @@ MonoBehaviour:
   _bgm: {fileID: 200675028}
   _sfxWalking: {fileID: 884425320}
   _sfx: {fileID: 1280911579}
+  _sfxHeartBeat: {fileID: 756233699}
   Bgm: {fileID: 8300000, guid: dd5d81b525adf3d4bac0d212bd37a62a, type: 3}
   Walking: {fileID: 8300000, guid: b8b30d6c31d2e7848ad28e67fc5fec5c, type: 3}
+  HeartBeat: {fileID: 8300000, guid: 2b3b739abcab31247885c3d475bf02c8, type: 3}
 --- !u!4 &1117276257
 Transform:
   m_ObjectHideFlags: 0
@@ -3904,6 +4044,7 @@ Transform:
   - {fileID: 200675027}
   - {fileID: 1280911578}
   - {fileID: 884425319}
+  - {fileID: 756233698}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1123296651
@@ -6403,9 +6544,9 @@ GameObject:
   - component: {fileID: 1829039579}
   - component: {fileID: 1829039578}
   - component: {fileID: 1829039580}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Murderer
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7328,7 +7469,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1998030928}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

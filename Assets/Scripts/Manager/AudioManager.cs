@@ -8,10 +8,12 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioSource _bgm;
     [SerializeField] private AudioSource _sfxWalking;
     [SerializeField] private AudioSource _sfx;
+    [SerializeField] private AudioSource _sfxHeartBeat;
 
     [Header("Audio Clips")]
     public AudioClip Bgm;
     public AudioClip Walking;
+    public AudioClip HeartBeat;
 
     private void Start()
     {
@@ -29,5 +31,31 @@ public class AudioManager : Singleton<AudioManager>
     {
         _sfxWalking.pitch = Random.Range(0.7f, 0.9f);
         _sfxWalking.PlayOneShot(Walking);
+    }
+
+    public void PlaySFXHearBeat()
+    {
+        if (_sfxHeartBeat.isPlaying) return;
+        _sfxHeartBeat.clip = HeartBeat;
+        _sfxHeartBeat.loop = true;
+        _sfxHeartBeat.Play();
+    }
+
+    public void StopSFXHearBeat()
+    {
+        _sfxHeartBeat.Pause();
+    }
+
+    public void AdjustPitch(bool isVeryNear)
+    {
+        if (isVeryNear)
+        {
+            _sfxHeartBeat.pitch = 1.7f;
+        }
+        else
+        {
+            _sfxHeartBeat.pitch = 1.3f;
+        }
+           
     }
 }
