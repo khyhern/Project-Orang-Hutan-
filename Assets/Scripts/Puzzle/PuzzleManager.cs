@@ -37,7 +37,7 @@ public class PuzzleManager : MonoBehaviour
     {
         Debug.Log("✅ Puzzle solved. Unlocking drawer...");
 
-        clunkSound?.Play();
+        // clunkSound?.Play();
         drawer?.SetActive(true);
         clockHand?.SetActive(true);
 

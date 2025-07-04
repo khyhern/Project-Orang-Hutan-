@@ -34,7 +34,7 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         }
 
         ActiveSlot = this;
-        InventoryUI.Instance.OpenInventory();
+        InventoryUI.Instance.OpenInventory(true);
         Debug.Log("[PuzzleSlot] Waiting for item via 'Use' button...");
     }
 
@@ -74,6 +74,7 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         Debug.Log($"[PuzzleSlot] Slot cleared (was holding: {placedItem?.itemName})");
         placedItem = null;
         spawnedInstance = null;
+
         manager?.CheckPuzzleState();
     }
 

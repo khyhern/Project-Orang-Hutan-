@@ -19,6 +19,8 @@ public class InventoryUI : MonoBehaviour
 
     public static InventoryUI Instance { get; private set; }
 
+    private bool wasOpenedFromSlot = false;
+
     private void Awake()
     {
         if (Instance != null)
@@ -40,6 +42,7 @@ public class InventoryUI : MonoBehaviour
 
     private void Start()
     {
+        // Ensures it catches InventorySystem if it loaded late
         StartCoroutine(RegisterWhenReady());
     }
 
@@ -76,17 +79,19 @@ public class InventoryUI : MonoBehaviour
 
     private void ToggleInventory()
     {
-        bool isActive = !inventoryCanvas.activeSelf;
-        inventoryCanvas.SetActive(isActive);
-
-        if (isActive)
+        if (inventoryCanvas.activeSelf)
         {
-            RefreshDisplay();
+            inventoryCanvas.SetActive(false);
+        }
+        else
+        {
+            OpenInventory(false); // Opened manually, not by slot
         }
     }
 
-    public void OpenInventory()
+    public void OpenInventory(bool fromSlot = false)
     {
+        wasOpenedFromSlot = fromSlot;
         inventoryCanvas.SetActive(true);
         RefreshDisplay();
     }
@@ -153,6 +158,12 @@ public class InventoryUI : MonoBehaviour
         if (PuzzleSlotInteractable.ActiveSlot != null)
         {
             PuzzleSlotInteractable.ActiveSlot.PlaceItem(selectedItem);
+
+            if (wasOpenedFromSlot)
+            {
+                inventoryCanvas.SetActive(false);
+                wasOpenedFromSlot = false;
+            }
         }
         else
         {
