@@ -43,19 +43,6 @@ public class AudioManager : Singleton<AudioManager>
 
     public void StopSFXHearBeat()
     {
-        _sfxHeartBeat.Pause();
-    }
-
-    public void AdjustPitch(bool isVeryNear)
-    {
-        if (isVeryNear)
-        {
-            _sfxHeartBeat.pitch = 1.7f;
-        }
-        else
-        {
-            _sfxHeartBeat.pitch = 1.3f;
-        }
-           
+        _sfxHeartBeat.Stop();
     }
 }

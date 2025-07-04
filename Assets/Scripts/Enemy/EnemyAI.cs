@@ -85,7 +85,6 @@ public class EnemyAI : MonoBehaviour, IHear
             _walkPointSet = false;
         }
         _enemy.speed = _speed;
-        AudioManager.Instance.AdjustPitch(false);
     }
 
     private void SearchWalkPoint()
@@ -104,7 +103,6 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         _enemy.SetDestination(_player.position);
         _enemy.speed = _speed * 2.5f;
-        AudioManager.Instance.AdjustPitch(true);
     }
 
     private void SearchSound()
@@ -124,7 +122,6 @@ public class EnemyAI : MonoBehaviour, IHear
             _searching = false;
         }
         _enemy.speed = _speed;
-        AudioManager.Instance.AdjustPitch(false);
     }
 
     private void SearchSoundPoint()
