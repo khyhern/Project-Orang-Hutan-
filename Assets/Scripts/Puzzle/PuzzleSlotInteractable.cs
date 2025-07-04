@@ -10,6 +10,9 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
     public PuzzleManager manager;
 
     private PuzzleItemData placedItem;
+    private GameObject spawnedInstance;
+
+    public static PuzzleSlotInteractable ActiveSlot { get; private set; }
 
     public void Interact()
     {
@@ -19,26 +22,40 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
             return;
         }
 
-        var selectedItem = InventoryUI.Instance.GetSelectedItem();
-        if (selectedItem == null)
+        ActiveSlot = this;
+        InventoryUI.Instance.OpenInventory();
+        Debug.Log("[PuzzleSlot] Waiting for item via 'Use' button...");
+    }
+
+    public void PlaceItem(PuzzleItemData item)
+    {
+        if (item == null || placedItem != null)
         {
-            Debug.Log("[PuzzleSlot] No item selected in inventory.");
+            Debug.LogWarning("[PuzzleSlot] Cannot place item: already filled or null.");
             return;
         }
 
-        if (!InventorySystem.Instance.HasItem(selectedItem))
+        placedItem = item;
+
+        // Spawn the actual visual object at the slot
+        if (item.prefab != null)
         {
-            Debug.Log("[PuzzleSlot] Selected item is no longer in inventory.");
-            return;
+            spawnedInstance = Instantiate(item.prefab, transform.position, transform.rotation, transform);
+        }
+        else
+        {
+            Debug.LogWarning($"[PuzzleSlot] Item '{item.itemName}' has no prefab assigned.");
         }
 
-        placedItem = selectedItem;
-        InventorySystem.Instance.RemoveItem(selectedItem);
+        InventorySystem.Instance.RemoveItem(item);
         InventoryUI.Instance.RefreshDisplay();
 
-        Debug.Log($"[PuzzleSlot] Placed {selectedItem.itemName} into slot expecting {expectedItemName}");
+        Debug.Log($"[PuzzleSlot] Placed {item.itemName} into slot expecting {expectedItemName}");
 
         manager?.CheckPuzzleState();
+
+        // Clear the global slot reference after use
+        ActiveSlot = null;
     }
 
     public string GetPlacedItemName() => placedItem?.itemName;

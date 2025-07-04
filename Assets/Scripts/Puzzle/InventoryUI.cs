@@ -40,7 +40,6 @@ public class InventoryUI : MonoBehaviour
 
     private void Start()
     {
-        // Ensures it catches InventorySystem if it loaded late
         StartCoroutine(RegisterWhenReady());
     }
 
@@ -84,6 +83,12 @@ public class InventoryUI : MonoBehaviour
         {
             RefreshDisplay();
         }
+    }
+
+    public void OpenInventory()
+    {
+        inventoryCanvas.SetActive(true);
+        RefreshDisplay();
     }
 
     public void RefreshDisplay()
@@ -139,9 +144,20 @@ public class InventoryUI : MonoBehaviour
 
     private void OnUse()
     {
-        if (selectedItem == null) return;
-        Debug.Log($"[USE] {selectedItem.itemName}");
-        // TODO: Implement actual use logic
+        if (selectedItem == null)
+        {
+            Debug.Log("[InventoryUI] No item selected to use.");
+            return;
+        }
+
+        if (PuzzleSlotInteractable.ActiveSlot != null)
+        {
+            PuzzleSlotInteractable.ActiveSlot.PlaceItem(selectedItem);
+        }
+        else
+        {
+            Debug.Log("[InventoryUI] No puzzle slot is active to use this item on.");
+        }
     }
 
     private void OnCombine()

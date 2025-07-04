@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 3613774782914564989}
   - component: {fileID: 3235697640029370040}
   - component: {fileID: 3858506779781873230}
-  m_Layer: 0
+  - component: {fileID: 6612983824251027112}
+  m_Layer: 10
   m_Name: Goblet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,3 +136,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6612983824251027112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5733954977895589830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e276a8020d9d87b449d1e08ed5c977a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 49bc70a8fcd85464c83dcc8853ce464c, type: 2}

@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 3849097549653202833}
   - component: {fileID: 948507769896051085}
   - component: {fileID: 8304235363382302905}
-  m_Layer: 0
+  - component: {fileID: 7515432950354397924}
+  m_Layer: 10
   m_Name: Skull
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,3 +134,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7515432950354397924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5555397712648146543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e276a8020d9d87b449d1e08ed5c977a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: c220d11f9e586024ba5c7b868253a4f9, type: 2}
