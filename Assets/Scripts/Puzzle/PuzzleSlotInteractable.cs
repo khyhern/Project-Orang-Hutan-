@@ -1,19 +1,22 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 {
     [Tooltip("The item this slot expects (correct solution).")]
-    public string expectedItemName;
+    public PuzzleItemData expectedItemData;
 
     [Tooltip("The item this slot originally started with.")]
-    public string originalItemName;
+    public PuzzleItemData originalItemData;
 
-    [Tooltip("Reference to the puzzle manager that owns this slot.")]
-    public PuzzleManager manager;
+    [Tooltip("Spawn point for item visual prefab.")]
+    public Transform itemSpawnPoint;
 
     private PuzzleItemData placedItem;
     private GameObject spawnedInstance;
+    public PuzzleItemData GetPlacedItem() => placedItem;
+    public PuzzleItemData GetOriginalItem() => originalItemData;
+
 
     public static PuzzleSlotInteractable ActiveSlot { get; private set; }
 
@@ -48,24 +51,24 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 
         placedItem = item;
 
-        if (item.prefab != null)
+        if (item.prefab != null && itemSpawnPoint != null)
         {
-            spawnedInstance = Instantiate(item.prefab, transform.position, transform.rotation, transform);
+            spawnedInstance = Instantiate(item.prefab, itemSpawnPoint.position, itemSpawnPoint.rotation, itemSpawnPoint);
 
             var refComponent = spawnedInstance.AddComponent<PuzzleSlotReference>();
             refComponent.AssignSlot(this);
         }
         else
         {
-            Debug.LogWarning($"[PuzzleSlot] Item '{item.itemName}' has no prefab assigned.");
+            Debug.LogWarning($"[PuzzleSlot] Item '{item.itemName}' has no prefab or spawn point.");
         }
 
         InventorySystem.Instance.RemoveItem(item);
         InventoryUI.Instance.RefreshDisplay();
 
-        Debug.Log($"[PuzzleSlot] Placed {item.itemName} into slot expecting {expectedItemName}");
+        Debug.Log($"[PuzzleSlot] Placed {item.itemName} into slot (Expected: {expectedItemData?.itemName})");
 
-        manager?.CheckPuzzleState();
+        PuzzleManager.Instance?.CheckPuzzleState();
         ActiveSlot = null;
     }
 
@@ -75,7 +78,7 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         placedItem = null;
         spawnedInstance = null;
 
-        manager?.CheckPuzzleState();
+        PuzzleManager.Instance?.CheckPuzzleState();
     }
 
     public string GetPlacedItemName() => placedItem?.itemName;
@@ -83,8 +86,8 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
     public SlotState GetSlotState()
     {
         if (placedItem == null) return SlotState.Empty;
-        if (placedItem.itemName == expectedItemName) return SlotState.Correct;
-        if (placedItem.itemName == originalItemName) return SlotState.Original;
+        if (placedItem == expectedItemData) return SlotState.Correct;
+        if (placedItem == originalItemData) return SlotState.Original;
         return SlotState.Wrong;
     }
 }
