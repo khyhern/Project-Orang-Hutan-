@@ -6,19 +6,15 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour
 {
     private PlayerMovement _playerMovement;
-    private PlayerLook _playerLook;
 
     private void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
-        _playerLook = GetComponent<PlayerLook>();
     }
 
     private void Update()
     {
         _playerMovement.MovePlayer(InputSystem.actions.FindAction("Move").ReadValue<Vector2>());
-        _playerLook.Look(InputSystem.actions.FindAction("Look").ReadValue<Vector2>());
-
     }
 
     private void OnSprint(InputAction.CallbackContext obj)
@@ -34,7 +30,7 @@ public class PlayerInput : MonoBehaviour
     private void OnEnable()
     {
         InputSystem.actions.FindAction("Sprint").started += OnSprint;
-        InputSystem.actions.FindAction("Sprint").canceled += OnWalk; 
+        InputSystem.actions.FindAction("Sprint").canceled += OnWalk;
     }
 
     private void OnDisable()
