@@ -17,7 +17,7 @@ public class PlayerHear : MonoBehaviour
     private void CheckEnemy()
     {
         if (Physics.CheckSphere(transform.position, hearingRange, whatIsEnemy))
-        {         
+        {          
             AudioManager.Instance.PlaySFXHearBeat();
         }
         else

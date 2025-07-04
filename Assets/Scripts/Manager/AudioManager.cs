@@ -14,6 +14,7 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip Bgm;
     public AudioClip Walking;
     public AudioClip HeartBeat;
+    public AudioClip MurdererCome;
 
     private void Start()
     {
@@ -25,6 +26,11 @@ public class AudioManager : Singleton<AudioManager>
         _bgm.clip = clip;
         _bgm.loop = true;
         _bgm.Play();    
+    }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        _sfx.PlayOneShot(clip);
     }
 
     public void PlaySFXWalk()
