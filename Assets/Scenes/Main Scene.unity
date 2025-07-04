@@ -2126,6 +2126,7 @@ GameObject:
   - component: {fileID: 685937512}
   - component: {fileID: 685937514}
   - component: {fileID: 685937516}
+  - component: {fileID: 685937517}
   - component: {fileID: 685937515}
   m_Layer: 0
   m_Name: FPCamera
@@ -2228,7 +2229,7 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -3691862931820141480, guid: 690a1cdf3c28b224f840399968e4877e,
           type: 3}
-        Gain: 6
+        Gain: 10
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
@@ -2242,7 +2243,7 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -3691862931820141480, guid: 690a1cdf3c28b224f840399968e4877e,
           type: 3}
-        Gain: -6
+        Gain: -10
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
@@ -2286,6 +2287,23 @@ MonoBehaviour:
       Wait: 1
       Time: 2
     Restrictions: 0
+--- !u!114 &685937517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685937511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseProfile: {fileID: 11400000, guid: 46965f9cbaf525742a6da4c2172a99cd, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 0.7
+  FrequencyGain: 0.7
+  m_NoiseOffsets: {x: 953.7783, y: -414.61218, z: -449.80847}
 --- !u!1 &790750321
 GameObject:
   m_ObjectHideFlags: 0

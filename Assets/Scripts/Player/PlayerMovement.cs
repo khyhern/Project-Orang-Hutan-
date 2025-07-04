@@ -128,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
         if (_conditions.IsGrounded && _conditions.IsSprinting == false && _conditions.IsWalking)
         {
             AudioManager.Instance.PlaySFXWalk();
-            var sound = new Sound(transform.position, 12f);
+            var sound = new Sound(transform.position, 11f);
 
             Sounds.MakeSound(sound);
         }
@@ -137,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, 12f);
+        Gizmos.DrawWireSphere(transform.position, 11f);
     }
     #endregion
     #endregion
