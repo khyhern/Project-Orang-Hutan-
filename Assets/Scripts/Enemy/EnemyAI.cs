@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour, IHear
 {
     [Header("Settings")]
     [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsThis;
     [SerializeField] private Transform _enemyAttackPoint;
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private float _walkPointRange;
+    [SerializeField] private float _searchRange;
 
     #region Internal
     private Transform _player;
     private NavMeshAgent _enemy;
     private float _speed;
     private Vector3 dirToPlayer;
+
+    // Searching
+    private Vector3 _soundPos;
+    private Vector3 _searchPoint;
+    private bool _searchPointSet;
+    private bool _searching;
 
     // Patrolling
     private Vector3 _walkPoint;
@@ -28,7 +35,6 @@ public class EnemyAI : MonoBehaviour
 
     // States
     private bool _playerInSightRange, _playerInAttackRange;
-    private bool _smtgInSightRange;
     #endregion
 
     private void Start()
@@ -58,9 +64,10 @@ public class EnemyAI : MonoBehaviour
        
 
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
-        if (!_playerInSightRange && !_playerInAttackRange) Patroling();
+        if (_searching && !_playerInSightRange) SearchSound();
+        if (!_playerInSightRange && !_playerInAttackRange && !_searching) Patroling();
         if (_playerInSightRange && !_playerInAttackRange) ChasePlayer();
-        if (_playerInAttackRange && _playerInSightRange) AttackPlayer();
+        if (_playerInAttackRange && _playerInSightRange) AttackPlayer(); 
     }
 
     private void Patroling()
@@ -73,11 +80,11 @@ public class EnemyAI : MonoBehaviour
         }
 
         Vector3 distanceToWalkPoint = transform.position - _walkPoint;
-        if (distanceToWalkPoint.magnitude < 1f)
+        if (distanceToWalkPoint.magnitude < 1.5f)
         {
             _walkPointSet = false;
         }
-        Debug.Log("Patrolling");
+        _enemy.speed = _speed;
     }
 
     private void SearchWalkPoint()
@@ -89,14 +96,43 @@ public class EnemyAI : MonoBehaviour
         {
             _walkPointSet = true;
         }
-        _enemy.speed = _speed;
+        
     }
 
     private void ChasePlayer()
     {
         _enemy.SetDestination(_player.position);
-        _enemy.speed = _speed * 2f;
-        Debug.Log("Chasing Player");
+        _enemy.speed = _speed * 2.5f;
+    }
+
+    private void SearchSound()
+    {
+        if (!_searchPointSet) SearchSoundPoint();
+
+        if (_searchPointSet)
+        {
+            _enemy.SetDestination(_searchPoint);
+        }
+        
+        Vector3 distanceToSearchPoint = transform.position - _searchPoint;
+        Debug.Log("Finding sound");
+        if (distanceToSearchPoint.magnitude < 1.5f)
+        {
+            _searchPointSet = false;
+            _searching = false;
+        }
+        _enemy.speed = _speed;
+    }
+
+    private void SearchSoundPoint()
+    {
+        float randomZ = Random.Range(-_searchRange, _searchRange);
+        float randomX = Random.Range(-_searchRange, _searchRange);
+        _searchPoint = new Vector3(_soundPos.x + randomX, _soundPos.y, _soundPos.z + randomZ);
+        if (Physics.Raycast(_searchPoint, -transform.up, 2f, whatIsGround))
+        {
+            _searchPointSet = true;
+        }
     }
 
     private void AttackPlayer()
@@ -112,8 +148,6 @@ public class EnemyAI : MonoBehaviour
             _alreadyAttacked = true;
             Invoke(nameof(ResetAttack), _timeBetweenAttacks);
         }
-
-        Debug.Log("Attacking Player");
     }
 
     private void ResetAttack()
@@ -130,5 +164,15 @@ public class EnemyAI : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(_enemyAttackPoint.position, _attackRange);
         }
+    }
+
+    public void RespondToSound(Sound sound)
+    {
+        
+        Debug.Log("Enemy heard sound: " + sound);
+
+        _searchPointSet = false;
+        _searching = true;
+        _soundPos = sound.Pos;
     }
 }

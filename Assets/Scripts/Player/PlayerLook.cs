@@ -4,29 +4,33 @@ using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] private float _xSensitivity = 20f;
-    [SerializeField] private float _ySensitivity = 20f;
-
-    private Camera _camera;
-    private float _rotationX = 0f;
+    private Camera mainCamera;
 
     private void Start()
     {
-        _camera = GetComponentInChildren<Camera>();
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
+        // Find the main camera in the scene
+        mainCamera = Camera.main;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void Look(Vector2 input)
+    private void Update()
     {
-        float mouseX = input.x;
-        float mouseY = input.y;
+        // Rotate the player towards the camera every frame
+        RotatePlayerTowardsCamera();
+    }
 
-        _rotationX -= (mouseY * _ySensitivity) * Time.deltaTime;
-        _rotationX = Mathf.Clamp(_rotationX, -80f, 80f);
+    private void RotatePlayerTowardsCamera()
+    {
+        if (mainCamera != null)
+        {
+            Vector3 cameraForward = mainCamera.transform.forward;
+            cameraForward.y = 0f; // Ignore the y-axis rotation
 
-        _camera.transform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
-
-        transform.Rotate(Vector3.up * (mouseX * _xSensitivity) * Time.deltaTime);
+            if (cameraForward != Vector3.zero)
+            {
+                Quaternion newRotation = Quaternion.LookRotation(cameraForward);
+                transform.rotation = newRotation;
+            }
+        }
     }
 }

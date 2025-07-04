@@ -7,6 +7,7 @@ public class PlayerConditions
     // Conditions
     public bool IsGrounded { get; set; }
     public bool IsSprinting { get; set; }
+    public bool IsWalking { get; set; }
 
     public void Reset()
     {
