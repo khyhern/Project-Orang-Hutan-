@@ -3,8 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 {
-    [Tooltip("The item this slot expects to receive.")]
+    [Tooltip("The item this slot expects (correct solution).")]
     public string expectedItemName;
+
+    [Tooltip("The item this slot originally started with.")]
+    public string originalItemName;
 
     [Tooltip("Reference to the puzzle manager that owns this slot.")]
     public PuzzleManager manager;
@@ -13,6 +16,14 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
     private GameObject spawnedInstance;
 
     public static PuzzleSlotInteractable ActiveSlot { get; private set; }
+
+    public enum SlotState
+    {
+        Empty,
+        Correct,
+        Original,
+        Wrong
+    }
 
     public void Interact()
     {
@@ -37,10 +48,12 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 
         placedItem = item;
 
-        // Spawn the actual visual object at the slot
         if (item.prefab != null)
         {
             spawnedInstance = Instantiate(item.prefab, transform.position, transform.rotation, transform);
+
+            var refComponent = spawnedInstance.AddComponent<PuzzleSlotReference>();
+            refComponent.AssignSlot(this);
         }
         else
         {
@@ -53,10 +66,24 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         Debug.Log($"[PuzzleSlot] Placed {item.itemName} into slot expecting {expectedItemName}");
 
         manager?.CheckPuzzleState();
-
-        // Clear the global slot reference after use
         ActiveSlot = null;
     }
 
+    public void ClearSlot()
+    {
+        Debug.Log($"[PuzzleSlot] Slot cleared (was holding: {placedItem?.itemName})");
+        placedItem = null;
+        spawnedInstance = null;
+        manager?.CheckPuzzleState();
+    }
+
     public string GetPlacedItemName() => placedItem?.itemName;
+
+    public SlotState GetSlotState()
+    {
+        if (placedItem == null) return SlotState.Empty;
+        if (placedItem.itemName == expectedItemName) return SlotState.Correct;
+        if (placedItem.itemName == originalItemName) return SlotState.Original;
+        return SlotState.Wrong;
+    }
 }

@@ -18,20 +18,19 @@ public class PuzzleManager : MonoBehaviour
 
     public void CheckPuzzleState()
     {
+        if (puzzleSolved) return;
+
         foreach (var slot in slots)
         {
-            if (slot.GetPlacedItemName() != slot.expectedItemName)
+            if (slot.GetSlotState() != PuzzleSlotInteractable.SlotState.Correct)
             {
                 Debug.Log("[PuzzleManager] Puzzle not solved yet.");
                 return;
             }
         }
 
-        if (!puzzleSolved)
-        {
-            puzzleSolved = true;
-            UnlockPuzzle();
-        }
+        puzzleSolved = true;
+        UnlockPuzzle();
     }
 
     private void UnlockPuzzle()
@@ -42,7 +41,38 @@ public class PuzzleManager : MonoBehaviour
         drawer?.SetActive(true);
         clockHand?.SetActive(true);
 
-        // Future logic:
+        // Optional: Trigger enemy return timer
         // CuratorReturnManager.Instance?.StartWarning(warningTime);
+    }
+
+    public bool AreAllSlotsInOriginalOrder()
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.GetSlotState() != PuzzleSlotInteractable.SlotState.Original)
+                return false;
+        }
+
+        return true;
+    }
+
+    public bool AreAllSlotsEmpty()
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.GetSlotState() != PuzzleSlotInteractable.SlotState.Empty)
+                return false;
+        }
+
+        return true;
+    }
+
+    public void ForceReset()
+    {
+        Debug.Log("[PuzzleManager] Forcing full puzzle reset.");
+        foreach (var slot in slots)
+        {
+            slot.ClearSlot(); // Slot handles destroying the instance and nulling state
+        }
     }
 }
