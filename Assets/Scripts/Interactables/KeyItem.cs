@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class KeyItem : Interactable
 {
-    public string keyID = "Rusty Key"; // Unique name or ID
+    public string itemID = "Rusty Key"; // Unique name or ID
 
     public override void Interact()
     {
-        InventoryManager.Instance.AddKeyItem(keyID);
+        InventoryManager.Instance.AddKeyItem(itemID);
         Destroy(gameObject);
     }
 
@@ -19,12 +19,12 @@ public class KeyItem : Interactable
 
     public override string GetObjectID()
     {
-        return keyID;
+        return itemID;
     }
 
     public override string GetObjectName()
     {
-        return keyID.ToLower();     // convert string ID into all lowercase
+        return itemID.ToLower();     // convert string ID into all lowercase
     }
 }
 
