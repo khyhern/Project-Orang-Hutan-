@@ -83,11 +83,9 @@ public class PlayerMovement : MonoBehaviour
     #region Sprinting
     public void Sprint()
     {
-        
-        
-            _conditions.IsSprinting = true;
-            _moveSpeed *= 2.5f;
-        
+        _conditions.IsSprinting = true;
+        _moveSpeed *= 2.5f;
+        _animator.SetBool("Sprint", true);
     }
 
     public void ResetSpeed()
@@ -98,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
             _moveSpeed = _defaultMoveSpeed;
 
         _conditions.IsSprinting = false;
-        Debug.Log("Player move speed reset to: " + _moveSpeed);
+        _animator.SetBool("Sprint", false);
     }
 
     private void CheckSprint()
@@ -128,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
     #region Move SFX
     public void PlayWalkSFX()
     {
-        if (_conditions.IsGrounded && _conditions.IsSprinting == false && _conditions.IsWalking)
+        if (_conditions.IsGrounded && !_conditions.IsSprinting && _conditions.IsWalking)
         {
             AudioManager.Instance.PlaySFXWalk();
             var sound = new Sound(transform.position, 11f);
@@ -137,10 +135,20 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void PlaySprintSFX()
+    {
+        if (_conditions.IsGrounded && _conditions.IsSprinting)
+        {
+            AudioManager.Instance.PlaySFXWalk();
+            var sound = new Sound(transform.position, 15f);
+            Sounds.MakeSound(sound);
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, 11f);
+        Gizmos.DrawWireSphere(transform.position, 15f);
     }
     #endregion
     #endregion
