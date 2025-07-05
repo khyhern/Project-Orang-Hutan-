@@ -14,7 +14,6 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton setup
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -37,16 +36,6 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void DamagePart(BodyPart part, int amount)
-    {
-        GetBodyPart(part)?.ApplyDamage(amount);
-    }
-
-    public void BandageLimb(BodyPart part)
-    {
-        GetBodyPart(part)?.Bandage();
-    }
-
     public void DamagePlayer(int amount)
     {
         if (IsDead()) return;
@@ -59,6 +48,16 @@ public class PlayerHealth : MonoBehaviour
             Debug.Log("Player has died.");
             // TODO: trigger death logic
         }
+    }
+
+    public void DamagePart(BodyPart part, int amount)
+    {
+        GetBodyPart(part)?.ApplyDamage(amount);
+    }
+
+    public void BandageLimb(BodyPart part)
+    {
+        GetBodyPart(part)?.Bandage();
     }
 
     public bool IsDead()
@@ -74,6 +73,17 @@ public class PlayerHealth : MonoBehaviour
     public BodyPartHealth GetBodyPart(BodyPart part)
     {
         return bodyParts.Find(p => p.part == part);
+    }
+
+    public int CountActiveBleedingLimbs()
+    {
+        int count = 0;
+        foreach (var part in bodyParts)
+        {
+            if (part.part == BodyPart.Head) continue;
+            if (part.IsDestroyed && part.isBleeding) count++;
+        }
+        return count;
     }
 
     public float GetMovementSpeedMultiplier()
@@ -94,14 +104,8 @@ public class PlayerHealth : MonoBehaviour
         return 1f;
     }
 
-    public int CountActiveBleedingLimbs()
+    public float InstanceHealthPercent()
     {
-        int count = 0;
-        foreach (var part in bodyParts)
-        {
-            if (part.part == BodyPart.Head) continue;
-            if (part.IsDestroyed && part.isBleeding) count++;
-        }
-        return count;
+        return maxHealth > 0 ? (float)currentHealth / maxHealth : 0f;
     }
 }
