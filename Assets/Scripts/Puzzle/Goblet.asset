@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Goblet
   m_EditorClassIdentifier: 
   itemName: Goblet
+  icon: {fileID: 0}
   prefab: {fileID: 5733954977895589830, guid: 74bc1123511cc8447ba5f3e838cdb74a, type: 3}
+  description: 
+  isCombinable: 0

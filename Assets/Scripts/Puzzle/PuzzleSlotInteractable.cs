@@ -1,36 +1,93 @@
-using UnityEngine;
+﻿using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 {
-    public string expectedItemName;
-    public PuzzleManager manager;
+    [Tooltip("The item this slot expects (correct solution).")]
+    public PuzzleItemData expectedItemData;
+
+    [Tooltip("The item this slot originally started with.")]
+    public PuzzleItemData originalItemData;
+
+    [Tooltip("Spawn point for item visual prefab.")]
+    public Transform itemSpawnPoint;
+
     private PuzzleItemData placedItem;
+    private GameObject spawnedInstance;
+    public PuzzleItemData GetPlacedItem() => placedItem;
+    public PuzzleItemData GetOriginalItem() => originalItemData;
+
+
+    public static PuzzleSlotInteractable ActiveSlot { get; private set; }
+
+    public enum SlotState
+    {
+        Empty,
+        Correct,
+        Original,
+        Wrong
+    }
 
     public void Interact()
     {
         if (placedItem != null)
         {
-            Debug.Log("Slot already filled.");
+            Debug.Log("[PuzzleSlot] Slot already filled.");
             return;
         }
 
-        var inventory = InventorySystem.Instance;
-        var items = inventory.GetAllItems();
+        ActiveSlot = this;
+        InventoryUI.Instance.OpenInventory(true);
+        Debug.Log("[PuzzleSlot] Waiting for item via 'Use' button...");
+    }
 
-        if (items.Count == 0)
+    public void PlaceItem(PuzzleItemData item)
+    {
+        if (item == null || placedItem != null)
         {
-            Debug.Log("Inventory is empty.");
+            Debug.LogWarning("[PuzzleSlot] Cannot place item: already filled or null.");
             return;
         }
 
-        // Just use the first item
-        PuzzleItemData chosenItem = items[0];
-        placedItem = chosenItem;
-        inventory.RemoveItem(chosenItem);
+        placedItem = item;
 
-        Debug.Log($"Placed {chosenItem.itemName} into slot expecting {expectedItemName}");
-        manager.CheckPuzzleState();
+        if (item.prefab != null && itemSpawnPoint != null)
+        {
+            spawnedInstance = Instantiate(item.prefab, itemSpawnPoint.position, itemSpawnPoint.rotation, itemSpawnPoint);
+
+            var refComponent = spawnedInstance.AddComponent<PuzzleSlotReference>();
+            refComponent.AssignSlot(this);
+        }
+        else
+        {
+            Debug.LogWarning($"[PuzzleSlot] Item '{item.itemName}' has no prefab or spawn point.");
+        }
+
+        InventorySystem.Instance.RemoveItem(item);
+        InventoryUI.Instance.RefreshDisplay();
+
+        Debug.Log($"[PuzzleSlot] Placed {item.itemName} into slot (Expected: {expectedItemData?.itemName})");
+
+        PuzzleManager.Instance?.CheckPuzzleState();
+        ActiveSlot = null;
+    }
+
+    public void ClearSlot()
+    {
+        Debug.Log($"[PuzzleSlot] Slot cleared (was holding: {placedItem?.itemName})");
+        placedItem = null;
+        spawnedInstance = null;
+
+        PuzzleManager.Instance?.CheckPuzzleState();
     }
 
     public string GetPlacedItemName() => placedItem?.itemName;
+
+    public SlotState GetSlotState()
+    {
+        if (placedItem == null) return SlotState.Empty;
+        if (placedItem == expectedItemData) return SlotState.Correct;
+        if (placedItem == originalItemData) return SlotState.Original;
+        return SlotState.Wrong;
+    }
 }
