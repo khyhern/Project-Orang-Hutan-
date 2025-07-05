@@ -7,16 +7,16 @@ public class SuspicionCheckManager : MonoBehaviour
 
     [Header("Suspicion Settings")]
     [Tooltip("Seconds the player has to reset the items after solving the puzzle.")]
-    public float resetTimeLimit = 30f;
+    [SerializeField] private float resetTimeLimit = 30f;
 
     [Tooltip("All puzzle slots involved in the check.")]
-    public PuzzleSlotInteractable[] slotsToCheck;
+    [SerializeField] private PuzzleSlotInteractable[] slotsToCheck;
 
     [Tooltip("Called if reset is successful.")]
-    public GameObject successEvent;
+    [SerializeField] private GameObject successEvent;
 
     [Tooltip("Called if reset failed (e.g., enemy becomes suspicious).")]
-    public GameObject failureEvent;
+    [SerializeField] private GameObject failureEvent;
 
     private Coroutine checkRoutine;
 
@@ -27,10 +27,12 @@ public class SuspicionCheckManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
     }
 
+    /// <summary>
+    /// Starts or restarts the suspicion countdown timer.
+    /// </summary>
     public void BeginInspectionCountdown()
     {
         if (checkRoutine != null)
@@ -39,6 +41,9 @@ public class SuspicionCheckManager : MonoBehaviour
         checkRoutine = StartCoroutine(InspectionCountdown());
     }
 
+    /// <summary>
+    /// Delays and then runs suspicion check.
+    /// </summary>
     private IEnumerator InspectionCountdown()
     {
         Debug.Log("[SuspicionCheck] Countdown started.");
@@ -46,42 +51,43 @@ public class SuspicionCheckManager : MonoBehaviour
         CheckSlotStates();
     }
 
+    /// <summary>
+    /// Checks whether all slots have been reset to their original state.
+    /// </summary>
     private void CheckSlotStates()
     {
         foreach (var slot in slotsToCheck)
         {
-            var placed = slot.GetPlacedItem();
-            var original = slot.GetOriginalItem();
+            PuzzleItemData placed = slot.GetPlacedItem();
+            PuzzleItemData original = slot.GetOriginalItem();
 
             Debug.Log($"[SuspicionCheck] Checking slot: {slot.name}");
-            Debug.Log($"[SuspicionCheck] Placed item: {(placed != null ? placed.itemName : "None")} ({placed?.GetInstanceID()})");
-            Debug.Log($"[SuspicionCheck] Original item: {(original != null ? original.itemName : "None")} ({original?.GetInstanceID()})");
+            Debug.Log($"  - Placed item: {(placed ? placed.itemName : "None")} ({placed?.GetInstanceID()})");
+            Debug.Log($"  - Original item: {(original ? original.itemName : "None")} ({original?.GetInstanceID()})");
 
             if (placed == null || original == null)
             {
-                Debug.Log("[SuspicionCheck] One of the items is null.");
+                Debug.Log("[SuspicionCheck] ❌ Null item detected.");
                 TriggerFailure();
                 return;
             }
 
             if (placed != original)
             {
-                Debug.LogWarning("[SuspicionCheck] Reference mismatch! Falling back to name check...");
+                Debug.LogWarning("[SuspicionCheck] ⚠️ Reference mismatch. Falling back to name comparison...");
 
                 if (placed.itemName != original.itemName)
                 {
-                    Debug.Log("❌ [SuspicionCheck] Fallback comparison also failed. Mismatch confirmed.");
+                    Debug.Log("[SuspicionCheck] ❌ Name mismatch detected.");
                     TriggerFailure();
                     return;
                 }
-                else
-                {
-                    Debug.Log("⚠️ [SuspicionCheck] Reference mismatch but names match — assuming correct.");
-                }
+
+                Debug.Log("[SuspicionCheck] ✅ Names match — assuming correct.");
             }
             else
             {
-                Debug.Log("✅ [SuspicionCheck] Reference match confirmed.");
+                Debug.Log("[SuspicionCheck] ✅ Reference match confirmed.");
             }
         }
 
@@ -91,12 +97,12 @@ public class SuspicionCheckManager : MonoBehaviour
     private void TriggerSuccess()
     {
         Debug.Log("✅ [SuspicionCheck] All items restored to original positions. No suspicion.");
-        // successEvent?.SetActive(true);
+        successEvent?.SetActive(true);
     }
 
     private void TriggerFailure()
     {
         Debug.Log("❌ [SuspicionCheck] Items were NOT returned correctly. Curator becomes suspicious!");
-        // failureEvent?.SetActive(true);
+        failureEvent?.SetActive(true);
     }
 }
