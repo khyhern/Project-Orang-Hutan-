@@ -319,6 +319,7 @@ GameObject:
   - component: {fileID: 7803437798793453404}
   - component: {fileID: 3400471409530388425}
   - component: {fileID: 5431191911666137500}
+  - component: {fileID: 6401322178869448303}
   m_Layer: 6
   m_Name: Player 1
   m_TagString: Player
@@ -565,6 +566,33 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   raycastCamera: {fileID: 0}
+--- !u!114 &6401322178869448303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6655764239279335478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79184c56c016dc4399ba4641bae772d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactRange: 2
+  friendLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  safepointLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  pickupUIObject: {fileID: 0}
+  safepointUIObject: {fileID: 0}
+  carrySpeed: 2.5
+  normalSpeed: 5
+  dropRange: 5
 --- !u!1 &8662911718266811732
 GameObject:
   m_ObjectHideFlags: 0

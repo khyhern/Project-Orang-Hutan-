@@ -86,7 +86,7 @@ public class PickUpF : MonoBehaviour
         {
             Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
             RaycastHit hit;
-            Debug.DrawRay(ray.origin, ray.direction * 20, Color.white);
+            
             if (Physics.Raycast(ray, out hit, interactRange, friendLayer))
             {
                 Debug.Log("hi friend");
@@ -119,6 +119,8 @@ public class PickUpF : MonoBehaviour
         {
             Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
             RaycastHit hit;
+
+            Debug.DrawRay(ray.origin, ray.direction * dropRange, Color.white);
             if (Physics.Raycast(ray, out hit, dropRange, groundLayer))
             {
                 PutDownFriend(hit.point + Vector3.up * 0.1f); // Slightly above ground
