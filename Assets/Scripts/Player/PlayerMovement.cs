@@ -83,11 +83,11 @@ public class PlayerMovement : MonoBehaviour
     #region Sprinting
     public void Sprint()
     {
-        if (_conditions.IsWalking) 
-        { 
+        
+        
             _conditions.IsSprinting = true;
             _moveSpeed *= 2.5f;
-        }
+        
     }
 
     public void ResetSpeed()
