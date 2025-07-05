@@ -42,9 +42,6 @@ public class PlayerLook : MonoBehaviour
         Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
         RaycastHit hit;
 
-        // Scene View ray visualization
-        Debug.DrawRay(ray.origin, ray.direction * _seeDistance, Color.white);
-
         if (Physics.Raycast(ray, out hit, _seeDistance, whatIsEnemy))
         {
             if (hit.collider.CompareTag("Enemy"))

@@ -48,7 +48,7 @@ public class PickUpF : MonoBehaviour
     {
         if (carriedFriend == null)
         {
-            Ray ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, interactRange, friendLayer))
@@ -64,7 +64,7 @@ public class PickUpF : MonoBehaviour
         }
         else
         {
-            Ray ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, interactRange, safepointLayer))
@@ -84,10 +84,12 @@ public class PickUpF : MonoBehaviour
     {
         if (carriedFriend == null)
         {
-            Ray ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
             RaycastHit hit;
+            Debug.DrawRay(ray.origin, ray.direction * 20, Color.white);
             if (Physics.Raycast(ray, out hit, interactRange, friendLayer))
             {
+                Debug.Log("hi friend");
                 carriedFriend = hit.collider.gameObject;
                 carriedFriend.transform.SetParent(transform);
                 carriedFriend.transform.localPosition = new Vector3(0, 1, 1);
@@ -102,7 +104,7 @@ public class PickUpF : MonoBehaviour
         else
         {
             // If looking at a safepoint, drop at safepoint
-            Ray ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, interactRange, safepointLayer))
             {
@@ -115,7 +117,7 @@ public class PickUpF : MonoBehaviour
     {
         if (carriedFriend != null)
         {
-            Ray ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, dropRange, groundLayer))
             {
