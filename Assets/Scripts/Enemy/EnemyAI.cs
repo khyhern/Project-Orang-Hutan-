@@ -102,7 +102,7 @@ public class EnemyAI : MonoBehaviour, IHear
     private void ChasePlayer()
     {
         _enemy.SetDestination(_player.position);
-        _enemy.speed = _speed * 2.5f;
+        _enemy.speed = _speed * 2f;
     }
 
     private void SearchSound()

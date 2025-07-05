@@ -7483,7 +7483,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   _enemyAttackPoint: {fileID: 1998030928}
-  _sightRange: 7
+  _sightRange: 8
   _attackRange: 1
   _walkPointRange: 20
   _searchRange: 2

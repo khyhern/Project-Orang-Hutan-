@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _stamina;
     [SerializeField] private float _maxStamina = 50f;
 
@@ -17,8 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _velocity;
     private float _gravity = -9.81f;
     [HideInInspector] public bool isCarryingFriend = false;
-    [HideInInspector] public float carryingSpeed = 2.5f;
-    private float _defaultMoveSpeed = 5f;
+    [HideInInspector] public float carryingSpeed = 1.5f;
+    private float _defaultMoveSpeed = 3f;
     
 
     public PlayerConditions Conditions => _conditions;
