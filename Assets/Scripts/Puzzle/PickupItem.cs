@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class PickupItem : MonoBehaviour, IInteractable
 {
+    [Tooltip("The data representing this physical puzzle item.")]
     public PuzzleItemData itemData;
 
     public void Interact()
@@ -13,10 +14,15 @@ public class PickupItem : MonoBehaviour, IInteractable
             return;
         }
 
-        InventorySystem.Instance.PickUp(itemData);
-        Debug.Log($"[PickupItem] Picked up {itemData.itemName}");
+        if (InventorySystem.Instance == null)
+        {
+            Debug.LogError("[PickupItem] InventorySystem instance not found.");
+            return;
+        }
 
-        // Trigger OnDestroy to notify the slot
-        Destroy(gameObject);
+        InventorySystem.Instance.PickUp(itemData);
+        Debug.Log($"[PickupItem] Picked up: {itemData.itemName}");
+
+        Destroy(gameObject); // Will trigger PuzzleSlotReference.OnDestroy if attached
     }
 }

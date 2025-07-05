@@ -14,9 +14,6 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 
     private PuzzleItemData placedItem;
     private GameObject spawnedInstance;
-    public PuzzleItemData GetPlacedItem() => placedItem;
-    public PuzzleItemData GetOriginalItem() => originalItemData;
-
 
     public static PuzzleSlotInteractable ActiveSlot { get; private set; }
 
@@ -77,9 +74,11 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         Debug.Log($"[PuzzleSlot] Slot cleared (was holding: {placedItem?.itemName})");
         placedItem = null;
         spawnedInstance = null;
-
         PuzzleManager.Instance?.CheckPuzzleState();
     }
+
+    public PuzzleItemData GetPlacedItem() => placedItem;
+    public PuzzleItemData GetOriginalItem() => originalItemData;
 
     public string GetPlacedItemName() => placedItem?.itemName;
 

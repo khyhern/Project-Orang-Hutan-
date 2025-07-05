@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 807982da5e58877449dab5d2c7a06371, type: 3}
-  m_Name: Goblet
+  m_Name: BobbyPin
   m_EditorClassIdentifier: 
-  itemName: Goblet
+  itemName: BobbyPin
   icon: {fileID: 0}
-  prefab: {fileID: 5733954977895589830, guid: 74bc1123511cc8447ba5f3e838cdb74a, type: 3}
+  prefab: {fileID: 8013181316485291606, guid: 0614c0654919d714e9bdbddc755e28ca, type: 3}
   description: 
-  isCombinable: 0
-  combinableWith: []
+  isCombinable: 1
+  combinableWith:
+  - otherItem: {fileID: 11400000, guid: 46eb83e7b5fc66340bcc85f4de53d91b, type: 2}
+    resultItem: {fileID: 11400000, guid: 2ba0eb5369cf4cc4fbb575cffe424870, type: 2}

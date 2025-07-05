@@ -2,18 +2,18 @@
 
 public class PuzzleManager : MonoBehaviour
 {
+    public static PuzzleManager Instance { get; private set; }
+
     [Header("Puzzle Setup")]
     [Tooltip("All puzzle slots to check for correctness.")]
     public PuzzleSlotInteractable[] slots;
 
-    [Header("Objects to activate on success")]
+    [Header("Success Activation")]
     public GameObject drawer;
     public GameObject clockHand;
     public AudioSource clunkSound;
 
     private bool puzzleSolved = false;
-
-    public static PuzzleManager Instance { get; private set; }
 
     private void Awake()
     {
@@ -22,6 +22,7 @@ public class PuzzleManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
     }
 
