@@ -31,8 +31,8 @@ public class PointerController : MonoBehaviour
     [Header("Success Actions")]
     public GameObject qteCanvas; // Reference to the QTE canvas to close
     public QTETrigger qteTrigger; // Reference to the QTE trigger (door)
-    
-    private float direction = 1f; 
+
+    //private float direction = 1f;
     private RectTransform pointerTransform;
     private Vector3 targetPosition;
     private Color originalFailureColor;
@@ -129,12 +129,12 @@ public class PointerController : MonoBehaviour
         if (Vector3.Distance(pointerTransform.position, pointA.position) < 0.1f)
         {
             targetPosition = pointB.position;
-            direction = 1f;
+            //direction = 1f;
         }
         else if (Vector3.Distance(pointerTransform.position, pointB.position) < 0.1f)
         {
             targetPosition = pointA.position;
-            direction = -1f;
+            //direction = -1f;
         }
         
         if (Input.GetKeyDown(KeyCode.Space))

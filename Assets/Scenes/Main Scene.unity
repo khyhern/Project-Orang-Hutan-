@@ -5168,6 +5168,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8192
   qteCanvas: {fileID: 1227858837}
+  cooldownTime: 3
   interactUIObject: {fileID: 1311664197}
   doorAnimator: {fileID: 0}
   doorAnimationName: OpenDoor
@@ -6861,7 +6862,7 @@ GameObject:
   - component: {fileID: 1478297234}
   - component: {fileID: 1478297233}
   - component: {fileID: 1478297232}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Friend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7215,9 +7216,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1526576928}
-  - component: {fileID: 1526576927}
-  - component: {fileID: 1526576926}
-  - component: {fileID: 1526576925}
   m_Layer: 8
   m_Name: ---NPC---
   m_TagString: Untagged
@@ -7225,68 +7223,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!54 &1526576925
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1526576924}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!65 &1526576926
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1526576924}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1526576927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1526576924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34be7d007250fe845a697944fbccbaf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  spriteChildName: Friend
 --- !u!4 &1526576928
 Transform:
   m_ObjectHideFlags: 0
@@ -9233,6 +9169,8 @@ MonoBehaviour:
   safepointAnimator2: {fileID: 559903217}
   animation1Name: Moving
   animation2Name: Teleport
+  notMovingTrigger: notmoving
+  notTeleportTrigger: notTeleport
   qteCanvas: {fileID: 1227858837}
   qteTrigger: {fileID: 0}
 --- !u!1 &1961718648

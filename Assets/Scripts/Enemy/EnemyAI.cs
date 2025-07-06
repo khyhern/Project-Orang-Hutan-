@@ -148,9 +148,10 @@ public class EnemyAI : MonoBehaviour, IHear
         {
             // Attack code here (Ryan)
             Debug.Log("Attack!");
-            _alreadyAttacked = true;
+            
             BodyPart bodyPart = BodyPartsProbability();
             _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 20); // Example damage, adjust as needed
+            _alreadyAttacked = true;
             ResetAttack();
         }
     }
