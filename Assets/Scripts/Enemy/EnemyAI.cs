@@ -11,6 +11,7 @@ public class EnemyAI : MonoBehaviour, IHear
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private float _walkPointRange;
     [SerializeField] private float _searchRange;
+    [SerializeField] private float _respawnRange;
 
     #region Internal
     private Transform _player;
@@ -19,8 +20,10 @@ public class EnemyAI : MonoBehaviour, IHear
     private Vector3 _dirToPlayer;
     private float[] _probs = { 0.2f, 0.2f, 0.2f, 0.2f, 0.15f, 0.05f };
 
-    // Teleport
-    private Vector3 _RespawnPos;
+    // Run Away
+    private Vector3 _respawnPoint;
+    private bool _respawnPointSet;
+    private bool _runAway;
 
     // Searching
     private Vector3 _soundPos;
@@ -67,10 +70,12 @@ public class EnemyAI : MonoBehaviour, IHear
        
 
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
-        if (_searching && !_playerInSightRange) SearchSound();
-        if (!_playerInSightRange && !_playerInAttackRange && !_searching) Patroling();
-        if (_playerInSightRange && !_playerInAttackRange) ChasePlayer();
-        if (_playerInAttackRange && _playerInSightRange) AttackPlayer(); 
+        if (_runAway) RunAway();
+        if (_searching && !_playerInSightRange && !_runAway) SearchSound();
+        if (!_playerInSightRange && !_playerInAttackRange && !_searching && !_runAway) Patroling();
+        if (_playerInSightRange && !_playerInAttackRange && !_runAway) ChasePlayer();
+        if (_playerInAttackRange && _playerInSightRange && !_runAway) AttackPlayer();
+        
     }
 
     private void Patroling()
@@ -117,8 +122,7 @@ public class EnemyAI : MonoBehaviour, IHear
             _enemy.SetDestination(_searchPoint);
         }
         
-        Vector3 distanceToSearchPoint = transform.position - _searchPoint;
-        Debug.Log("Finding sound");
+        Vector3 distanceToSearchPoint = transform.position - _searchPoint;    
         if (distanceToSearchPoint.magnitude < 1.5f)
         {
             _searchPointSet = false;
@@ -151,15 +155,47 @@ public class EnemyAI : MonoBehaviour, IHear
             
             BodyPart bodyPart = BodyPartsProbability();
             _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 20); // Example damage, adjust as needed
-            _alreadyAttacked = true;
-            ResetAttack();
+            StartCoroutine(Stop());
         }
     }
 
-    private void ResetAttack()
+    private IEnumerator Stop()
     {
-        _alreadyAttacked = false;
-        gameObject.SetActive(false);
+        _alreadyAttacked = true;
+        yield return new WaitForSeconds(2f);
+        _runAway = true;
+    }
+
+    private void RunAway()
+    {
+        _searching = false;
+        if (!_respawnPointSet) SearchRespawnPoint();
+        
+        _enemy.speed = _speed * 3f;
+        _enemy.SetDestination(_respawnPoint);
+        Vector3 distanceToRespawnPoint = transform.position - _respawnPoint;
+        if (distanceToRespawnPoint.magnitude < 1.5f)
+        {
+            _alreadyAttacked = false;
+            _runAway = false;
+            _respawnPointSet = false;
+            _walkPointSet = false;
+
+        }
+    }
+
+    private void SearchRespawnPoint()
+    {
+        
+        float randomZ = Random.Range(-_respawnRange, _respawnRange);
+        float randomX = Random.Range(-_respawnRange, _respawnRange);
+        randomZ = Mathf.Abs(randomZ) < 15f ? 15f : randomZ; // Ensure minimum distance
+        randomX = Mathf.Abs(randomX) < 15f ? 15f : randomX; // Ensure minimum distance
+        _respawnPoint = new Vector3(_player.transform.position.x + randomX, _player.transform.position.y, _player.transform.position.z + randomZ);
+        if (Physics.Raycast(_respawnPoint, -transform.up, 2f, whatIsGround))
+        {
+            _respawnPointSet = true;
+        }
     }
 
     private void OnDrawGizmosSelected()

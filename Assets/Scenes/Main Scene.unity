@@ -8571,8 +8571,9 @@ MonoBehaviour:
   _enemyAttackPoint: {fileID: 1998030928}
   _sightRange: 7
   _attackRange: 1
-  _walkPointRange: 20
+  _walkPointRange: 18
   _searchRange: 2
+  _respawnRange: 25
 --- !u!195 &1829039579
 NavMeshAgent:
   m_ObjectHideFlags: 0
