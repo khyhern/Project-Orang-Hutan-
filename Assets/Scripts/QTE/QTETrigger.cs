@@ -9,6 +9,7 @@ public class QTETrigger : MonoBehaviour
     public float interactRange = 2f;
     public LayerMask playerLayer;
     public GameObject qteCanvas;
+    public float cooldownTime = 3f; // 3 seconds cooldown
     
     [Header("UI Feedback")]
     public GameObject interactUIObject;
@@ -20,6 +21,8 @@ public class QTETrigger : MonoBehaviour
     private InputAction interactAction;
     private Camera mainCamera;
     private bool isQTEActive = false;
+    private bool isOnCooldown = false;
+    private float cooldownTimer = 0f;
     private PointerController pointerController;
 
     void Awake()
@@ -79,7 +82,19 @@ public class QTETrigger : MonoBehaviour
 
     void Update()
     {
-        if (isQTEActive) return; // Don't show interact UI if QTE is active
+        // Handle cooldown timer
+        if (isOnCooldown)
+        {
+            cooldownTimer -= Time.deltaTime;
+            if (cooldownTimer <= 0f)
+            {
+                isOnCooldown = false;
+                cooldownTimer = 0f;
+                Debug.Log("QTE cooldown finished for door: " + gameObject.name);
+            }
+        }
+        
+        if (isQTEActive || isOnCooldown) return; // Don't show interact UI if QTE is active or on cooldown
         
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         RaycastHit hit;
@@ -113,7 +128,7 @@ public class QTETrigger : MonoBehaviour
 
     private void OnInteract(InputAction.CallbackContext context)
     {
-        if (isQTEActive) return; // Don't trigger if QTE is already active
+        if (isQTEActive || isOnCooldown) return; // Don't trigger if QTE is already active or on cooldown
         
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         RaycastHit hit;
@@ -143,6 +158,14 @@ public class QTETrigger : MonoBehaviour
         if (qteCanvas != null)
         {
             qteCanvas.SetActive(true);
+        }
+        
+        // Reset PointerController state if it exists (for reactivation)
+        if (pointerController != null)
+        {
+            pointerController.ResetQTEState();
+            // Activate random behaviors for this QTE session
+            pointerController.ActivateQTE();
         }
         
         // You can add additional logic here like:
@@ -191,5 +214,43 @@ public class QTETrigger : MonoBehaviour
         // - Show success particles
         // - Unlock achievements
         // - Update game state
+    }
+    
+    // Called when QTE is exited (ESC key)
+    public void OnQTEExit()
+    {
+        Debug.Log("QTE Exited for door: " + gameObject.name);
+        
+        // Reset QTE state so it can be triggered again
+        isQTEActive = false;
+        
+        // Start cooldown
+        StartCooldown();
+        
+        // You can add additional exit actions here like:
+        // - Play exit sound
+        // - Show exit message
+        // - Reset door state
+        // - Don't play door animation (since it wasn't completed)
+    }
+    
+    // Start the cooldown timer
+    private void StartCooldown()
+    {
+        isOnCooldown = true;
+        cooldownTimer = cooldownTime;
+        Debug.Log("QTE cooldown started for door: " + gameObject.name + " - " + cooldownTime + " seconds");
+    }
+    
+    // Check if QTE is available (not active and not on cooldown)
+    public bool IsQTEAvailable()
+    {
+        return !isQTEActive && !isOnCooldown;
+    }
+    
+    // Get remaining cooldown time (for UI display)
+    public float GetRemainingCooldown()
+    {
+        return isOnCooldown ? cooldownTimer : 0f;
     }
 }

@@ -25,6 +25,8 @@ public class PointerController : MonoBehaviour
     public Animator safepointAnimator2; // Third behavior: play safepoint animation 2
     public string animation1Name = "SafepointAnimation1"; // Animation trigger name for animator 1
     public string animation2Name = "SafepointAnimation2"; // Animation trigger name for animator 2
+    public string notMovingTrigger = "notmoving"; // Trigger for behavior 2 cleanup
+    public string notTeleportTrigger = "notTeleport"; // Trigger for behavior 3 cleanup
     
     [Header("Success Actions")]
     public GameObject qteCanvas; // Reference to the QTE canvas to close
@@ -38,6 +40,7 @@ public class PointerController : MonoBehaviour
     private AudioSource audioSource;
     private Transform mainCamera;
     private bool behaviorsActivated = false;
+    private int currentBehavior = -1; // Track which behavior was activated
  
     void Start()
     {
@@ -65,8 +68,7 @@ public class PointerController : MonoBehaviour
             safeZone = SafeZone.GetComponent<RectTransform>();
         }
         
-        // Activate extra behaviors when QTE starts
-        ActivateExtraBehaviors();
+        // Don't activate behaviors here - will be called when QTE actually starts
     }
     
     void ActivateExtraBehaviors()
@@ -76,9 +78,9 @@ public class PointerController : MonoBehaviour
         Debug.Log("Activating random extra behavior for QTE!");
         
         // Randomly select one of the three behaviors
-        int randomBehavior = Random.Range(0, 3); // 0, 1, or 2
+        currentBehavior = Random.Range(0, 3); // 0, 1, or 2
         
-        switch (randomBehavior)
+        switch (currentBehavior)
         {
             case 0:
                 // First behavior: Activate fake safepoints
@@ -114,6 +116,13 @@ public class PointerController : MonoBehaviour
     void Update()
     {
         if (isQTEComplete) return;
+        
+        // Check for ESC key to exit QTE
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ExitQTE();
+            return;
+        }
         
         pointerTransform.position = Vector3.MoveTowards(pointerTransform.position, targetPosition, moveSpeed * Time.deltaTime);
         
@@ -167,6 +176,54 @@ public class PointerController : MonoBehaviour
         
         // Mark QTE as complete
         isQTEComplete = true;
+        
+        // Cleanup behavior-specific actions
+        CleanupBehavior();
+    }
+    
+    void ExitQTE()
+    {
+        Debug.Log("QTE Exited by ESC key!");
+        
+        // Close the QTE canvas
+        if (qteCanvas != null)
+        {
+            qteCanvas.SetActive(false);
+            Debug.Log("QTE Canvas closed by ESC!");
+        }
+        
+        // Notify QTETrigger that QTE was exited (not completed)
+        if (qteTrigger != null)
+        {
+            qteTrigger.OnQTEExit();
+        }
+        
+        // Cleanup behavior-specific actions
+        CleanupBehavior();
+        
+        // Reset QTE state instead of marking as complete
+        ResetQTEState();
+    }
+    
+    public void ResetQTEState()
+    {
+        isQTEComplete = false;
+        behaviorsActivated = false;
+        
+        // Reset pointer position to starting position
+        if (pointerTransform != null && pointA != null)
+        {
+            pointerTransform.position = pointA.position;
+            targetPosition = pointB.position;
+        }
+        
+        Debug.Log("QTE state reset - ready for reactivation!");
+    }
+    
+    public void ActivateQTE()
+    {
+        // Activate random behaviors when QTE starts
+        ActivateExtraBehaviors();
     }
     
     void OnFailure()
@@ -193,4 +250,36 @@ public class PointerController : MonoBehaviour
         }
     }
     
+    void CleanupBehavior()
+    {
+        if (currentBehavior == 0)
+        {
+            // Cleanup behavior 1: deactivate fake safepoints
+            if (fakeSafepoints != null)
+            {
+                fakeSafepoints.SetActive(false);
+                Debug.Log("Behavior 1 cleaned up: Fake safepoints deactivated!");
+            }
+        }
+        else if (currentBehavior == 1)
+        {
+            // Cleanup behavior 2: use "notmoving" trigger
+            if (safepointAnimator1 != null)
+            {
+                safepointAnimator1.SetTrigger(notMovingTrigger);
+                Debug.Log("Behavior 2 cleaned up: Safepoint animation 1 triggered!");
+            }
+        }
+        else if (currentBehavior == 2)
+        {
+            // Cleanup behavior 3: use "notTeleport" trigger
+            if (safepointAnimator2 != null)
+            {
+                safepointAnimator2.SetTrigger(notTeleportTrigger);
+                Debug.Log("Behavior 3 cleaned up: Safepoint animation 2 triggered!");
+            }
+        }
+        
+        currentBehavior = -1; // Reset current behavior
+    }
 }
