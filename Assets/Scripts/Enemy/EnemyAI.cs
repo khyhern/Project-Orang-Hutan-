@@ -19,6 +19,9 @@ public class EnemyAI : MonoBehaviour, IHear
     private Vector3 _dirToPlayer;
     private float[] _probs = { 0.2f, 0.2f, 0.2f, 0.2f, 0.15f, 0.05f };
 
+    // Teleport
+    private Vector3 _RespawnPos;
+
     // Searching
     private Vector3 _soundPos;
     private Vector3 _searchPoint;
@@ -31,7 +34,6 @@ public class EnemyAI : MonoBehaviour, IHear
     
 
     // Attacking
-    private float _timeBetweenAttacks = 2f;
     private bool _alreadyAttacked;
 
     // States
@@ -149,13 +151,14 @@ public class EnemyAI : MonoBehaviour, IHear
             _alreadyAttacked = true;
             BodyPart bodyPart = BodyPartsProbability();
             _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 20); // Example damage, adjust as needed
-            Invoke(nameof(ResetAttack), _timeBetweenAttacks);
+            ResetAttack();
         }
     }
 
     private void ResetAttack()
     {
         _alreadyAttacked = false;
+        gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()
