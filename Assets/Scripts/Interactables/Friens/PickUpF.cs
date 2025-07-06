@@ -10,7 +10,7 @@ public class PickUpF : MonoBehaviour
     public GameObject pickupUIObject;
     public GameObject safepointUIObject;
     public float carrySpeed = 2.5f;
-    public float normalSpeed = 5f;
+    public float normalSpeed = 3f;
     [SerializeField] private float dropRange = 2f; // Max distance to drop friend
 
     private GameObject carriedFriend = null;
