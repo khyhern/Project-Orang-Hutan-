@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e79cb51-d4e0-496c-9ab6-be4776a4db50" name="Changes" comment="" />
+    <list default="true" id="5e79cb51-d4e0-496c-9ab6-be4776a4db50" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Qte/Moving.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/Qte/Moving.anim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Qte/SafePoint.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/Qte/SafePoint.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/QTE/PointerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/QTE/PointerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/QTE/QTETrigger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/QTE/QTETrigger.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,6 +97,7 @@
       <updated>1751373766323</updated>
       <workItem from="1751373768939" duration="5311000" />
       <workItem from="1751551621307" duration="1556000" />
+      <workItem from="1751786108305" duration="3926000" />
     </task>
     <servers />
   </component>
