@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e79cb51-d4e0-496c-9ab6-be4776a4db50" name="Changes" comment="" />
+    <list default="true" id="5e79cb51-d4e0-496c-9ab6-be4776a4db50" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Game-Engine-2411/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Game-Engine-2411/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/PSX/PSXTexture.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/PSX/PSXTexture.renderTexture" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,6 +98,7 @@
       <updated>1751373766323</updated>
       <workItem from="1751373768939" duration="5311000" />
       <workItem from="1751551621307" duration="1556000" />
+      <workItem from="1751786108305" duration="3926000" />
     </task>
     <servers />
   </component>
