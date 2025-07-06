@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerSittingController : MonoBehaviour
 {
@@ -11,8 +11,8 @@ public class PlayerSittingController : MonoBehaviour
     private Quaternion originalRotation;
     private bool isSitting;
 
-    private float sitTime = 0f;                     // Timestamp of when player sat
-    private float sitInputDelay = 0.2f;             // Minimum delay before pressing E is allowed
+    private float sitTime = 0f;
+    private float sitInputDelay = 0.2f;
 
     void Awake()
     {
@@ -36,30 +36,25 @@ public class PlayerSittingController : MonoBehaviour
         originalPosition = transform.position;
         originalRotation = transform.rotation;
 
-        _movement.enabled = false;
-        _controller.enabled = false;
-
         transform.SetPositionAndRotation(sitTarget.sitSpot.position, sitTarget.sitSpot.rotation);
 
-        _controller.enabled = true;
+        _movement.canMove = false; // ✅ lock movement
         isSitting = true;
-        sitTime = Time.time; // record the sit time
+        sitTime = Time.time;
 
-        Debug.Log($"[Player] Sat down. Press [E] after {sitInputDelay}s to stand up.");
+        Debug.Log("[Player] Sat down. Movement disabled.");
     }
 
     public void StandUp()
     {
         if (!isSitting) return;
 
-        _controller.enabled = false;
         transform.SetPositionAndRotation(originalPosition, originalRotation);
-        _controller.enabled = true;
 
-        _movement.enabled = true;
+        _movement.canMove = true; // ✅ unlock movement
         isSitting = false;
 
-        Debug.Log("[Player] Stood up.");
+        Debug.Log("[Player] Stood up. Movement re-enabled.");
     }
 
     public bool IsSitting() => isSitting;
