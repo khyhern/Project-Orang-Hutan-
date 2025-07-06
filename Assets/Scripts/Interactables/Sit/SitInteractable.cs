@@ -17,7 +17,7 @@ public class SitInteractable : Interactable
         player.SitAt(this);
     }
 
-    public override string GetInteractionVerb() => "sit";
+    public override string GetInteractionVerb() => "sit on";
     public override string GetObjectName() => gameObject.name;
     public override string GetObjectID() => gameObject.name;
 }

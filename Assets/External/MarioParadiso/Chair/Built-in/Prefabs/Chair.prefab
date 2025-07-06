@@ -166,7 +166,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sitSpot: {fileID: 1692231842990934579}
-  sitAnimationTrigger: Sit
 --- !u!65 &130418847235853104
 BoxCollider:
   m_ObjectHideFlags: 0
