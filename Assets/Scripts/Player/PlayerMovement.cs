@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -19,8 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool isCarryingFriend = false;
     [HideInInspector] public float carryingSpeed = 1.5f;
     private float _defaultMoveSpeed = 3f;
-    
 
+    public bool canMove = true; // ✅ Added movement lock flag
     public PlayerConditions Conditions => _conditions;
     #endregion
 
@@ -38,16 +36,16 @@ public class PlayerMovement : MonoBehaviour
         _conditions.IsGrounded = _controller.isGrounded;
         CheckSprint();
 
-        // No stamina no sprint
         if (_stamina == 0f)
         {
             ResetSpeed();
         }
     }
 
-    #region Movement
     public void MovePlayer(Vector2 input)
     {
+        if (!canMove) return; // ✅ Prevent movement if sitting
+
         if (input != Vector2.zero)
         {
             _conditions.IsWalking = true;
@@ -70,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
         _controller.Move(transform.TransformDirection(moveDir) * _moveSpeed * speedMultiplier * Time.deltaTime);
         ApplyGravity();
     }
+
     private void ApplyGravity()
     {
         _velocity.y += _gravity * Time.deltaTime;
@@ -77,10 +76,10 @@ public class PlayerMovement : MonoBehaviour
         {
             _velocity.y = -1f;
         }
-        
-        _controller.Move(_velocity * Time.deltaTime);     
+
+        _controller.Move(_velocity * Time.deltaTime);
     }
-    #region Sprinting
+
     public void Sprint()
     {
         _conditions.IsSprinting = true;
@@ -90,11 +89,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetSpeed()
     {
-        if (isCarryingFriend)
-            _moveSpeed = carryingSpeed;
-        else
-            _moveSpeed = _defaultMoveSpeed;
-
+        _moveSpeed = isCarryingFriend ? carryingSpeed : _defaultMoveSpeed;
         _conditions.IsSprinting = false;
         _animator.SetBool("Sprint", false);
     }
@@ -110,11 +105,9 @@ public class PlayerMovement : MonoBehaviour
             _stamina += 2f * Time.deltaTime;
         }
 
-        _stamina = Mathf.Clamp(_stamina, 0f, 50f);
-        
+        _stamina = Mathf.Clamp(_stamina, 0f, _maxStamina);
         UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
     }
-   
 
     public void SetMoveSpeed(float newSpeed)
     {
@@ -122,8 +115,6 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Player move speed set to: " + _moveSpeed);
     }
 
-    #endregion
-    #region Move SFX
     public void PlayWalkSFX()
     {
         if (_conditions.IsGrounded && !_conditions.IsSprinting && _conditions.IsWalking)
@@ -150,7 +141,4 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, 13f);
     }
-    #endregion
-    #endregion
-
 }

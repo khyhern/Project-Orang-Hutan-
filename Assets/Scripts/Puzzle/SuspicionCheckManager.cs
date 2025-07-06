@@ -12,10 +12,13 @@ public class SuspicionCheckManager : MonoBehaviour
     [Tooltip("All puzzle slots involved in the check.")]
     [SerializeField] private PuzzleSlotInteractable[] slotsToCheck;
 
-    [Tooltip("Called if reset is successful.")]
+    [Tooltip("Optional: If true, player must be seated during check.")]
+    [SerializeField] private bool requirePlayerSeated = true;
+
+    [Tooltip("Object activated if reset is successful.")]
     [SerializeField] private GameObject successEvent;
 
-    [Tooltip("Called if reset failed (e.g., enemy becomes suspicious).")]
+    [Tooltip("Object activated if reset failed.")]
     [SerializeField] private GameObject failureEvent;
 
     private Coroutine checkRoutine;
@@ -48,14 +51,29 @@ public class SuspicionCheckManager : MonoBehaviour
     {
         Debug.Log("[SuspicionCheck] Countdown started.");
         yield return new WaitForSeconds(resetTimeLimit);
-        CheckSlotStates();
+        CheckSlotStatesAndSeating();
     }
 
     /// <summary>
-    /// Checks whether all slots have been reset to their original state.
+    /// Checks all slots and (optionally) player seating state.
     /// </summary>
-    private void CheckSlotStates()
+    private void CheckSlotStatesAndSeating()
     {
+        // Step 1: Check player seating
+        if (requirePlayerSeated)
+        {
+            var sitter = PlayerSittingController.Instance;
+            if (sitter == null || !sitter.IsSitting())
+            {
+                Debug.Log("❌ [SuspicionCheck] Player is not seated.");
+                TriggerFailure();
+                return;
+            }
+
+            Debug.Log("✅ [SuspicionCheck] Player is seated.");
+        }
+
+        // Step 2: Check puzzle slots
         foreach (var slot in slotsToCheck)
         {
             PuzzleItemData placed = slot.GetPlacedItem();
@@ -96,13 +114,13 @@ public class SuspicionCheckManager : MonoBehaviour
 
     private void TriggerSuccess()
     {
-        Debug.Log("✅ [SuspicionCheck] All items restored to original positions. No suspicion.");
+        Debug.Log("✅ [SuspicionCheck] All items restored. Player not suspicious.");
         successEvent?.SetActive(true);
     }
 
     private void TriggerFailure()
     {
-        Debug.Log("❌ [SuspicionCheck] Items were NOT returned correctly. Curator becomes suspicious!");
+        Debug.Log("❌ [SuspicionCheck] Failure: puzzle or posture incorrect.");
         failureEvent?.SetActive(true);
     }
 }
