@@ -1985,6 +1985,7 @@ MonoBehaviour:
   _sightRange: 5
   _attackRange: 1
   _walkPointRange: 10
+  _searchRange: 0
 --- !u!195 &1829039579
 NavMeshAgent:
   m_ObjectHideFlags: 0
