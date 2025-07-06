@@ -578,10 +578,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 258690169505119222, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 366769767657601182, guid: 5158e6545e88ee543ad3dd94075844ff,
         type: 3}
       propertyPath: m_Name
       value: Flashlight
+      objectReference: {fileID: 0}
+    - target: {fileID: 366769767657601182, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3642225303887563889, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
         type: 3}
@@ -632,6 +647,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5354929495607773808, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628552726496971265, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8733747553012715790, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1811,7 +1841,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -4164,6 +4194,11 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 5598416578654791249}
+    - target: {fileID: 7803437798793453404, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: interactableLayer.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7483,7 +7518,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   _enemyAttackPoint: {fileID: 1998030928}
-  _sightRange: 8
+  _sightRange: 7
   _attackRange: 1
   _walkPointRange: 20
   _searchRange: 2
@@ -8631,7 +8666,7 @@ PrefabInstance:
     - target: {fileID: 1693325170182695113, guid: 639180f49dcef7547a08986691d750d8,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -29.161652
+      value: -29.261652
       objectReference: {fileID: 0}
     - target: {fileID: 1693325170182695113, guid: 639180f49dcef7547a08986691d750d8,
         type: 3}
@@ -8672,6 +8707,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FPCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692858937037764281, guid: 639180f49dcef7547a08986691d750d8,
+        type: 3}
+      propertyPath: Lens.FieldOfView
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692858937037764281, guid: 639180f49dcef7547a08986691d750d8,
+        type: 3}
+      propertyPath: Lens.NearClipPlane
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692858937037764281, guid: 639180f49dcef7547a08986691d750d8,
+        type: 3}
+      propertyPath: Lens.OrthographicSize
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8692858937037764281, guid: 639180f49dcef7547a08986691d750d8,
         type: 3}
@@ -8753,12 +8803,12 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 13.858139
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
   m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
+  m_SensorSize: {x: 21.946, y: 16.002}
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -8766,11 +8816,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.01
   far clip plane: 5000
-  field of view: 60.000004
+  field of view: 60
   orthographic: 0
-  orthographic size: 10
+  orthographic size: 2
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8794,8 +8844,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 104635881565408737}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.144032, y: 13.207923, z: -29.161652}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -16.144032, y: 13.207923, z: -29.261652}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

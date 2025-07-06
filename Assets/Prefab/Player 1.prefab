@@ -24,9 +24,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3377106427341105277}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.537, y: 0.386, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.3, y: 0.4, z: 0}
+  m_LocalScale: {x: 0.15, y: 0.1487802, z: 0.48245734}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5149424561190231939}
@@ -292,7 +292,7 @@ Transform:
   m_GameObject: {fileID: 5669466903953912507}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0.6, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -524,7 +524,7 @@ MonoBehaviour:
   interactDistance: 3
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 5120
   interactText: {fileID: 0}
   interactKey: 101
   playerCamera: {fileID: 0}
