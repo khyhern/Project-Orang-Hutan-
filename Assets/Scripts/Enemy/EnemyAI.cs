@@ -16,7 +16,11 @@ public class EnemyAI : MonoBehaviour, IHear
     private Transform _player;
     private NavMeshAgent _enemy;
     private float _speed;
-    private Vector3 dirToPlayer;
+    private Vector3 _dirToPlayer;
+    private float[] _probs = { 0.2f, 0.2f, 0.2f, 0.2f, 0.15f, 0.05f };
+
+    // Teleport
+    private Vector3 _RespawnPos;
 
     // Searching
     private Vector3 _soundPos;
@@ -30,7 +34,6 @@ public class EnemyAI : MonoBehaviour, IHear
     
 
     // Attacking
-    private float _timeBetweenAttacks;
     private bool _alreadyAttacked;
 
     // States
@@ -47,8 +50,8 @@ public class EnemyAI : MonoBehaviour, IHear
     private void Update()
     {
         // Check for sight and attack ranges
-        dirToPlayer = _player.position - transform.position;
-        Ray ray = new Ray(transform.position, dirToPlayer.normalized);
+        _dirToPlayer = _player.position - transform.position;
+        Ray ray = new Ray(transform.position, _dirToPlayer.normalized);
         if (Physics.Raycast(ray, out RaycastHit hit, _sightRange, whatIsThis))
         {
             if (hit.collider.CompareTag("Player"))
@@ -145,19 +148,23 @@ public class EnemyAI : MonoBehaviour, IHear
         {
             // Attack code here (Ryan)
             Debug.Log("Attack!");
+            
+            BodyPart bodyPart = BodyPartsProbability();
+            _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 20); // Example damage, adjust as needed
             _alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), _timeBetweenAttacks);
+            ResetAttack();
         }
     }
 
     private void ResetAttack()
     {
         _alreadyAttacked = false;
+        gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()
     {
-        Debug.DrawRay(transform.position, dirToPlayer.normalized * _sightRange, Color.green);
+        Debug.DrawRay(transform.position, _dirToPlayer.normalized * _sightRange, Color.green);
         
         if (_enemyAttackPoint != null)
         {
@@ -174,5 +181,30 @@ public class EnemyAI : MonoBehaviour, IHear
         _searchPointSet = false;
         _searching = true;
         _soundPos = sound.Pos;
+    }
+
+    private BodyPart BodyPartsProbability()
+    {
+        float total = 0f;
+
+        foreach (float prob in _probs)
+        {
+            total += prob;
+        }
+
+        float randomPoint = Random.value * total;
+
+        for (int i = 0; i < _probs.Length; i++)
+        {
+            if (randomPoint < _probs[i])
+            {
+                return (BodyPart)i;       
+            }
+            else 
+            { 
+                randomPoint -= _probs[i];
+            }
+        }
+        return (BodyPart)_probs.Length - 1;      
     }
 }

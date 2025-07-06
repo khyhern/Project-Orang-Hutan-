@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,17 +12,18 @@ public class InventoryUI : MonoBehaviour
     public Button useButton;
     public Button combineButton;
 
+    public static InventoryUI Instance { get; private set; }
+
     private PuzzleItemData selectedItem;
     private GameObject selectedButton;
     private readonly List<GameObject> buttonInstances = new();
 
-    public static InventoryUI Instance { get; private set; }
-
+    private PuzzleItemData combineCandidate = null;
     private bool wasOpenedFromSlot = false;
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -35,18 +35,12 @@ public class InventoryUI : MonoBehaviour
         combineButton.onClick.AddListener(OnCombine);
     }
 
-    private void OnEnable()
-    {
-        TryRegisterToInventory();
-    }
+    private void OnEnable() => TryRegisterToInventory();
+    private void OnDisable() => UnregisterFromInventory();
 
-    private void Start()
-    {
-        // Ensures it catches InventorySystem if it loaded late
-        StartCoroutine(RegisterWhenReady());
-    }
+    private void Start() => StartCoroutine(RegisterWhenReady());
 
-    private IEnumerator RegisterWhenReady()
+    private System.Collections.IEnumerator RegisterWhenReady()
     {
         while (InventorySystem.Instance == null)
             yield return null;
@@ -56,14 +50,13 @@ public class InventoryUI : MonoBehaviour
 
     private void TryRegisterToInventory()
     {
-        if (InventorySystem.Instance != null)
-        {
-            InventorySystem.Instance.OnInventoryChanged -= RefreshDisplay;
-            InventorySystem.Instance.OnInventoryChanged += RefreshDisplay;
-        }
+        if (InventorySystem.Instance == null) return;
+
+        InventorySystem.Instance.OnInventoryChanged -= RefreshDisplay;
+        InventorySystem.Instance.OnInventoryChanged += RefreshDisplay;
     }
 
-    private void OnDisable()
+    private void UnregisterFromInventory()
     {
         if (InventorySystem.Instance != null)
             InventorySystem.Instance.OnInventoryChanged -= RefreshDisplay;
@@ -72,21 +65,15 @@ public class InventoryUI : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
-        {
             ToggleInventory();
-        }
     }
 
     private void ToggleInventory()
     {
         if (inventoryCanvas.activeSelf)
-        {
             inventoryCanvas.SetActive(false);
-        }
         else
-        {
-            OpenInventory(false); // Opened manually, not by slot
-        }
+            OpenInventory(false);
     }
 
     public void OpenInventory(bool fromSlot = false)
@@ -110,8 +97,7 @@ public class InventoryUI : MonoBehaviour
             GameObject buttonObj = Instantiate(itemButtonPrefab, gridContainer);
             buttonInstances.Add(buttonObj);
 
-            var label = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
-            label.text = item.itemName;
+            buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = item.itemName;
 
             var button = buttonObj.GetComponent<Button>();
             button.onClick.AddListener(() => OnItemSelected(item, buttonObj));
@@ -136,12 +122,19 @@ public class InventoryUI : MonoBehaviour
         selectedButton = buttonObj;
         selectedButton.GetComponent<Image>().color = Color.yellow;
 
+        if (combineCandidate != null && combineCandidate != selectedItem)
+        {
+            TryPerformCombination(combineCandidate, selectedItem);
+            combineCandidate = null;
+        }
+
         Debug.Log($"[InventoryUI] Selected: {item.itemName}");
     }
 
     private void DeselectItem()
     {
         selectedItem = null;
+        combineCandidate = null;
 
         foreach (var btn in buttonInstances)
             btn.GetComponent<Image>().color = Color.white;
@@ -179,8 +172,21 @@ public class InventoryUI : MonoBehaviour
             return;
         }
 
-        Debug.Log($"[COMBINE] {selectedItem.itemName}");
-        // TODO: Implement actual combine logic
+        combineCandidate = selectedItem;
+        Debug.Log($"[COMBINE] Now select item to combine with: {combineCandidate.itemName}");
+    }
+
+    private void TryPerformCombination(PuzzleItemData a, PuzzleItemData b)
+    {
+        if (InventorySystem.Instance.TryCombineItems(a, b, out var result))
+        {
+            Debug.Log($"[COMBINE SUCCESS] {a.itemName} + {b.itemName} = {result.itemName}");
+            RefreshDisplay();
+        }
+        else
+        {
+            Debug.Log($"[COMBINE FAILED] {a.itemName} and {b.itemName} cannot be combined.");
+        }
     }
 
     public PuzzleItemData GetSelectedItem() => selectedItem;

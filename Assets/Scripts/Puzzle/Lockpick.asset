@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 807982da5e58877449dab5d2c7a06371, type: 3}
-  m_Name: Goblet
+  m_Name: Lockpick
   m_EditorClassIdentifier: 
-  itemName: Goblet
+  itemName: Lockpick
   icon: {fileID: 0}
-  prefab: {fileID: 5733954977895589830, guid: 74bc1123511cc8447ba5f3e838cdb74a, type: 3}
+  prefab: {fileID: 4478940174131006863, guid: 7a84e8e4a92b2f24d812a37bcc1b1c8f, type: 3}
   description: 
   isCombinable: 0
   combinableWith: []

@@ -65,6 +65,14 @@ public class InventoryManager : MonoBehaviour
         spawnedFlashlight = Instantiate(flashlightPrefab, flashlightSpawnPoint.position, flashlightSpawnPoint.rotation);
         spawnedFlashlight.transform.SetParent(flashlightSpawnPoint);
 
+        // Ensure flashlight and its children are on the FPView layer
+        spawnedFlashlight.layer = LayerMask.NameToLayer("FPView");
+        
+        foreach (Transform child in spawnedFlashlight.transform)
+        {
+            child.gameObject.layer = LayerMask.NameToLayer("FPView"); 
+        }
+
         FlashlightController controller = spawnedFlashlight.GetComponent<FlashlightController>();
         if (controller != null)
         {

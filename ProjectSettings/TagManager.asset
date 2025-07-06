@@ -17,10 +17,10 @@ TagManager:
   - LevelComponents
   - Friend
   - Savepoint
-  - Interactable
+  - Interactables
   - Enemy
-  - 
-  - 
+  - FPView
+  - QTE
   - 
   - 
   - 

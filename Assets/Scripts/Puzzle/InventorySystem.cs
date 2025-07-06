@@ -12,7 +12,7 @@ public class InventorySystem : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -40,6 +40,31 @@ public class InventorySystem : MonoBehaviour
     }
 
     public IReadOnlyList<PuzzleItemData> GetAllItems() => items;
+
     public bool HasItem(PuzzleItemData item) => items.Contains(item);
-    public bool HasAnyItems() => items.Count > 0;
+
+    public bool TryCombineItems(PuzzleItemData a, PuzzleItemData b, out PuzzleItemData result)
+    {
+        result = null;
+
+        if (a == null || b == null || !a.isCombinable || !b.isCombinable)
+            return false;
+
+        foreach (var combo in a.combinableWith)
+        {
+            if (combo.otherItem == b)
+            {
+                result = combo.resultItem;
+
+                RemoveItem(a);
+                RemoveItem(b);
+                PickUp(result);
+
+                Debug.Log($"[Inventory] Combined {a.itemName} + {b.itemName} -> {result.itemName}");
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

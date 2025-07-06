@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("Interaction Settings")]
     [Tooltip("Max distance to interact with objects.")]
-    public float interactRange = 3f;
+    [SerializeField] private float interactRange = 3f;
 
     [Tooltip("Which layers contain interactable objects.")]
-    public LayerMask interactLayer;
+    [SerializeField] private LayerMask interactLayer;
 
-    [Tooltip("Optional: Assign the camera that will be used for raycasting. If left empty, Camera.main will be used.")]
-    public Camera raycastCamera;
+    [Tooltip("Optional: Use a specific camera for raycasting. If null, will default to Camera.main.")]
+    [SerializeField] private Camera raycastCamera;
 
     private void Awake()
     {
-        // Fallback to main camera if none assigned
         if (raycastCamera == null)
         {
             raycastCamera = Camera.main;
@@ -50,7 +50,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                Debug.Log($"[PlayerInteraction] Hit {hit.collider.name}, but it doesn't implement IInteractable.");
+                Debug.LogWarning($"[PlayerInteraction] Hit '{hit.collider.name}' but it doesn't implement IInteractable.");
             }
         }
         else
