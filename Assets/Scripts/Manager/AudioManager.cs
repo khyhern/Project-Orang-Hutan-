@@ -17,6 +17,7 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip HeartBeat;
     public AudioClip MurdererCome;
     public AudioClip MurdererAttack;
+    public AudioClip Breath;
 
     private bool firstPlay = true;
 

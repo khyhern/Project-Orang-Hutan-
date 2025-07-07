@@ -17,6 +17,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
     [Header("Camera")]
     [SerializeField] private CinemachineImpulseSource _impulseSource;
+    [SerializeField] private Animator _blink;
     public CinemachineCamera CameraPlayer;
     public CinemachineCamera CameraEnemy;
 
@@ -175,8 +176,12 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         _alreadyAttacked = true;
         yield return new WaitForSeconds(2.5f);
-        _runAway = true;
+        _runAway = true;    
+        _blink.SetTrigger("Blink");
+        yield return new WaitForSeconds(1f);
         CameraManager.SwitchCamera(CameraPlayer);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.Breath);
+        yield return new WaitForSeconds(1.5f);
         OnEnemyAttack?.Invoke(true);
     }
 
@@ -184,8 +189,9 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         _searching = false;
         if (!_respawnPointSet) SearchRespawnPoint();
-        
-        _enemy.speed = _speed * 3f;
+
+        transform.LookAt(_player);
+        _enemy.speed = _speed * 4f;
         _enemy.SetDestination(_respawnPoint);
         Vector3 distanceToRespawnPoint = transform.position - _respawnPoint;
         if (distanceToRespawnPoint.magnitude < 1.5f)
@@ -194,6 +200,7 @@ public class EnemyAI : MonoBehaviour, IHear
             _runAway = false;
             _respawnPointSet = false;
             _walkPointSet = false;
+            _blink.ResetTrigger("Blink");
 
         }
     }
@@ -203,8 +210,8 @@ public class EnemyAI : MonoBehaviour, IHear
         
         float randomZ = UnityEngine.Random.Range(-_respawnRange, _respawnRange);
         float randomX = UnityEngine.Random.Range(-_respawnRange, _respawnRange);
-        randomZ = Mathf.Abs(randomZ) < 15f ? 15f : randomZ; // Ensure minimum distance
-        randomX = Mathf.Abs(randomX) < 15f ? 15f : randomX; // Ensure minimum distance
+        randomZ = Mathf.Abs(randomZ) < 20f ? 20f : randomZ; // Ensure minimum distance
+        randomX = Mathf.Abs(randomX) < 20f ? 20f : randomX; // Ensure minimum distance
         _respawnPoint = new Vector3(_player.transform.position.x + randomX, _player.transform.position.y, _player.transform.position.z + randomZ);
         if (Physics.Raycast(_respawnPoint, -transform.up, 2f, whatIsGround))
         {
