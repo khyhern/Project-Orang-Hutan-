@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
-    [SerializeField] private LayerMask whatIsEnemy;
+    [Header("Settings")]
+    [SerializeField] private LayerMask _whatIsEnemy;
+
     private Camera _mainCamera;
     private float _seeDistance = 100f;
 
@@ -12,7 +15,7 @@ public class PlayerLook : MonoBehaviour
     {
         // Find the main camera in the scene
         _mainCamera = Camera.main;
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked; 
     }
 
     private void Update()
@@ -42,7 +45,7 @@ public class PlayerLook : MonoBehaviour
         Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, _seeDistance, whatIsEnemy))
+        if (Physics.Raycast(ray, out hit, _seeDistance, _whatIsEnemy))
         {
             if (hit.collider.CompareTag("Enemy"))
             {

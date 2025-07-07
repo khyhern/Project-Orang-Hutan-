@@ -9,12 +9,14 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioSource _sfxWalking;
     [SerializeField] private AudioSource _sfxSeeEnemy;
     [SerializeField] private AudioSource _sfxHeartBeat;
+    [SerializeField] private AudioSource _sfxGeneral;
 
     [Header("Audio Clips")]
     public AudioClip Bgm;
     public AudioClip Walking;
     public AudioClip HeartBeat;
     public AudioClip MurdererCome;
+    public AudioClip MurdererAttack;
 
     private bool firstPlay = true;
 
@@ -29,6 +31,11 @@ public class AudioManager : Singleton<AudioManager>
         _bgm.clip = clip;
         _bgm.loop = true;
         _bgm.Play();    
+    }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        _sfxGeneral.PlayOneShot(clip);
     }
 
     private void PlayHeartBeat()

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
+//using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,6 +14,11 @@ public class EnemyAI : MonoBehaviour, IHear
     [SerializeField] private float _walkPointRange;
     [SerializeField] private float _searchRange;
     [SerializeField] private float _respawnRange;
+
+    [Header("Camera")]
+    [SerializeField] private CinemachineImpulseSource _impulseSource;
+    public CinemachineCamera CameraPlayer;
+    public CinemachineCamera CameraEnemy;
 
     #region Internal
     private Transform _player;
@@ -41,6 +48,9 @@ public class EnemyAI : MonoBehaviour, IHear
 
     // States
     private bool _playerInSightRange, _playerInAttackRange;
+
+    // Event
+    public static Action<bool> OnEnemyAttack;
     #endregion
 
     private void Start()
@@ -97,8 +107,8 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void SearchWalkPoint()
     {
-        float randomZ = Random.Range(-_walkPointRange, _walkPointRange);
-        float randomX = Random.Range(-_walkPointRange, _walkPointRange);
+        float randomZ = UnityEngine.Random.Range(-_walkPointRange, _walkPointRange);
+        float randomX = UnityEngine.Random.Range(-_walkPointRange, _walkPointRange);
         _walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
         if (Physics.Raycast(_walkPoint, -transform.up, 2f, whatIsGround))
         {
@@ -133,8 +143,8 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void SearchSoundPoint()
     {
-        float randomZ = Random.Range(-_searchRange, _searchRange);
-        float randomX = Random.Range(-_searchRange, _searchRange);
+        float randomZ = UnityEngine.Random.Range(-_searchRange, _searchRange);
+        float randomX = UnityEngine.Random.Range(-_searchRange, _searchRange);
         _searchPoint = new Vector3(_soundPos.x + randomX, _soundPos.y, _soundPos.z + randomZ);
         if (Physics.Raycast(_searchPoint, -transform.up, 2f, whatIsGround))
         {
@@ -150,10 +160,12 @@ public class EnemyAI : MonoBehaviour, IHear
 
         if (!_alreadyAttacked)
         {
-            // Attack code here (Ryan)
-            Debug.Log("Attack!");
-            
+            CameraManager.SwitchCamera(CameraEnemy);
+            _impulseSource.GenerateImpulse();
+            OnEnemyAttack?.Invoke(false);
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
             BodyPart bodyPart = BodyPartsProbability();
+            
             _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 20); // Example damage, adjust as needed
             StartCoroutine(Stop());
         }
@@ -162,8 +174,10 @@ public class EnemyAI : MonoBehaviour, IHear
     private IEnumerator Stop()
     {
         _alreadyAttacked = true;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2.5f);
         _runAway = true;
+        CameraManager.SwitchCamera(CameraPlayer);
+        OnEnemyAttack?.Invoke(true);
     }
 
     private void RunAway()
@@ -187,8 +201,8 @@ public class EnemyAI : MonoBehaviour, IHear
     private void SearchRespawnPoint()
     {
         
-        float randomZ = Random.Range(-_respawnRange, _respawnRange);
-        float randomX = Random.Range(-_respawnRange, _respawnRange);
+        float randomZ = UnityEngine.Random.Range(-_respawnRange, _respawnRange);
+        float randomX = UnityEngine.Random.Range(-_respawnRange, _respawnRange);
         randomZ = Mathf.Abs(randomZ) < 15f ? 15f : randomZ; // Ensure minimum distance
         randomX = Mathf.Abs(randomX) < 15f ? 15f : randomX; // Ensure minimum distance
         _respawnPoint = new Vector3(_player.transform.position.x + randomX, _player.transform.position.y, _player.transform.position.z + randomZ);
@@ -228,7 +242,7 @@ public class EnemyAI : MonoBehaviour, IHear
             total += prob;
         }
 
-        float randomPoint = Random.value * total;
+        float randomPoint = UnityEngine.Random.value * total;
 
         for (int i = 0; i < _probs.Length; i++)
         {

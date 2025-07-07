@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9078330739019695693}
   - component: {fileID: 4107687981244873050}
   - component: {fileID: 212978380801277320}
+  - component: {fileID: 6597808151493718918}
   m_Layer: 0
   m_Name: FPCamera
   m_TagString: Untagged
@@ -190,3 +191,15 @@ MonoBehaviour:
         DecelTime: 0
   PlayerIndex: -1
   AutoEnableInputs: 1
+--- !u!114 &6597808151493718918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6083414405002815584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8f8c4982f3877d46a54626371421e61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
