@@ -167,7 +167,7 @@ public class EnemyAI : MonoBehaviour, IHear
             AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
             BodyPart bodyPart = BodyPartsProbability();
             
-            _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 20); // Example damage, adjust as needed
+            _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 35);
             StartCoroutine(Stop());
         }
     }
