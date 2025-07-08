@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(Collider))]
 public class PlayerInteraction : MonoBehaviour
@@ -10,52 +11,70 @@ public class PlayerInteraction : MonoBehaviour
     [Tooltip("Which layers contain interactable objects.")]
     [SerializeField] private LayerMask interactLayer;
 
-    [Tooltip("Optional: Use a specific camera for raycasting. If null, will default to Camera.main.")]
+    [Tooltip("UI Text to show interaction prompt.")]
+    [SerializeField] private TextMeshProUGUI interactText;
+
+    [Tooltip("Key used to trigger interaction.")]
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
+
+    [Tooltip("Optional: Use a specific camera for raycasting. If null, defaults to Camera.main.")]
     [SerializeField] private Camera raycastCamera;
+
+    private IInteractable currentTarget;
 
     private void Awake()
     {
         if (raycastCamera == null)
-        {
             raycastCamera = Camera.main;
-        }
 
         if (raycastCamera == null)
-        {
             Debug.LogError("[PlayerInteraction] No camera assigned and no MainCamera found.");
-        }
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        CheckForInteractable();
+
+        if (currentTarget != null && Input.GetKeyDown(interactKey))
         {
-            TryInteract();
+            currentTarget.Interact();
         }
     }
 
-    private void TryInteract()
+    private void CheckForInteractable()
     {
         if (raycastCamera == null) return;
 
-        Vector3 origin = raycastCamera.transform.position;
-        Vector3 direction = raycastCamera.transform.forward;
+        Ray ray = new Ray(raycastCamera.transform.position, raycastCamera.transform.forward);
+        Debug.DrawRay(ray.origin, ray.direction * interactRange, Color.green);
 
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, interactRange, interactLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactLayer))
         {
             if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
             {
-                interactable.Interact();
-                Debug.DrawRay(origin, direction * interactRange, Color.green, 1f);
-            }
-            else
-            {
-                Debug.LogWarning($"[PlayerInteraction] Hit '{hit.collider.name}' but it doesn't implement IInteractable.");
+                currentTarget = interactable;
+
+                if (interactText != null)
+                {
+                    if (interactable is Interactable fullInteractable)
+                    {
+                        string verb = fullInteractable.GetInteractionVerb();
+                        string objectID = fullInteractable.GetObjectID();
+                        interactText.text = $"Press [{interactKey}] to {verb} {objectID}";
+                    }
+                    else
+                    {
+                        interactText.text = $"Press [{interactKey}] to interact";
+                    }
+
+                    interactText.enabled = true;
+                }
+                return;
             }
         }
-        else
-        {
-            Debug.DrawRay(origin, direction * interactRange, Color.red, 1f);
-        }
+
+        currentTarget = null;
+        if (interactText != null)
+            interactText.enabled = false;
     }
 }

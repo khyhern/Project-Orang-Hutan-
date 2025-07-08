@@ -51,6 +51,8 @@ public class PlayerInteract : MonoBehaviour
             }
         }
 
+
+
         currentTarget = null;
         interactText.enabled = false;
     }
