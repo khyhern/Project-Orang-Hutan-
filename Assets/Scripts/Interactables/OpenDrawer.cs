@@ -17,9 +17,6 @@ public class OpenDrawer : MonoBehaviour, IDescriptiveInteractable
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private float messageDuration = 3f;
 
-    [Tooltip("Should this object show interaction prompts?")]
-    public bool showPrompt = true;
-
     [Header("Lock Settings")]
     [SerializeField] private bool isLocked = true;
 
