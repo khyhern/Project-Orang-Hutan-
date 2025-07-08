@@ -50,8 +50,29 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 
         if (item.prefab != null && itemSpawnPoint != null)
         {
-            spawnedInstance = Instantiate(item.prefab, itemSpawnPoint.position, itemSpawnPoint.rotation, itemSpawnPoint);
+            spawnedInstance = Instantiate(item.prefab);
 
+            // Default visual transform
+            spawnedInstance.transform.rotation = item.prefab.transform.rotation;
+            spawnedInstance.transform.localScale = item.prefab.transform.localScale;
+
+            // Try to find BottomMarker
+            Transform bottomMarker = spawnedInstance.transform.Find("BottomMarker");
+            if (bottomMarker != null)
+            {
+                Vector3 offset = spawnedInstance.transform.position - bottomMarker.position;
+                spawnedInstance.transform.position = itemSpawnPoint.position + offset;
+            }
+            else
+            {
+                Debug.LogWarning($"[PuzzleSlot] '{item.itemName}' is missing a BottomMarker — using default pivot.");
+                spawnedInstance.transform.position = itemSpawnPoint.position;
+            }
+
+            // Parent for hierarchy (optional)
+            spawnedInstance.transform.SetParent(itemSpawnPoint, true);
+
+            // Track slot ref
             var refComponent = spawnedInstance.AddComponent<PuzzleSlotReference>();
             refComponent.AssignSlot(this);
         }
@@ -68,6 +89,8 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         PuzzleManager.Instance?.CheckPuzzleState();
         ActiveSlot = null;
     }
+
+
 
     public void ClearSlot()
     {
