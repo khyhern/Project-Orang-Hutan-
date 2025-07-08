@@ -6,12 +6,11 @@ public class PuzzleManager : MonoBehaviour
 
     [Header("Puzzle Setup")]
     [Tooltip("All puzzle slots to check for correctness.")]
-    public PuzzleSlotInteractable[] slots;
+    [SerializeField] private PuzzleSlotInteractable[] slots;
 
-    [Header("Success Activation")]
-    public GameObject drawer;
-    public GameObject clockHand;
-    public AudioSource clunkSound;
+    [Header("Drawer Audio Source")]
+    [Tooltip("Audio source attached to the drawer that plays the success sound.")]
+    [SerializeField] private AudioSource drawerAudioSource;
 
     private bool puzzleSolved = false;
 
@@ -24,6 +23,15 @@ public class PuzzleManager : MonoBehaviour
         }
 
         Instance = this;
+
+        if (drawerAudioSource == null)
+        {
+            Debug.LogWarning("[PuzzleManager] Drawer AudioSource not assigned.");
+        }
+        else if (drawerAudioSource.clip == null)
+        {
+            Debug.LogWarning("[PuzzleManager] Drawer AudioSource has no clip assigned.");
+        }
     }
 
     public void CheckPuzzleState()
@@ -46,12 +54,17 @@ public class PuzzleManager : MonoBehaviour
 
     private void UnlockPuzzle()
     {
-        Debug.Log("✅ [PuzzleManager] Puzzle solved. Unlocking drawer...");
+        Debug.Log("✅ [PuzzleManager] Puzzle solved.");
 
-        // clunkSound?.Play();
-        drawer?.SetActive(true);
-        clockHand?.SetActive(true);
+        PlayDrawerSound();
 
         SuspicionCheckManager.Instance?.BeginInspectionCountdown();
+    }
+
+    private void PlayDrawerSound()
+    {
+        if (drawerAudioSource == null) return;
+
+        drawerAudioSource.Play();
     }
 }

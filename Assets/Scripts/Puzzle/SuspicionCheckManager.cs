@@ -21,6 +21,10 @@ public class SuspicionCheckManager : MonoBehaviour
     [Tooltip("Object activated if reset failed.")]
     [SerializeField] private GameObject failureEvent;
 
+    [Header("UI")]
+    [Tooltip("Reference to Timer UI component.")]
+    [SerializeField] private TimerUI timerUI;
+
     private Coroutine checkRoutine;
 
     private void Awake()
@@ -31,6 +35,11 @@ public class SuspicionCheckManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        if (timerUI == null)
+        {
+            Debug.LogWarning("[SuspicionCheck] TimerUI not assigned.");
+        }
     }
 
     /// <summary>
@@ -41,6 +50,7 @@ public class SuspicionCheckManager : MonoBehaviour
         if (checkRoutine != null)
             StopCoroutine(checkRoutine);
 
+        timerUI?.StartTimer(resetTimeLimit);
         checkRoutine = StartCoroutine(InspectionCountdown());
     }
 
