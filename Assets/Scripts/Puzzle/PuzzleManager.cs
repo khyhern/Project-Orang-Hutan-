@@ -5,11 +5,9 @@ public class PuzzleManager : MonoBehaviour
     public static PuzzleManager Instance { get; private set; }
 
     [Header("Puzzle Setup")]
-    [Tooltip("All puzzle slots to check for correctness.")]
     [SerializeField] private PuzzleSlotInteractable[] slots;
 
     [Header("Drawer Audio Source")]
-    [Tooltip("Audio source attached to the drawer that plays the success sound.")]
     [SerializeField] private AudioSource drawerAudioSource;
 
     private bool puzzleSolved = false;
@@ -55,16 +53,13 @@ public class PuzzleManager : MonoBehaviour
     private void UnlockPuzzle()
     {
         Debug.Log("✅ [PuzzleManager] Puzzle solved.");
-
         PlayDrawerSound();
-
         SuspicionCheckManager.Instance?.BeginInspectionCountdown();
     }
 
     private void PlayDrawerSound()
     {
         if (drawerAudioSource == null) return;
-
         drawerAudioSource.Play();
     }
 }

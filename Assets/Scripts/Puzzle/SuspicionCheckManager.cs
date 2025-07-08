@@ -124,9 +124,11 @@ public class SuspicionCheckManager : MonoBehaviour
 
     private void TriggerSuccess()
     {
-        Debug.Log("✅ [SuspicionCheck] All items restored. Player not suspicious.");
+        Debug.Log("✅ Puzzle success. Disabling PuzzleA interactables.");
+        InteractionManager.DisableGroup(InteractionGroup.PuzzleA);
         successEvent?.SetActive(true);
     }
+
 
     private void TriggerFailure()
     {

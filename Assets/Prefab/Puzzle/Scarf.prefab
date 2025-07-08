@@ -179,3 +179,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: e3dc2ad47cca8c540aba520819f74c19, type: 2}
+  interactionGroup: 1

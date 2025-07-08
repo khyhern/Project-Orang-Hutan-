@@ -233,6 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: c220d11f9e586024ba5c7b868253a4f9, type: 2}
+  interactionGroup: 1
 --- !u!4 &4430193742053401167 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4467138112451190354, guid: abf57f56dcffc7e419cbc1a9d5742408,

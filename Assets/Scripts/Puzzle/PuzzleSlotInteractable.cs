@@ -51,12 +51,9 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         if (item.prefab != null && itemSpawnPoint != null)
         {
             spawnedInstance = Instantiate(item.prefab);
-
-            // Default visual transform
             spawnedInstance.transform.rotation = item.prefab.transform.rotation;
             spawnedInstance.transform.localScale = item.prefab.transform.localScale;
 
-            // Try to find BottomMarker
             Transform bottomMarker = spawnedInstance.transform.Find("BottomMarker");
             if (bottomMarker != null)
             {
@@ -69,10 +66,8 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
                 spawnedInstance.transform.position = itemSpawnPoint.position;
             }
 
-            // Parent for hierarchy (optional)
             spawnedInstance.transform.SetParent(itemSpawnPoint, true);
 
-            // Track slot ref
             var refComponent = spawnedInstance.AddComponent<PuzzleSlotReference>();
             refComponent.AssignSlot(this);
         }
@@ -90,8 +85,6 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         ActiveSlot = null;
     }
 
-
-
     public void ClearSlot()
     {
         Debug.Log($"[PuzzleSlot] Slot cleared (was holding: {placedItem?.itemName})");
@@ -102,7 +95,6 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 
     public PuzzleItemData GetPlacedItem() => placedItem;
     public PuzzleItemData GetOriginalItem() => originalItemData;
-
     public string GetPlacedItemName() => placedItem?.itemName;
 
     public SlotState GetSlotState()
@@ -112,4 +104,6 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         if (placedItem == originalItemData) return SlotState.Original;
         return SlotState.Wrong;
     }
+
+    public InteractionGroup GetInteractionGroup() => InteractionGroup.PuzzleA;
 }

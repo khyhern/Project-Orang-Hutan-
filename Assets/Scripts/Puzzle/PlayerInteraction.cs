@@ -5,19 +5,10 @@ using TMPro;
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("Interaction Settings")]
-    [Tooltip("Max distance to interact with objects.")]
     [SerializeField] private float interactRange = 3f;
-
-    [Tooltip("Which layers contain interactable objects.")]
     [SerializeField] private LayerMask interactLayer;
-
-    [Tooltip("UI Text to show interaction prompt.")]
     [SerializeField] private TextMeshProUGUI interactText;
-
-    [Tooltip("Key used to trigger interaction.")]
     [SerializeField] private KeyCode interactKey = KeyCode.E;
-
-    [Tooltip("Optional: Use a specific camera for raycasting. If null, defaults to Camera.main.")]
     [SerializeField] private Camera raycastCamera;
 
     private IInteractable currentTarget;
@@ -26,9 +17,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (raycastCamera == null)
             raycastCamera = Camera.main;
-
-        if (raycastCamera == null)
-            Debug.LogError("[PlayerInteraction] No camera assigned and no MainCamera found.");
     }
 
     private void Update()
@@ -52,21 +40,18 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
             {
+                if (!InteractionManager.IsGroupEnabled(interactable.GetInteractionGroup()))
+                {
+                    interactText.enabled = false;
+                    currentTarget = null;
+                    return;
+                }
+
                 currentTarget = interactable;
 
                 if (interactText != null)
                 {
-                    if (interactable is Interactable fullInteractable)
-                    {
-                        string verb = fullInteractable.GetInteractionVerb();
-                        string objectID = fullInteractable.GetObjectID();
-                        interactText.text = $"Press [{interactKey}] to {verb} {objectID}";
-                    }
-                    else
-                    {
-                        interactText.text = $"Press [{interactKey}] to interact";
-                    }
-
+                    interactText.text = $"Press [{interactKey}] to interact";
                     interactText.enabled = true;
                 }
                 return;
