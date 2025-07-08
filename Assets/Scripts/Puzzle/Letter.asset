@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Letter
   icon: {fileID: 0}
-  prefab: {fileID: 5555397712648146543, guid: 7936c9d48e6ae8d45ab49bca3736cd84, type: 3}
+  prefab: {fileID: 57566728735019570, guid: 0026851435bfefa47be8f39736902b88, type: 3}
   description: 
   isCombinable: 0
   combinableWith: []

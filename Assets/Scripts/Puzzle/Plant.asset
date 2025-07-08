@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Plant
   icon: {fileID: 0}
-  prefab: {fileID: 5733954977895589830, guid: 74bc1123511cc8447ba5f3e838cdb74a, type: 3}
+  prefab: {fileID: 5343903059109694793, guid: beb3ac255b51e5540bbbb5df410d2dcd, type: 3}
   description: 
   isCombinable: 0
   combinableWith: []

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Scarf
   icon: {fileID: 0}
-  prefab: {fileID: 3693704675670723668, guid: e919c1ae18abbd443851a3329ae2f448, type: 3}
+  prefab: {fileID: 1775322976021687285, guid: e919c1ae18abbd443851a3329ae2f448, type: 3}
   description: 
   isCombinable: 0
   combinableWith: []
