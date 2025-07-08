@@ -51,9 +51,18 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (interactText != null)
                 {
-                    interactText.text = $"Press [{interactKey}] to interact";
+                    if (interactable is IDescriptiveInteractable descriptive)
+                    {
+                        interactText.text = $"Press [{interactKey}] to {descriptive.GetInteractionVerb()} {descriptive.GetObjectName()}";
+                    }
+                    else
+                    {
+                        interactText.text = $"Press [{interactKey}] to interact";
+                    }
+
                     interactText.enabled = true;
                 }
+
                 return;
             }
         }
