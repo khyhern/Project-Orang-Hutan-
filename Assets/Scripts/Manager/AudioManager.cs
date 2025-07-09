@@ -10,6 +10,7 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioSource _sfxSeeEnemy;
     [SerializeField] private AudioSource _sfxHeartBeat;
     [SerializeField] private AudioSource _sfxGeneral;
+    [SerializeField] private AudioSource _sfxEnemyWalk;
 
     [Header("Audio Clips")]
     public AudioClip Bgm;
@@ -18,6 +19,7 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip MurdererCome;
     public AudioClip MurdererAttack;
     public AudioClip Breath;
+    public AudioClip EnemyWalk;
 
     private bool firstPlay = true;
 
@@ -65,9 +67,15 @@ public class AudioManager : Singleton<AudioManager>
         _sfxWalking.PlayOneShot(Walking);
     }
 
+    public void PlaySFXEnemyWalk()
+    {
+        _sfxEnemyWalk.pitch = Random.Range(0.7f, 0.9f);
+        _sfxEnemyWalk.PlayOneShot(EnemyWalk);
+    }
+
     public void IncreaseVolumeHB()
     {
-        if (_sfxHeartBeat.volume < 0.8f)
+        if (_sfxHeartBeat.volume < 0.6f)
         {
             _sfxHeartBeat.volume += 0.1f * Time.deltaTime;
         }

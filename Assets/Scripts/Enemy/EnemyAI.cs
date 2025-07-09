@@ -30,11 +30,11 @@ public class EnemyAI : MonoBehaviour, IHear
     private Vector3 _dirToPlayer;
     private float[] _probs = { 0.2f, 0.2f, 0.2f, 0.2f, 0.15f, 0.05f };
     private bool _playerLook;
-    private MeshRenderer _meshRenderer;
+    private Animator _animator;
 
     // Timer
     private float _timer = 0f;
-    private float _timeDelay = 1f;
+    private float _timeDelay = 0.6f;
 
     // Teleport 
     private Vector3 _teleportPoint;
@@ -70,7 +70,7 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         _player = GameObject.FindWithTag("Player").transform;
         _enemy = GetComponent<NavMeshAgent>();
-        _meshRenderer = GetComponent<MeshRenderer>(); 
+        _animator = GetComponent<Animator>();
         _speed = _enemy.speed;
     }
 
@@ -101,7 +101,7 @@ public class EnemyAI : MonoBehaviour, IHear
         if (_searching && !_playerInSightRange && !_runAway) SearchSound();
         if (!_playerInSightRange && !_playerInAttackRange && !_searching && !_runAway) Patroling();
         
-        if (_teleport)
+        if (_teleport && !_runAway)
         {
             if (_timer >= _timeDelay)
             {
@@ -118,6 +118,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void Patroling()
     {
+        _animator.SetBool("enem_walk", true);
         if (!_walkPointSet) SearchWalkPoint();
 
         if (_walkPointSet)
@@ -147,25 +148,34 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void ChasePlayer()
     {
+        _animator.SetBool("enem_walk", true);
         _enemy.SetDestination(_player.position);
         Vector3 distanceToSearchPoint = transform.position - _player.position;
 
         if (distanceToSearchPoint.magnitude < 7f)
         {
-            _enemy.speed = _speed / 2f;
+            //_enemy.speed = _speed * 1.5f;
             _teleport = true;
         }
     }
 
     private void Teleport()
     {
-        float randomZ = UnityEngine.Random.Range(-2, 2);
+        _animator.SetBool("enem_walk", false);
+        float randomZ = UnityEngine.Random.Range(-4, 4);
+        randomZ = Mathf.Abs(randomZ) < 2f && Mathf.Abs(randomZ) >= 0 ? 2f : randomZ;
+        randomZ = Mathf.Abs(randomZ) > -2f && Mathf.Abs(randomZ) < 0 ? -2f : randomZ;
+        transform.LookAt(_player);
         _teleportPoint = new Vector3(transform.position.x, transform.position.y, _player.position.z + randomZ);
-        _enemy.transform.position = _teleportPoint;
+        if (Physics.Raycast(_teleportPoint, -transform.up, 2f, whatIsGround))
+        {
+            _enemy.transform.position = _teleportPoint;
+        }   
     }
 
     private void SearchSound()
     {
+        _animator.SetBool("enem_walk", true);
         if (!_searchPointSet) SearchSoundPoint();
 
         if (_searchPointSet)
@@ -195,6 +205,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void AttackPlayer()
     {
+        _animator.SetBool("enem_walk", false);
         _enemy.SetDestination(transform.position);
         transform.LookAt(_player);
 
@@ -227,6 +238,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void RunAway()
     {
+        _animator.SetBool("enem_walk", false);
         _searching = false;
         if (!_respawnPointSet) SearchRespawnPoint();
 
@@ -240,6 +252,7 @@ public class EnemyAI : MonoBehaviour, IHear
             _runAway = false;
             _respawnPointSet = false;
             _walkPointSet = false;
+            _teleport = false;
             _blink.ResetTrigger("Blink");
 
         }
@@ -303,6 +316,11 @@ public class EnemyAI : MonoBehaviour, IHear
             }
         }
         return (BodyPart)_probs.Length - 1;      
+    }
+
+    public void PlayWalkingSFX()
+    {
+        AudioManager.Instance.PlaySFXEnemyWalk();
     }
 
     private void PlayerSeeEnemy(bool see)
