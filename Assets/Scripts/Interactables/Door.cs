@@ -1,39 +1,70 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class Door : MonoBehaviour, IDescriptiveInteractable
+public class DoorInteractable : Interactable
 {
-    [Header("Door Requirements")]
-    [SerializeField] private string requiredKeyID = "Rusty Key";
+    public string requiredKeyID = "Rusty Key";
 
-    [Header("Identification")]
-    [SerializeField] private string objectID = "Suspicious door";
+    public string objectID = "Suspicious door";
 
     private bool isOpened = false;
 
-    public void Interact()
+    public override void Interact()
     {
         if (isOpened) return;
 
         if (InventoryManager.Instance.HasKeyItem(requiredKeyID))
         {
-            Debug.Log("[Door] Door opened.");
-            // TODO: Add animation or open logic here
+            Debug.Log("Door opened.");
+            // TODO: Add door animation or open logic here
 
-            // Optional: remove the key from inventory
-            // InventoryManager.Instance.RemoveKeyItem(requiredKeyID);
+            // Removes key (One-time use item)
+            //InventoryManager.Instance.RemoveKeyItem(requiredKeyID);
 
             isOpened = true;
-            enabled = false;
+            this.enabled = false; // Disable this script so it can't be interacted with again
         }
         else
         {
-            Debug.Log("[Door] Door is locked. You need the correct key.");
+            Debug.Log("Door is locked. You need a key.");
         }
     }
 
-    public string GetInteractionVerb() => "open";
-    public string GetObjectName() => "door";
-    public string GetObjectID() => objectID;
-    public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
+    public override string GetInteractionVerb()
+    {
+        return "open";
+    }
+
+    public override string GetObjectID()
+    {
+        return objectID;
+    }
+
+    public override string GetObjectName()
+    {
+        return "door";
+    }
 }
+
+
+/*
+public class DoorInteractable : Interactable
+{
+    public override void Interact()
+    {
+        Debug.Log("Door interacted.");
+        // TODO: Open door logic
+    }
+
+    public override string GetInteractionVerb()
+    {
+        return "open";
+    }
+
+    public override string GetObjectName()
+    {
+        return "door";
+    }
+}
+*/

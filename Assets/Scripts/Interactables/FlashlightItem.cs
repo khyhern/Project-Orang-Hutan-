@@ -1,20 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class FlashlightItem : MonoBehaviour, IDescriptiveInteractable
+public class FlashlightItem : Interactable
 {
-    [SerializeField] private string itemID = "Flashlight";
-    [SerializeField] private GameObject flashlightPrefab;
+    public string itemID = "Flashlight";
+    public GameObject flashlightPrefab;
 
-    public void Interact()
+    public override void Interact()
     {
         InventoryManager.Instance.SetFlashlightExists(true);
-        Debug.Log($"[Flashlight] {itemID} collected.");
+        Debug.Log("Flashlight pickup collected.");
         Destroy(gameObject);
     }
 
-    public string GetInteractionVerb() => "pick up";
-    public string GetObjectID() => itemID;
-    public string GetObjectName() => itemID.ToLower();
-    public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
+    public override string GetInteractionVerb()
+    {
+        return "pick up";
+    }
+
+    public override string GetObjectID()
+    {
+        return itemID;
+    }
+
+    public override string GetObjectName()
+    {
+        return itemID.ToLower();
+    }
 }
+
+
+    

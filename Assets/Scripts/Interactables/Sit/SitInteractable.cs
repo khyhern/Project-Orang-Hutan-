@@ -1,12 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class SitInteractable : MonoBehaviour, IDescriptiveInteractable
+public class SitInteractable : Interactable
 {
     [Tooltip("Sit position and rotation.")]
-    public Transform sitSpot; // ✅ Made public for direct access
+    public Transform sitSpot;
 
-    public void Interact()
+    public override void Interact()
     {
         var player = PlayerSittingController.Instance;
         if (player == null)
@@ -18,8 +17,7 @@ public class SitInteractable : MonoBehaviour, IDescriptiveInteractable
         player.SitAt(this);
     }
 
-    public string GetInteractionVerb() => "sit on";
-    public string GetObjectName() => gameObject.name;
-    public string GetObjectID() => gameObject.name;
-    public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
+    public override string GetInteractionVerb() => "sit on";
+    public override string GetObjectName() => gameObject.name;
+    public override string GetObjectID() => gameObject.name;
 }

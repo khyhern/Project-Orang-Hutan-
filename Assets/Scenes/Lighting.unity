@@ -3990,13 +3990,10 @@ MonoBehaviour:
   _sfxWalking: {fileID: 884425320}
   _sfxSeeEnemy: {fileID: 1280911579}
   _sfxHeartBeat: {fileID: 756233699}
-  _sfxGeneral: {fileID: 0}
   Bgm: {fileID: 8300000, guid: dd5d81b525adf3d4bac0d212bd37a62a, type: 3}
   Walking: {fileID: 8300000, guid: b8b30d6c31d2e7848ad28e67fc5fec5c, type: 3}
   HeartBeat: {fileID: 8300000, guid: 2ce6f3f1b564ba34aa7f16be596e4748, type: 3}
   MurdererCome: {fileID: 8300000, guid: 04e1ce9768911264ea79dfddd913e2d3, type: 3}
-  MurdererAttack: {fileID: 0}
-  Breath: {fileID: 0}
 --- !u!4 &1117276257
 Transform:
   m_ObjectHideFlags: 0
@@ -6846,11 +6843,6 @@ MonoBehaviour:
   _attackRange: 1
   _walkPointRange: 20
   _searchRange: 2
-  _respawnRange: 0
-  _impulseSource: {fileID: 0}
-  _blink: {fileID: 0}
-  CameraPlayer: {fileID: 0}
-  CameraEnemy: {fileID: 0}
 --- !u!195 &1829039579
 NavMeshAgent:
   m_ObjectHideFlags: 0

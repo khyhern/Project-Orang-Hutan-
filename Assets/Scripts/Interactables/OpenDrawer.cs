@@ -1,32 +1,43 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class OpenDrawer : MonoBehaviour, IDescriptiveInteractable
+public class OpenDrawer : Interactable
 {
-    [SerializeField] private Animator animator;
-    [SerializeField] private AudioSource openSound;
-    [SerializeField] private AudioSource closeSound;
+    public Animator animator;
+    public AudioSource openSound;
+    public AudioSource closeSound;
 
     private bool isOpen = false;
 
-    public void Interact()
+    public override void Interact()
     {
         if (!isOpen)
         {
-            // openSound?.Play();
-            animator?.SetTrigger("openDrawer");
+            if (openSound != null) openSound.Play();
+            animator.SetTrigger("openDrawer");
+            isOpen = true;
         }
         else
         {
-            // closeSound?.Play();
-            animator?.SetTrigger("closeDrawer");
+            if (closeSound != null) closeSound.Play();
+            animator.SetTrigger("closeDrawer");
+            isOpen = false;
         }
-
-        isOpen = !isOpen;
     }
 
-    public string GetInteractionVerb() => isOpen ? "close" : "open";
-    public string GetObjectName() => "drawer";
-    public string GetObjectID() => "Drawer";
-    public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
+    public override string GetInteractionVerb()
+    {
+        return isOpen ? "close" : "open";
+    }
+
+    public override string GetObjectName()
+    {
+        return "Drawer";
+    }
+
+    public override string GetObjectID()
+    {
+        return "Drawer";
+    }
 }

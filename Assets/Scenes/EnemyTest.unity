@@ -1986,11 +1986,6 @@ MonoBehaviour:
   _attackRange: 1
   _walkPointRange: 10
   _searchRange: 0
-  _respawnRange: 0
-  _impulseSource: {fileID: 0}
-  _blink: {fileID: 0}
-  CameraPlayer: {fileID: 0}
-  CameraEnemy: {fileID: 0}
 --- !u!195 &1829039579
 NavMeshAgent:
   m_ObjectHideFlags: 0
