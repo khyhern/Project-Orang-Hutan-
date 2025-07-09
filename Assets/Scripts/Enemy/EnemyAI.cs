@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Threading;
+
 //using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -27,6 +29,16 @@ public class EnemyAI : MonoBehaviour, IHear
     private float _speed;
     private Vector3 _dirToPlayer;
     private float[] _probs = { 0.2f, 0.2f, 0.2f, 0.2f, 0.15f, 0.05f };
+    private bool _playerLook;
+    private MeshRenderer _meshRenderer;
+
+    // Timer
+    private float _timer = 0f;
+    private float _timeDelay = 1f;
+
+    // Teleport 
+    private Vector3 _teleportPoint;
+    private bool _teleport;
 
     // Run Away
     private Vector3 _respawnPoint;
@@ -58,11 +70,15 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         _player = GameObject.FindWithTag("Player").transform;
         _enemy = GetComponent<NavMeshAgent>();
+        _meshRenderer = GetComponent<MeshRenderer>(); 
         _speed = _enemy.speed;
     }
 
     private void Update()
     {
+        // Increase timer
+        _timer = _timer + 1f * Time.deltaTime;
+
         // Check for sight and attack ranges
         _dirToPlayer = _player.position - transform.position;
         Ray ray = new Ray(transform.position, _dirToPlayer.normalized);
@@ -84,6 +100,17 @@ public class EnemyAI : MonoBehaviour, IHear
         if (_runAway) RunAway();
         if (_searching && !_playerInSightRange && !_runAway) SearchSound();
         if (!_playerInSightRange && !_playerInAttackRange && !_searching && !_runAway) Patroling();
+        
+        if (_teleport)
+        {
+            if (_timer >= _timeDelay)
+            {
+                _timer = 0f;
+                Teleport();
+            }
+        }
+        
+
         if (_playerInSightRange && !_playerInAttackRange && !_runAway) ChasePlayer();
         if (_playerInAttackRange && _playerInSightRange && !_runAway) AttackPlayer();
         
@@ -121,7 +148,20 @@ public class EnemyAI : MonoBehaviour, IHear
     private void ChasePlayer()
     {
         _enemy.SetDestination(_player.position);
-        _enemy.speed = _speed * 2f;
+        Vector3 distanceToSearchPoint = transform.position - _player.position;
+
+        if (distanceToSearchPoint.magnitude < 7f)
+        {
+            _enemy.speed = _speed / 2f;
+            _teleport = true;
+        }
+    }
+
+    private void Teleport()
+    {
+        float randomZ = UnityEngine.Random.Range(-2, 2);
+        _teleportPoint = new Vector3(transform.position.x, transform.position.y, _player.position.z + randomZ);
+        _enemy.transform.position = _teleportPoint;
     }
 
     private void SearchSound()
@@ -156,18 +196,18 @@ public class EnemyAI : MonoBehaviour, IHear
     private void AttackPlayer()
     {
         _enemy.SetDestination(transform.position);
-
         transform.LookAt(_player);
 
         if (!_alreadyAttacked)
         {
+            _teleport = false;
             CameraManager.SwitchCamera(CameraEnemy);
             _impulseSource.GenerateImpulse();
             OnEnemyAttack?.Invoke(false);
             AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
             BodyPart bodyPart = BodyPartsProbability();
-            
-            _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 35);
+
+            _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 100);
             StartCoroutine(Stop());
         }
     }
@@ -264,4 +304,19 @@ public class EnemyAI : MonoBehaviour, IHear
         }
         return (BodyPart)_probs.Length - 1;      
     }
+
+    private void PlayerSeeEnemy(bool see)
+    {
+        _playerLook = see;
+    }
+
+    private void OnEnable()
+    {
+        PlayerLook.OnPlayerSeeEnemy += PlayerSeeEnemy;
+    }
+
+    private void OnDisable()
+    {
+        PlayerLook.OnPlayerSeeEnemy -= PlayerSeeEnemy;
+    }   
 }

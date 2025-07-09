@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -10,6 +11,8 @@ public class PlayerLook : MonoBehaviour
 
     private Camera _mainCamera;
     private float _seeDistance = 100f;
+
+    public static Action<bool> OnPlayerSeeEnemy;
 
     private void Start()
     {
@@ -51,6 +54,12 @@ public class PlayerLook : MonoBehaviour
             {
                 // If the raycast hits an enemy, play the see enemy sound effect
                 AudioManager.Instance.PlaySFXseeEnemy();
+                OnPlayerSeeEnemy?.Invoke(true);
+            }
+            else
+            {
+                // If the raycast does not hit an enemy, invoke with false
+                OnPlayerSeeEnemy?.Invoke(false);
             }
         }
     }
