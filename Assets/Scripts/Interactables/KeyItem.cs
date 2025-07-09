@@ -1,50 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyItem : Interactable
+[RequireComponent(typeof(Collider))]
+public class KeyItem : MonoBehaviour, IDescriptiveInteractable
 {
-    public string itemID = "Rusty Key"; // Unique name or ID
+    [SerializeField] private string itemID = "Rusty Key";
 
-    public override void Interact()
+    public void Interact()
     {
         InventoryManager.Instance.AddKeyItem(itemID);
+        Debug.Log($"[KeyItem] {itemID} added to inventory.");
         Destroy(gameObject);
     }
 
-    public override string GetInteractionVerb()
-    {
-        return "pick up";
-    }
-
-    public override string GetObjectID()
-    {
-        return itemID;
-    }
-
-    public override string GetObjectName()
-    {
-        return itemID.ToLower();     // convert string ID into all lowercase
-    }
+    public string GetInteractionVerb() => "pick up";
+    public string GetObjectID() => itemID;
+    public string GetObjectName() => itemID.ToLower();
+    public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
 }
-
-/*
- * public class KeyItem : Interactable
-{
-    public override void Interact()
-    {
-        Debug.Log("Key collected!");
-        Destroy(gameObject);
-    }
-
-    public override string GetInteractionVerb()
-    {
-        return "pick up";
-    }
-
-    public override string GetObjectName()
-    {
-        return "key";
-    }
-}
-*/
