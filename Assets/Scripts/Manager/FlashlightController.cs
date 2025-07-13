@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FlashlightController : MonoBehaviour
 {
+    [System.Serializable]
+    public struct BatteryColorStage
+    {
+        public Color color;
+        public float threshold; // Battery level required to switch to this color
+    }
+
     [Header("References")]
     [SerializeField] private Light spotlight;
     [SerializeField] private GameObject onVisual;
@@ -13,10 +21,13 @@ public class FlashlightController : MonoBehaviour
     [Header("Battery Settings")]
     [SerializeField] private int maxLifetime = 100;
     [SerializeField] private float drainRate = 1f;
-
     [SerializeField] private float currentLifetime;
     private bool isOn = false;
     private bool isDepleted = false;
+
+    [Header("Battery UI")]
+    private Image batteryFillImage;
+    [SerializeField] private List<BatteryColorStage> colorStages;
 
     public void Activate()
     {
@@ -26,19 +37,32 @@ public class FlashlightController : MonoBehaviour
         onVisual.SetActive(false);
         offVisual.SetActive(true);
 
-        currentLifetime = maxLifetime;
-        isDepleted = false;
+        if (currentLifetime <= 0f)
+        {
+            currentLifetime = maxLifetime;
+            isDepleted = false;
+        }
+
+
+        if (batteryFillImage == null)
+        {
+            GameObject uiObj = GameObject.Find("Battery lifetime bar");
+            if (uiObj != null)
+            {
+                batteryFillImage = uiObj.GetComponent<Image>();
+                batteryFillImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                Debug.LogWarning("[FlashlightController] UI object 'Battery lifetime bar' not found.");
+            }
+        }
 
         UpdateAnimatorValues();
     }
 
     void Update()
     {
-        if (PressedOtherNumberKey())
-        {
-            UnequipFlashlight();
-        }
-
         if (Input.GetMouseButtonDown(2))
         {
             ToggleLight();
@@ -99,8 +123,22 @@ public class FlashlightController : MonoBehaviour
 
     void UpdateAnimatorValues()
     {
-        if (animator == null) return;
-        animator.SetInteger("Lifetime", Mathf.RoundToInt(currentLifetime));
+        if (animator != null)
+            animator.SetInteger("Lifetime", Mathf.RoundToInt(currentLifetime));
+
+        if (batteryFillImage != null)
+        {
+            batteryFillImage.fillAmount = currentLifetime / maxLifetime;
+
+            foreach (var stage in colorStages)
+            {
+                if (currentLifetime >= stage.threshold)
+                {
+                    batteryFillImage.color = stage.color;
+                    break;
+                }
+            }
+        }
     }
 
     void FaceCenterOfScreen()
@@ -115,20 +153,5 @@ public class FlashlightController : MonoBehaviour
 
         transform.rotation = targetRotation;
     }
-
-    void UnequipFlashlight()
-    {
-        Destroy(gameObject);
-    }
-
-    bool PressedOtherNumberKey()
-    {
-        for (int i = 0; i <= 9; i++)
-        {
-            KeyCode key = KeyCode.Alpha0 + i;
-            if (key != KeyCode.Alpha1 && Input.GetKeyDown(key))
-                return true;
-        }
-        return false;
-    }
 }
+

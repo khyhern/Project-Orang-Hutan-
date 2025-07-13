@@ -178,6 +178,16 @@ MonoBehaviour:
   animator: {fileID: 8257565432019996673}
   maxLifetime: 100
   drainRate: 1
+  currentLifetime: 0
+  colorStages:
+  - color: {r: 0.07169092, g: 1, b: 0, a: 1}
+    threshold: 70
+  - color: {r: 0.99709713, g: 1, b: 0, a: 0.79607844}
+    threshold: 33
+  - color: {r: 1, g: 0.5184802, b: 0, a: 0.69803923}
+    threshold: 15
+  - color: {r: 1, g: 0, b: 0, a: 0.6862745}
+    threshold: 0
 --- !u!95 &8257565432019996673
 Animator:
   serializedVersion: 5
