@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 5705980139319661535}
   - component: {fileID: 8264952312940385558}
   - component: {fileID: 7506481065803271668}
+  - component: {fileID: 8257565432019996673}
   m_Layer: 12
   m_Name: Flashlight
   m_TagString: Untagged
@@ -174,6 +175,30 @@ MonoBehaviour:
   spotlight: {fileID: 3681232735133361331}
   onVisual: {fileID: 258690169505119222}
   offVisual: {fileID: 8733747553012715790}
+  animator: {fileID: 8257565432019996673}
+  maxLifetime: 100
+  drainRate: 1
+--- !u!95 &8257565432019996673
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366769767657601182}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3853b61a377f3e5478aed0fa3425996e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3642225303887563889
 GameObject:
   m_ObjectHideFlags: 0
