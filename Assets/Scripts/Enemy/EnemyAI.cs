@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour, IHear
     [Header("Settings")]
     [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsThis;
     [SerializeField] private Transform _enemyAttackPoint;
+    [SerializeField] private GameObject _enemyBody;
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private float _walkPointRange;
     [SerializeField] private float _searchRange;
@@ -34,7 +35,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
     // Timer
     private float _timer = 0f;
-    private float _timeDelay = 0.6f;
+    private float _timeDelay = 1.5f;
 
     // Teleport 
     private Vector3 _teleportPoint;
@@ -101,15 +102,9 @@ public class EnemyAI : MonoBehaviour, IHear
         if (_searching && !_playerInSightRange && !_runAway) SearchSound();
         if (!_playerInSightRange && !_playerInAttackRange && !_searching && !_runAway) Patroling();
         
-        if (_teleport && !_runAway)
-        {
-            if (_timer >= _timeDelay)
-            {
-                _timer = 0f;
-                Teleport();
-            }
-        }
-        
+        if (_teleport && !_runAway) Teleport();
+
+
 
         if (_playerInSightRange && !_playerInAttackRange && !_runAway) ChasePlayer();
         if (_playerInAttackRange && _playerInSightRange && !_runAway) AttackPlayer();
@@ -148,13 +143,17 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void ChasePlayer()
     {
+        transform.LookAt(_player.position);
         _animator.SetBool("enem_walk", true);
+        _enemy.speed = _speed * 1.5f;
         _enemy.SetDestination(_player.position);
         Vector3 distanceToSearchPoint = transform.position - _player.position;
 
-        if (distanceToSearchPoint.magnitude < 7f)
+        if (distanceToSearchPoint.magnitude < 5f)
         {
-            //_enemy.speed = _speed * 1.5f;
+            _enemyBody.SetActive(false);
+
+            if (distanceToSearchPoint.magnitude < 3f) _enemyBody.SetActive(true);  
             _teleport = true;
         }
     }
@@ -162,11 +161,11 @@ public class EnemyAI : MonoBehaviour, IHear
     private void Teleport()
     {
         _animator.SetBool("enem_walk", false);
-        float randomZ = UnityEngine.Random.Range(-4, 4);
-        randomZ = Mathf.Abs(randomZ) < 2f && Mathf.Abs(randomZ) >= 0 ? 2f : randomZ;
-        randomZ = Mathf.Abs(randomZ) > -2f && Mathf.Abs(randomZ) < 0 ? -2f : randomZ;
+        float randomTime = UnityEngine.Random.Range(1, 4);
+        //randomZ = Mathf.Abs(randomZ) < 2f && Mathf.Abs(randomZ) >= 0 ? 2f : randomZ;
+        //randomZ = Mathf.Abs(randomZ) > -2f && Mathf.Abs(randomZ) < 0 ? -2f : randomZ;
         transform.LookAt(_player);
-        _teleportPoint = new Vector3(transform.position.x, transform.position.y, _player.position.z + randomZ);
+        _teleportPoint = new Vector3(_player.position.x + 1f, transform.position.y, transform.position.z);
         if (Physics.Raycast(_teleportPoint, -transform.up, 2f, whatIsGround))
         {
             _enemy.transform.position = _teleportPoint;
