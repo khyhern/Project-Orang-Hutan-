@@ -4480,6 +4480,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6655764239279335478, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7803437798793453404, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: interactText
@@ -8416,7 +8421,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1829039575
 MeshRenderer:
   m_ObjectHideFlags: 0
