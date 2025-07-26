@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -115,23 +116,19 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Player move speed set to: " + _moveSpeed);
     }
 
-    public void PlayWalkSFX()
+    public void PlayMovementSFX()
     {
         if (_conditions.IsGrounded && !_conditions.IsSprinting && _conditions.IsWalking)
         {
             AudioManager.Instance.PlaySFXWalk();
-            var sound = new Sound(transform.position, 10f);
+            var sound = new Sound(transform.position, 8f);
 
             Sounds.MakeSound(sound);
         }
-    }
-
-    public void PlaySprintSFX()
-    {
-        if (_conditions.IsGrounded && _conditions.IsSprinting)
+        else if (_conditions.IsGrounded && _conditions.IsSprinting)
         {
             AudioManager.Instance.PlaySFXWalk();
-            var sound = new Sound(transform.position, 13f);
+            var sound = new Sound(transform.position, 12f);
             Sounds.MakeSound(sound);
         }
     }
@@ -139,6 +136,16 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, 13f);
+        Gizmos.DrawWireSphere(transform.position, 12f);
+    }
+
+    private void OnEnable()
+    {
+        HeadBobSystem.OnFootStep += PlayMovementSFX;
+    }
+
+    private void OnDisable()
+    {
+        HeadBobSystem.OnFootStep -= PlayMovementSFX;
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
@@ -17,6 +19,10 @@ public class HeadBobSystem : MonoBehaviour
     [SerializeField] private float _smoothness = 10f;
 
     private Vector3 _originalPosition;
+    private bool _isTriggered;
+    private float Sin;
+
+    public static Action OnFootStep;
 
     private void Start()
     {
@@ -46,6 +52,19 @@ public class HeadBobSystem : MonoBehaviour
         pos.y += Mathf.Lerp(pos.y, Mathf.Sin(Time.time * _frequency) * _amount * 1.4f, _smoothness * Time.deltaTime);
         pos.x += Mathf.Lerp(pos.x, Mathf.Cos(Time.time * _frequency/2f) * _amount * 1.6f, _smoothness * Time.deltaTime);
         transform.localPosition += pos;
+
+        // Footsteps sound effect
+        Sin = Mathf.Sin(Time.time * _frequency);
+        if (Sin > 0.97f && !_isTriggered)
+        {
+            _isTriggered = true;
+            Debug.Log("Footstep sound triggered");
+            OnFootStep?.Invoke();
+        }
+        else if (_isTriggered == true && Sin < -0.97f)
+        {
+            _isTriggered = false;
+        }
 
         return pos;
     }
