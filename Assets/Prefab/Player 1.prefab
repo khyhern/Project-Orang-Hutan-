@@ -25,9 +25,9 @@ Transform:
   m_GameObject: {fileID: 3377106427341105277}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0.4, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.1487802, z: 0.48245734}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0.22, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5149424561190231939}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c74b61ce79f2ec4e82b72fbcdaebc60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 5
+  _moveSpeed: 3
   _stamina: 50
   _maxStamina: 50
   isCarryingFriend: 0
@@ -465,7 +465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2176
 --- !u!114 &5969082494536676894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,7 +525,7 @@ MonoBehaviour:
   interactDistance: 3
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 5120
+    m_Bits: 1024
   interactText: {fileID: 0}
   interactKey: 101
   playerCamera: {fileID: 0}
@@ -639,9 +639,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9da19970b346546937249afef1bcc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 0.005
-  _frequency: 20
-  _smoothness: 20
+  _amount: 0.01
+  _frequency: 10
+  _smoothness: 10
 --- !u!1 &8662911718266811732
 GameObject:
   m_ObjectHideFlags: 0

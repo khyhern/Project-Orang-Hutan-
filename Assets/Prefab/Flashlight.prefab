@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 5705980139319661535}
   - component: {fileID: 8264952312940385558}
   - component: {fileID: 7506481065803271668}
-  m_Layer: 12
+  m_Layer: 10
   m_Name: Flashlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,8 +113,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.26, y: 0.66673, z: -0.000000052797}
-  m_LocalScale: {x: 0.1142104, y: 0.1142104, z: 0.1142104}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5122853397664952530}
   - {fileID: 5651426584902419139}
@@ -201,8 +201,8 @@ Transform:
   m_GameObject: {fileID: 3642225303887563889}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000000010348, y: 2.412, z: 0.000000026365}
-  m_LocalScale: {x: 1.1736, y: 0.5258492, z: 1.1736}
+  m_LocalPosition: {x: -0.000000010348, y: 2.13, z: 0.000000026365}
+  m_LocalScale: {x: 1.1736, y: 0.8, z: 1.1736}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4460554723436554948}
@@ -402,8 +402,8 @@ Transform:
   m_GameObject: {fileID: 7628552726496971265}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.97, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4460554723436554948}
