@@ -2018,7 +2018,7 @@ GameObject:
   - component: {fileID: 5677815427615531314}
   - component: {fileID: 2379177456640904075}
   - component: {fileID: 577482621671750357}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2086,6 +2086,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   _enemyAttackPoint: {fileID: 382509365216546316}
+  _enemyBody: {fileID: 852003135937877039}
   _sightRange: 7
   _attackRange: 1
   _walkPointRange: 15
@@ -2429,7 +2430,7 @@ Transform:
   m_GameObject: {fileID: 9064687521517936429}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0.8}
+  m_LocalPosition: {x: 0, y: -1, z: 0.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

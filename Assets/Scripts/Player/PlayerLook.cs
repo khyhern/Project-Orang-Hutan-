@@ -52,6 +52,7 @@ public class PlayerLook : MonoBehaviour
         {
             if (hit.collider.CompareTag("Enemy"))
             {
+                Debug.Log("Player sees an enemy: " + hit.collider.name);
                 // If the raycast hits an enemy, play the see enemy sound effect
                 AudioManager.Instance.PlaySFXseeEnemy();
                 OnPlayerSeeEnemy?.Invoke(true);

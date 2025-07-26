@@ -35,7 +35,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
     // Timer
     private float _timer = 0f;
-    private float _timeDelay = 1.5f;
+    //private float _timeDelay = 1.5f;
 
     // Teleport 
     private Vector3 _teleportPoint;
@@ -91,7 +91,6 @@ public class EnemyAI : MonoBehaviour, IHear
             }
             else
             {
-                Debug.Log("player not here");
                 _playerInSightRange = false;
             }
         }
@@ -101,11 +100,7 @@ public class EnemyAI : MonoBehaviour, IHear
         if (_runAway) RunAway();
         if (_searching && !_playerInSightRange && !_runAway) SearchSound();
         if (!_playerInSightRange && !_playerInAttackRange && !_searching && !_runAway) Patroling();
-        
         if (_teleport && !_runAway) Teleport();
-
-
-
         if (_playerInSightRange && !_playerInAttackRange && !_runAway) ChasePlayer();
         if (_playerInAttackRange && _playerInSightRange && !_runAway) AttackPlayer();
         
