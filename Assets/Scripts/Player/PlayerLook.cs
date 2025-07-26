@@ -8,6 +8,7 @@ public class PlayerLook : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private LayerMask _whatIsEnemy;
+    [SerializeField] private float _rotationSpeed;
 
     private Camera _mainCamera;
     private float _seeDistance = 100f;
@@ -33,12 +34,12 @@ public class PlayerLook : MonoBehaviour
         if (_mainCamera != null)
         {
             Vector3 cameraForward = _mainCamera.transform.forward;
-            cameraForward.y = 0f; // Ignore the y-axis rotation
 
             if (cameraForward != Vector3.zero)
             {
                 Quaternion newRotation = Quaternion.LookRotation(cameraForward);
-                transform.rotation = newRotation;
+                // Smooth out rotation to prevent jitteriness
+                transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * _rotationSpeed);
             }
         }
     }

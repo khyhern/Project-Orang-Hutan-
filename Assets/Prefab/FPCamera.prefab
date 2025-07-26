@@ -50,8 +50,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Priority:
-    Enabled: 0
-    m_Value: 0
+    Enabled: 1
+    m_Value: 1
   OutputChannel: 1
   StandbyUpdate: 2
   m_StreamingVersion: 20241001
@@ -61,9 +61,9 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 60.000004
-    OrthographicSize: 10
-    NearClipPlane: 0.1
+    FieldOfView: 60
+    OrthographicSize: 2
+    NearClipPlane: 0.01
     FarClipPlane: 5000
     Dutch: 0
     ModeOverride: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -3691862931820141480, guid: 690a1cdf3c28b224f840399968e4877e,
           type: 3}
-        Gain: 10
+        Gain: 6
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
@@ -181,7 +181,7 @@ MonoBehaviour:
       Input:
         InputAction: {fileID: -3691862931820141480, guid: 690a1cdf3c28b224f840399968e4877e,
           type: 3}
-        Gain: -10
+        Gain: -6
         LegacyInput: 
         LegacyGain: 1
         CancelDeltaTime: 0
