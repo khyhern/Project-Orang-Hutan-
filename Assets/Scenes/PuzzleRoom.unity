@@ -2680,6 +2680,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1986908487}
     m_Modifications:
+    - target: {fileID: 1669708320930209230, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4882850247107332362, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: hearingRange
@@ -2811,7 +2816,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6655764239279335478, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
-      insertIndex: 13
+      insertIndex: 12
       addedObject: {fileID: 2063819652}
   m_SourcePrefab: {fileID: 100100000, guid: 420acbcd244e33c458689f1c7dd27739, type: 3}
 --- !u!4 &972192024 stripped
@@ -4032,10 +4037,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
