@@ -173,6 +173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 888074027824021005}
+  - component: {fileID: 7437061621711552011}
   m_Layer: 11
   m_Name: Body
   m_TagString: Enemy
@@ -193,11 +194,31 @@ Transform:
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 5337496381614941142}
   - {fileID: 5168148137577197237}
   - {fileID: 5011635415245453131}
   m_Father: {fileID: 6987829888405342632}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!95 &7437061621711552011
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852003135937877039}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: c50dd1eacaa04c845964e929a5c867fa, type: 2}
+  m_Controller: {fileID: 9100000, guid: ac122b1835ec81944964af4bad072ac6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1020432775638676863
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,12 +340,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1391444440601128250}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.8000002, z: 0}
+  m_LocalScale: {x: 0.40000004, y: 0.4, z: 0.40000004}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 888074027824021005}
+  m_Father: {fileID: 6987829888405342632}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1412816309391821998
 GameObject:
@@ -2017,7 +2038,6 @@ GameObject:
   - component: {fileID: 6987829888405342632}
   - component: {fileID: 5677815427615531314}
   - component: {fileID: 2379177456640904075}
-  - component: {fileID: 577482621671750357}
   - component: {fileID: 8305103702952407255}
   m_Layer: 11
   m_Name: Enemy
@@ -2040,6 +2060,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 382509365216546316}
+  - {fileID: 5337496381614941142}
   - {fileID: 888074027824021005}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2097,27 +2118,6 @@ MonoBehaviour:
   _blink: {fileID: 0}
   CameraPlayer: {fileID: 0}
   CameraEnemy: {fileID: 0}
---- !u!95 &577482621671750357
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7133875365418257459}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 622a99318d5bb8b40862d1e1a68c0252, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!136 &8305103702952407255
 CapsuleCollider:
   m_ObjectHideFlags: 0
