@@ -25,6 +25,11 @@ public class SuspicionCheckManager : MonoBehaviour
     [Tooltip("Reference to Timer UI component.")]
     [SerializeField] private TimerUI timerUI;
 
+    [Header("Drawer Check")]
+    [Tooltip("If assigned, drawer must be closed during inspection.")]
+    [SerializeField] private OpenDrawer drawerToCheck;
+
+
     private Coroutine checkRoutine;
 
     private void Awake()
@@ -69,6 +74,14 @@ public class SuspicionCheckManager : MonoBehaviour
     /// </summary>
     private void CheckSlotStatesAndSeating()
     {
+
+        if (drawerToCheck != null && drawerToCheck.IsOpen)
+        {
+            Debug.Log("❌ [SuspicionCheck] Drawer is open during inspection.");
+            TriggerFailure();
+            return;
+        }
+
         // Step 1: Check player seating
         if (requirePlayerSeated)
         {

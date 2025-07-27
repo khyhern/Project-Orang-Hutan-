@@ -10,6 +10,9 @@ public class PuzzleManager : MonoBehaviour
     [Header("Drawer Audio Source")]
     [SerializeField] private AudioSource drawerAudioSource;
 
+    [Header("Drawer Reference")]
+    [SerializeField] private OpenDrawer targetDrawer;
+
     private bool puzzleSolved = false;
 
     private void Awake()
@@ -55,6 +58,11 @@ public class PuzzleManager : MonoBehaviour
         Debug.Log("✅ [PuzzleManager] Puzzle solved.");
         PlayDrawerSound();
         SuspicionCheckManager.Instance?.BeginInspectionCountdown();
+        if (targetDrawer != null)
+        {
+            targetDrawer.SetLocked(false);
+            targetDrawer.Interact(); // Automatically open the drawer
+        }
     }
 
     private void PlayDrawerSound()

@@ -107,6 +107,9 @@ public class OpenDrawer : MonoBehaviour, IDescriptiveInteractable
 
     public string GetObjectName() => "drawer";
     public string GetObjectID() => "Drawer";
+    public bool IsOpen => isOpen;
+
+
     public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
 
     public void SetLocked(bool state) => isLocked = state;
