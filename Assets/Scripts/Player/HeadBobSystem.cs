@@ -21,12 +21,16 @@ public class HeadBobSystem : MonoBehaviour
     private Vector3 _originalPosition;
     private bool _isTriggered;
     private float Sin;
+    private float _startFrequency;
+    private float _startAmount;
+    private float _startSmoothness;
 
     public static Action OnFootStep;
 
     private void Start()
     {
         _originalPosition = transform.localPosition;
+
     }
 
     private void Update()
@@ -73,5 +77,24 @@ public class HeadBobSystem : MonoBehaviour
     {
         if (transform.localPosition == _originalPosition) return;
         transform.localPosition = Vector3.Lerp(transform.localPosition, _originalPosition, 1 * Time.deltaTime);
+    }
+
+    public void IncreaseHeadBob()
+    {
+        _startFrequency = _frequency;
+        _startAmount = _amount;
+        _startSmoothness = _smoothness;
+
+        _frequency *= 2.2f;
+        _amount *= 1.5f;
+        _smoothness *= 1.5f;
+    }
+
+    public void ResetHeadBob()
+    {
+        _frequency = _startFrequency;
+        _amount = _startAmount;
+        _smoothness = _startSmoothness;
+
     }
 }

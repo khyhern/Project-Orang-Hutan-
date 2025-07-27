@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _stamina;
     [SerializeField] private float _maxStamina = 50f;
 
+    public HeadBobSystem _headBobSystem;
+
     #region Internal
     private CharacterController _controller;
     private PlayerConditions _conditions;
@@ -85,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _conditions.IsSprinting = true;
         _moveSpeed *= 2.5f;
+        _headBobSystem.IncreaseHeadBob();
         _animator.SetBool("Sprint", true);
     }
 
@@ -92,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _moveSpeed = isCarryingFriend ? carryingSpeed : _defaultMoveSpeed;
         _conditions.IsSprinting = false;
+        _headBobSystem.ResetHeadBob();
         _animator.SetBool("Sprint", false);
     }
 

@@ -7,6 +7,7 @@ public class PlayerInput : MonoBehaviour
 {
     private PlayerMovement _playerMovement;
 
+
     private void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
