@@ -26,11 +26,11 @@ Transform:
   m_GameObject: {fileID: 3377106427341105277}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.21, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0.20999908, y: 0.5, z: 0.5}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 5149424561190231939}
+  m_Father: {fileID: 3699167388841154212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &380651654416615055
 MonoBehaviour:
@@ -311,6 +311,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5828962685435173042}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5867058674549393401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3699167388841154212}
+  m_Layer: 6
+  m_Name: Body
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3699167388841154212
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867058674549393401}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3787382651685629953}
+  - {fileID: 5828962685435173042}
+  m_Father: {fileID: 5149424561190231939}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6655764239279335478
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,8 +387,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8658497840223167716}
-  - {fileID: 3787382651685629953}
-  - {fileID: 5828962685435173042}
+  - {fileID: 3699167388841154212}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3146412362441064324
@@ -461,6 +493,8 @@ MonoBehaviour:
   _moveSpeed: 3
   _stamina: 50
   _maxStamina: 50
+  HeadBobSystem: {fileID: 0}
+  CameraPivot: {fileID: 0}
   isCarryingFriend: 0
   carryingSpeed: 2.5
   canMove: 1
@@ -633,13 +667,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8033315272141508874}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4948476045185317781}
-  m_Father: {fileID: 5149424561190231939}
+  m_Father: {fileID: 3699167388841154212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3262015508088472422
 MonoBehaviour:

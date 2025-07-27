@@ -30,7 +30,6 @@ public class HeadBobSystem : MonoBehaviour
     private void Start()
     {
         _originalPosition = transform.localPosition;
-
     }
 
     private void Update()
@@ -79,6 +78,12 @@ public class HeadBobSystem : MonoBehaviour
         transform.localPosition = Vector3.Lerp(transform.localPosition, _originalPosition, 1 * Time.deltaTime);
     }
 
+    public void ReduceHeadBob(float speedModifier)
+    {
+        _frequency = 20f * speedModifier;
+        _amount = 0.01f * speedModifier;
+    }
+
     public void IncreaseHeadBob()
     {
         _startFrequency = _frequency;
@@ -95,6 +100,5 @@ public class HeadBobSystem : MonoBehaviour
         _frequency = _startFrequency;
         _amount = _startAmount;
         _smoothness = _startSmoothness;
-
     }
 }

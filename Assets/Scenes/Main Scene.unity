@@ -4701,6 +4701,26 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1669708320930209230, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
+      propertyPath: Body
+      value: 
+      objectReference: {fileID: 1846208079}
+    - target: {fileID: 1669708320930209230, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: FlashPoint
+      value: 
+      objectReference: {fileID: 993673817}
+    - target: {fileID: 1669708320930209230, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: CameraPivot
+      value: 
+      objectReference: {fileID: 972192025}
+    - target: {fileID: 1669708320930209230, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: HeadBobSystem
+      value: 
+      objectReference: {fileID: 972192024}
+    - target: {fileID: 1669708320930209230, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
       propertyPath: _headBobSystem
       value: 
       objectReference: {fileID: 972192024}
@@ -4713,6 +4733,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _amount
       value: 0.007
+      objectReference: {fileID: 0}
+    - target: {fileID: 3262015508088472422, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: _frequency
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5149424561190231939, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
@@ -4811,6 +4836,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9da19970b346546937249afef1bcc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &972192025 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5828962685435173042, guid: 420acbcd244e33c458689f1c7dd27739,
+    type: 3}
+  m_PrefabInstance: {fileID: 972192023}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &993673817 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3787382651685629953, guid: 420acbcd244e33c458689f1c7dd27739,
@@ -9047,6 +9078,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837237070}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1846208079 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3699167388841154212, guid: 420acbcd244e33c458689f1c7dd27739,
+    type: 3}
+  m_PrefabInstance: {fileID: 972192023}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1847111642
 GameObject:
   m_ObjectHideFlags: 0
