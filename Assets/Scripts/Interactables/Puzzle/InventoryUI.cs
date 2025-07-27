@@ -14,13 +14,12 @@ public class InventoryUI : MonoBehaviour
 
     public static InventoryUI Instance { get; private set; }
 
-    private PuzzleItemData selectedItem;
+    private BaseItemData selectedItem;
+    private BaseItemData combineCandidate;
     private GameObject selectedButton;
     private readonly List<GameObject> buttonInstances = new();
 
-    private PuzzleItemData combineCandidate = null;
     private bool wasOpenedFromSlot = false;
-
     private PlayerMovement playerMovement;
 
     private void Awake()
@@ -43,7 +42,7 @@ public class InventoryUI : MonoBehaviour
     private void Start()
     {
         StartCoroutine(RegisterWhenReady());
-        playerMovement = FindObjectOfType<PlayerMovement>(); // Assign PlayerMovement reference
+        playerMovement = FindObjectOfType<PlayerMovement>();
     }
 
     private System.Collections.IEnumerator RegisterWhenReady()
@@ -80,7 +79,7 @@ public class InventoryUI : MonoBehaviour
         {
             inventoryCanvas.SetActive(false);
             if (playerMovement != null)
-                playerMovement.canMove = true; // Re-enable movement
+                playerMovement.canMove = true;
         }
         else
         {
@@ -95,7 +94,7 @@ public class InventoryUI : MonoBehaviour
         RefreshDisplay();
 
         if (playerMovement != null)
-            playerMovement.canMove = false; // Disable movement
+            playerMovement.canMove = false;
     }
 
     public void RefreshDisplay()
@@ -127,7 +126,7 @@ public class InventoryUI : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(firstSelectable);
     }
 
-    private void OnItemSelected(PuzzleItemData item, GameObject buttonObj)
+    private void OnItemSelected(BaseItemData item, GameObject buttonObj)
     {
         selectedItem = item;
 
@@ -139,7 +138,9 @@ public class InventoryUI : MonoBehaviour
 
         if (combineCandidate != null && combineCandidate != selectedItem)
         {
-            TryPerformCombination(combineCandidate, selectedItem);
+            if (combineCandidate is PuzzleItemData a && selectedItem is PuzzleItemData b)
+                TryPerformCombination(a, b);
+
             combineCandidate = null;
         }
 
@@ -163,35 +164,55 @@ public class InventoryUI : MonoBehaviour
             return;
         }
 
-        if (PuzzleSlotInteractable.ActiveSlot != null)
+        switch (selectedItem.GetItemType())
         {
-            PuzzleSlotInteractable.ActiveSlot.PlaceItem(selectedItem);
+            case ItemType.Puzzle:
+                if (PuzzleSlotInteractable.ActiveSlot != null && selectedItem is PuzzleItemData puzzleItem)
+                {
+                    PuzzleSlotInteractable.ActiveSlot.PlaceItem(puzzleItem);
 
-            if (wasOpenedFromSlot)
-            {
-                inventoryCanvas.SetActive(false);
-                wasOpenedFromSlot = false;
+                    if (wasOpenedFromSlot)
+                    {
+                        inventoryCanvas.SetActive(false);
+                        wasOpenedFromSlot = false;
 
-                if (playerMovement != null)
-                    playerMovement.canMove = true; // Re-enable movement after using from slot
-            }
-        }
-        else
-        {
-            Debug.Log("[InventoryUI] No puzzle slot is active to use this item on.");
+                        if (playerMovement != null)
+                            playerMovement.canMove = true;
+                    }
+                }
+                else
+                {
+                    Debug.Log("[InventoryUI] No puzzle slot is active to use this item on.");
+                }
+                break;
+
+            case ItemType.Consumable:
+                if (selectedItem is ConsumableItemData consumable)
+                {
+                    consumable.ApplyEffect();
+                    InventorySystem.Instance.RemoveItem(consumable);
+                    RefreshDisplay();
+                }
+                break;
+
+
+            default:
+                Debug.Log("[USE] This item type has no defined use.");
+                break;
         }
     }
 
     private void OnCombine()
     {
-        if (selectedItem == null || !selectedItem.isCombinable)
+        if (selectedItem is PuzzleItemData puzzleItem && puzzleItem.isCombinable)
+        {
+            combineCandidate = puzzleItem;
+            Debug.Log($"[COMBINE] Now select item to combine with: {puzzleItem.itemName}");
+        }
+        else
         {
             Debug.Log("[COMBINE] No valid item selected.");
-            return;
         }
-
-        combineCandidate = selectedItem;
-        Debug.Log($"[COMBINE] Now select item to combine with: {combineCandidate.itemName}");
     }
 
     private void TryPerformCombination(PuzzleItemData a, PuzzleItemData b)
@@ -207,5 +228,5 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    public PuzzleItemData GetSelectedItem() => selectedItem;
+    public BaseItemData GetSelectedItem() => selectedItem;
 }
