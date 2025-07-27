@@ -21,6 +21,8 @@ public class InventoryUI : MonoBehaviour
     private PuzzleItemData combineCandidate = null;
     private bool wasOpenedFromSlot = false;
 
+    private PlayerMovement playerMovement;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -38,7 +40,11 @@ public class InventoryUI : MonoBehaviour
     private void OnEnable() => TryRegisterToInventory();
     private void OnDisable() => UnregisterFromInventory();
 
-    private void Start() => StartCoroutine(RegisterWhenReady());
+    private void Start()
+    {
+        StartCoroutine(RegisterWhenReady());
+        playerMovement = FindObjectOfType<PlayerMovement>(); // Assign PlayerMovement reference
+    }
 
     private System.Collections.IEnumerator RegisterWhenReady()
     {
@@ -71,9 +77,15 @@ public class InventoryUI : MonoBehaviour
     private void ToggleInventory()
     {
         if (inventoryCanvas.activeSelf)
+        {
             inventoryCanvas.SetActive(false);
+            if (playerMovement != null)
+                playerMovement.canMove = true; // Re-enable movement
+        }
         else
+        {
             OpenInventory(false);
+        }
     }
 
     public void OpenInventory(bool fromSlot = false)
@@ -81,6 +93,9 @@ public class InventoryUI : MonoBehaviour
         wasOpenedFromSlot = fromSlot;
         inventoryCanvas.SetActive(true);
         RefreshDisplay();
+
+        if (playerMovement != null)
+            playerMovement.canMove = false; // Disable movement
     }
 
     public void RefreshDisplay()
@@ -156,6 +171,9 @@ public class InventoryUI : MonoBehaviour
             {
                 inventoryCanvas.SetActive(false);
                 wasOpenedFromSlot = false;
+
+                if (playerMovement != null)
+                    playerMovement.canMove = true; // Re-enable movement after using from slot
             }
         }
         else

@@ -7,6 +7,7 @@ public class InventorySystem : MonoBehaviour
     public static InventorySystem Instance { get; private set; }
 
     private readonly List<PuzzleItemData> items = new();
+    private const int MaxInventorySize = 4;
 
     public event Action OnInventoryChanged;
 
@@ -24,6 +25,12 @@ public class InventorySystem : MonoBehaviour
     public void PickUp(PuzzleItemData item)
     {
         if (item == null) return;
+
+        if (items.Count >= MaxInventorySize)
+        {
+            Debug.LogWarning("[Inventory] Cannot pick up item: Inventory is full.");
+            return;
+        }
 
         items.Add(item);
         Debug.Log($"[Inventory] Picked up: {item.itemName}");
@@ -58,10 +65,11 @@ public class InventorySystem : MonoBehaviour
 
                 RemoveItem(a);
                 RemoveItem(b);
-                PickUp(result);
+                PickUp(result); // No need to check inventory space
 
                 Debug.Log($"[Inventory] Combined {a.itemName} + {b.itemName} -> {result.itemName}");
                 return true;
+
             }
         }
 
