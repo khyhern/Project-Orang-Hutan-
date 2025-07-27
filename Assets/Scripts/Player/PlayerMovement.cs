@@ -136,6 +136,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void RestoreStamina(float amount)
+    {
+        _stamina += amount;
+        _stamina = Mathf.Clamp(_stamina, 0f, _maxStamina);
+        UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
+        Debug.Log($"[Player] Restored {amount} stamina. Current: {_stamina}/{_maxStamina}");
+    }
+
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;

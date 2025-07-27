@@ -1,18 +1,37 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Item/Consumable Item")]
+[CreateAssetMenu(menuName = "Items/Consumable Item")]
 public class ConsumableItemData : BaseItemData
 {
-    [TextArea] public string useText; // Optional: e.g. "You drank the potion. You feel stronger."
+    public ConsumableEffectType effectType;
+    public int effectAmount = 10;
 
     public override ItemType GetItemType() => ItemType.Consumable;
 
-    // You can expand this to actual behavior like events or delegates if needed
-    public virtual void ApplyEffect()
+    public void ApplyEffect()
     {
-        Debug.Log($"[CONSUMABLE] Used: {itemName} - {useText}");
+        switch (effectType)
+        {
+            case ConsumableEffectType.Heal:
+                //PlayerStats.Instance?.RestoreHealth(effectAmount);
+                break;
 
-        // Example: Play VFX, trigger event, change state, etc.
-        // For now it's just a log — you can hook into gameplay systems later
+            case ConsumableEffectType.Stamina:
+                PlayerMovement player = GameObject.FindObjectOfType<PlayerMovement>();
+                if (player != null)
+                    player.RestoreStamina(effectAmount);
+                else
+                    Debug.LogWarning("[Stamina] PlayerMovement not found.");
+                break;
+
+
+            case ConsumableEffectType.Buff:
+                Debug.Log($"[Buff] Boost applied. (amount: {effectAmount})");
+                break;
+
+            case ConsumableEffectType.Custom:
+                Debug.Log("[Custom] You can hook into an event or animation here.");
+                break;
+        }
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Item/Puzzle Item")]
+[CreateAssetMenu(menuName = "Items/Puzzle Item")]
 public class PuzzleItemData : BaseItemData
 {
     public bool isCombinable;
