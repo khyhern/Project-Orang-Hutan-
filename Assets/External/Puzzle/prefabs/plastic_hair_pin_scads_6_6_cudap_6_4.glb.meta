@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 22871f1d7007eda4987f481998b0d2e1
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: material_0
+    second: {fileID: -2840136634868304333, guid: 22871f1d7007eda4987f481998b0d2e1,
+      type: 3}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: cc45016b844e7624dae3aec10fb443ea, type: 3}
+  reverseAxis: 0
+  renderPipeline: 0
