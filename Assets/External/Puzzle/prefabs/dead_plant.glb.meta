@@ -1,8 +1,14 @@
 fileFormatVersion: 2
-guid: 7e7a0dd6bb3e0134da64e9c2f56a7e5d
+guid: 2fb1dacb2ae2a1f44b6a3574586507e6
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: default
+    second: {fileID: 8554655104631171556, guid: 2fb1dacb2ae2a1f44b6a3574586507e6,
+      type: 3}
   serializedVersion: 2
   userData: 
   assetBundleName: 
