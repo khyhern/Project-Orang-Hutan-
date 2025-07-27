@@ -205,6 +205,12 @@ public class InventoryUI : MonoBehaviour
                 break;
 
             case ItemType.Consumable:
+                if (wasOpenedFromSlot)
+                {
+                    Debug.Log("[InventoryUI] Cannot use consumables when inventory was opened from puzzle slot.");
+                    return;
+                }
+
                 if (selectedItem is ConsumableItemData consumable)
                 {
                     consumable.ApplyEffect();
@@ -213,6 +219,7 @@ public class InventoryUI : MonoBehaviour
                     RefreshDisplay();
                 }
                 break;
+
 
             default:
                 Debug.Log("[USE] This item type has no defined use.");
