@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
+<<<<<<< HEAD
+=======
+using TMPro;
+>>>>>>> parent of da63deb (organize scripts)
 
 [RequireComponent(typeof(Collider))]
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("Interaction Settings")]
+<<<<<<< HEAD
     [Tooltip("Max distance to interact with objects.")]
     [SerializeField] private float interactRange = 3f;
 
@@ -24,10 +29,25 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.LogError("[PlayerInteraction] No camera assigned and no MainCamera found.");
         }
+=======
+    [SerializeField] private float interactRange = 3f;
+    [SerializeField] private LayerMask interactLayer;
+    [SerializeField] private TextMeshProUGUI interactText;
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
+    [SerializeField] private Camera raycastCamera;
+
+    private IInteractable currentTarget;
+
+    private void Awake()
+    {
+        if (raycastCamera == null)
+            raycastCamera = Camera.main;
+>>>>>>> parent of da63deb (organize scripts)
     }
 
     private void Update()
     {
+<<<<<<< HEAD
         if (Input.GetMouseButtonDown(0))
         {
             TryInteract();
@@ -57,5 +77,56 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.DrawRay(origin, direction * interactRange, Color.red, 1f);
         }
+=======
+        CheckForInteractable();
+
+        if (currentTarget != null && Input.GetKeyDown(interactKey))
+        {
+            currentTarget.Interact();
+        }
+    }
+
+    private void CheckForInteractable()
+    {
+        if (raycastCamera == null) return;
+
+        Ray ray = new Ray(raycastCamera.transform.position, raycastCamera.transform.forward);
+        Debug.DrawRay(ray.origin, ray.direction * interactRange, Color.green);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactLayer))
+        {
+            if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
+            {
+                if (!InteractionManager.IsGroupEnabled(interactable.GetInteractionGroup()))
+                {
+                    interactText.enabled = false;
+                    currentTarget = null;
+                    return;
+                }
+
+                currentTarget = interactable;
+
+                if (interactText != null)
+                {
+                    if (interactable is IDescriptiveInteractable descriptive)
+                    {
+                        interactText.text = $"Press [{interactKey}] to {descriptive.GetInteractionVerb()} {descriptive.GetObjectName()}";
+                    }
+                    else
+                    {
+                        interactText.text = $"Press [{interactKey}] to interact";
+                    }
+
+                    interactText.enabled = true;
+                }
+
+                return;
+            }
+        }
+
+        currentTarget = null;
+        if (interactText != null)
+            interactText.enabled = false;
+>>>>>>> parent of da63deb (organize scripts)
     }
 }
