@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4448138281314253975}
   - component: {fileID: 1930655205074173719}
   - component: {fileID: 8706891896738196037}
+  - component: {fileID: 1391423022301113165}
   m_Layer: 10
   m_Name: ClockHand
   m_TagString: Untagged
@@ -147,3 +148,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 46eb83e7b5fc66340bcc85f4de53d91b, type: 2}
+  interactionGroup: 3
+--- !u!65 &1391423022301113165
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5179861035758970114}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 8.978622, y: 109.26598, z: 1.5000004}
+  m_Center: {x: -258.50204, y: -79.632996, z: -0.7500002}
