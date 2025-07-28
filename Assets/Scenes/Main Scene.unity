@@ -9207,10 +9207,30 @@ PrefabInstance:
       propertyPath: HeadBobSystem
       value: 
       objectReference: {fileID: 1644669754}
+    - target: {fileID: 2707591731532249190, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: _rotationSpeed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 3400471409530388425, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787382651685629953, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787382651685629953, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787382651685629953, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5149424561190231939, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
