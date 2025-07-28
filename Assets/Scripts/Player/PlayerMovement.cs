@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //use for update
     [Header("Settings")]
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _stamina;
