@@ -71,7 +71,6 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = new Vector3(input.x, 0, input.y);
         _controller.Move(transform.TransformDirection(moveDir) * _moveSpeed * speedMultiplier * Time.deltaTime);
-        Debug.Log(speedMultiplier * _moveSpeed);
         HeadBobSystem.ReduceHeadBob((speedMultiplier * _moveSpeed) / 7.5f);
         ApplyGravity();
     }

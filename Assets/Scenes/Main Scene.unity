@@ -5954,7 +5954,7 @@ MonoBehaviour:
   Walking: {fileID: 8300000, guid: b8b30d6c31d2e7848ad28e67fc5fec5c, type: 3}
   HeartBeat: {fileID: 8300000, guid: 2ce6f3f1b564ba34aa7f16be596e4748, type: 3}
   MurdererCome: {fileID: 8300000, guid: 04e1ce9768911264ea79dfddd913e2d3, type: 3}
-  MurdererAttack: {fileID: 8300000, guid: 6e8bdaa7cf354a641adf8f2fcef9cb1f, type: 3}
+  MurdererAttack: {fileID: 8300000, guid: 1aa4b2c132e73cc4aaa3ad537b75c8ee, type: 3}
   Breath: {fileID: 8300000, guid: 1b3c48739a343c141bce07919fd9139a, type: 3}
 --- !u!4 &1117276257
 Transform:
@@ -9395,6 +9395,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2379177456640904075, guid: 0e57169cd037edd48988aee0e8a9e543,
+        type: 3}
+      propertyPath: _blink
+      value: 
+      objectReference: {fileID: 782980207}
+    - target: {fileID: 2379177456640904075, guid: 0e57169cd037edd48988aee0e8a9e543,
+        type: 3}
+      propertyPath: CameraEnemy
+      value: 
+      objectReference: {fileID: 268608288}
+    - target: {fileID: 2379177456640904075, guid: 0e57169cd037edd48988aee0e8a9e543,
+        type: 3}
+      propertyPath: CameraPlayer
+      value: 
+      objectReference: {fileID: 1727007890}
+    - target: {fileID: 2379177456640904075, guid: 0e57169cd037edd48988aee0e8a9e543,
+        type: 3}
+      propertyPath: _impulseSource
+      value: 
+      objectReference: {fileID: 1488909421}
     - target: {fileID: 6987829888405342632, guid: 0e57169cd037edd48988aee0e8a9e543,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9468,6 +9488,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1562940449948516969}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1727007890 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8692858937037764281, guid: 639180f49dcef7547a08986691d750d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1562940449948516969}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1727144567
 PrefabInstance:
   m_ObjectHideFlags: 0
