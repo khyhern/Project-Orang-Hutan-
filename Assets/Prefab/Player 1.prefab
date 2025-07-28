@@ -480,8 +480,8 @@ MonoBehaviour:
   _moveSpeed: 3
   _stamina: 50
   _maxStamina: 50
-  HeadBobSystem: {fileID: 0}
-  Body: {fileID: 0}
+  HeadBobSystem: {fileID: 3262015508088472422}
+  Body: {fileID: 3699167388841154212}
   isCarryingFriend: 0
   carryingSpeed: 2.5
   canMove: 1
@@ -500,6 +500,7 @@ MonoBehaviour:
   _whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2176
+  _rotationSpeed: 20
 --- !u!114 &5969082494536676894
 MonoBehaviour:
   m_ObjectHideFlags: 0
