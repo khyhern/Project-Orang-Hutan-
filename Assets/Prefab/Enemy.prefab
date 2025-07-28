@@ -173,7 +173,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 888074027824021005}
-  - component: {fileID: 7437061621711552011}
   m_Layer: 11
   m_Name: Body
   m_TagString: Enemy
@@ -198,27 +197,6 @@ Transform:
   - {fileID: 5011635415245453131}
   m_Father: {fileID: 6987829888405342632}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!95 &7437061621711552011
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 852003135937877039}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: c50dd1eacaa04c845964e929a5c867fa, type: 2}
-  m_Controller: {fileID: 9100000, guid: ac122b1835ec81944964af4bad072ac6, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1020432775638676863
 GameObject:
   m_ObjectHideFlags: 0
