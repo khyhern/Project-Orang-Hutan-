@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3787382651685629953}
-  - component: {fileID: 380651654416615055}
   m_Layer: 6
   m_Name: Flashlight point
   m_TagString: Untagged
@@ -32,18 +31,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3699167388841154212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &380651654416615055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3377106427341105277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2edac6fac32a1af4196f2ead4432c0c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4216674905347743977
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +349,6 @@ GameObject:
   - component: {fileID: 5969082494536676894}
   - component: {fileID: 6928195551986123705}
   - component: {fileID: 4882850247107332362}
-  - component: {fileID: 7803437798793453404}
   - component: {fileID: 5431191911666137500}
   - component: {fileID: 6401322178869448303}
   - component: {fileID: 3400471409530388425}
@@ -514,7 +500,6 @@ MonoBehaviour:
   _whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2176
-  _rotationSpeed: 20
 --- !u!114 &5969082494536676894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,25 +544,6 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2048
---- !u!114 &7803437798793453404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6655764239279335478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 484219558a29dde4db87784cc07e941a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactDistance: 3
-  interactableLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  interactText: {fileID: 0}
-  interactKey: 101
-  playerCamera: {fileID: 0}
 --- !u!114 &5431191911666137500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -594,6 +560,8 @@ MonoBehaviour:
   interactLayer:
     serializedVersion: 2
     m_Bits: 1024
+  interactText: {fileID: 0}
+  interactKey: 101
   raycastCamera: {fileID: 0}
 --- !u!114 &6401322178869448303
 MonoBehaviour:

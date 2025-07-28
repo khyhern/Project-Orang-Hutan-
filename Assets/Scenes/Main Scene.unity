@@ -8516,6 +8516,11 @@ PrefabInstance:
       propertyPath: HeadBobSystem
       value: 
       objectReference: {fileID: 1644669754}
+    - target: {fileID: 3400471409530388425, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5149424561190231939, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8575,7 +8580,7 @@ PrefabInstance:
         type: 3}
       propertyPath: raycastCamera
       value: 
-      objectReference: {fileID: 5598416578654791249}
+      objectReference: {fileID: 0}
     - target: {fileID: 6401322178869448303, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: pickupUIObject
