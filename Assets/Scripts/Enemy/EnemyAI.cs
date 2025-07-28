@@ -20,7 +20,8 @@ public class EnemyAI : MonoBehaviour, IHear
     [SerializeField] private Animator _blink;
     public CinemachineCamera CameraPlayer;
     public CinemachineCamera CameraEnemy;
-    public Light _redLight;
+    public Light RedLight;
+    public GameObject Blood;
 
     #region Internal
     private Transform _player;
@@ -163,7 +164,8 @@ public class EnemyAI : MonoBehaviour, IHear
         if (!_alreadyAttacked)
         {
             CameraManager.SwitchCamera(CameraEnemy);
-            _redLight.enabled = true;
+            RedLight.enabled = true;
+            Blood.SetActive(true);
             _impulseSource.GenerateImpulse();
             OnEnemyAttack?.Invoke(false);
             AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
@@ -180,10 +182,11 @@ public class EnemyAI : MonoBehaviour, IHear
         yield return new WaitForSeconds(2.5f);
         _runAway = true;    
         _blink.SetTrigger("Blink");
-        _redLight.enabled = false;
+        RedLight.enabled = false;
         yield return new WaitForSeconds(1f);
         CameraManager.SwitchCamera(CameraPlayer);
         AudioManager.Instance.PlaySFX(AudioManager.Instance.Breath);
+        Blood.SetActive(false);
         yield return new WaitForSeconds(1.5f);
         OnEnemyAttack?.Invoke(true);
     }
