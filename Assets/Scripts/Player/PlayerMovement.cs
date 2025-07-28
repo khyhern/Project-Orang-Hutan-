@@ -1,13 +1,16 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //use for update
     [Header("Settings")]
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _stamina;
     [SerializeField] private float _maxStamina = 50f;
+
+    public HeadBobSystem HeadBobSystem;
+    public Transform Body;
 
     #region Internal
     private CharacterController _controller;
@@ -67,6 +70,8 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = new Vector3(input.x, 0, input.y);
         _controller.Move(transform.TransformDirection(moveDir) * _moveSpeed * speedMultiplier * Time.deltaTime);
+        Debug.Log(speedMultiplier * _moveSpeed);
+        HeadBobSystem.ReduceHeadBob((speedMultiplier * _moveSpeed) / 7.5f);
         ApplyGravity();
     }
 
@@ -85,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _conditions.IsSprinting = true;
         _moveSpeed *= 2.5f;
+        HeadBobSystem.IncreaseHeadBob();
         _animator.SetBool("Sprint", true);
     }
 
@@ -92,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _moveSpeed = isCarryingFriend ? carryingSpeed : _defaultMoveSpeed;
         _conditions.IsSprinting = false;
+        HeadBobSystem.ResetHeadBob();
         _animator.SetBool("Sprint", false);
     }
 
@@ -99,11 +106,20 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_conditions.IsSprinting)
         {
-            _stamina -= 25f * Time.deltaTime;
+            _stamina -= 20f * Time.deltaTime;
+            if (Body.localPosition.z < 2f)
+            {
+                Body.Translate(Vector3.forward * 1.5f * Time.deltaTime);
+            }
         }
         else
         {
-            _stamina += 2f * Time.deltaTime;
+            if (Body.localPosition.z > 0f)
+            {
+                Body.Translate(Vector3.back * 2f * Time.deltaTime);
+            }
+
+            _stamina += 20f * Time.deltaTime;
         }
 
         _stamina = Mathf.Clamp(_stamina, 0f, _maxStamina);
@@ -116,39 +132,36 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Player move speed set to: " + _moveSpeed);
     }
 
-    public void PlayWalkSFX()
+    public void PlayMovementSFX()
     {
         if (_conditions.IsGrounded && !_conditions.IsSprinting && _conditions.IsWalking)
         {
             AudioManager.Instance.PlaySFXWalk();
-            var sound = new Sound(transform.position, 10f);
+            var sound = new Sound(transform.position, 8f);
 
             Sounds.MakeSound(sound);
         }
-    }
-
-    public void PlaySprintSFX()
-    {
-        if (_conditions.IsGrounded && _conditions.IsSprinting)
+        else if (_conditions.IsGrounded && _conditions.IsSprinting)
         {
             AudioManager.Instance.PlaySFXWalk();
-            var sound = new Sound(transform.position, 13f);
+            var sound = new Sound(transform.position, 12f);
             Sounds.MakeSound(sound);
         }
     }
-
-    public void RestoreStamina(float amount)
-    {
-        _stamina += amount;
-        _stamina = Mathf.Clamp(_stamina, 0f, _maxStamina);
-        UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
-        Debug.Log($"[Player] Restored {amount} stamina. Current: {_stamina}/{_maxStamina}");
-    }
-
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, 13f);
+        Gizmos.DrawWireSphere(transform.position, 12f);
+    }
+
+    private void OnEnable()
+    {
+        HeadBobSystem.OnFootStep += PlayMovementSFX;
+    }
+
+    private void OnDisable()
+    {
+        HeadBobSystem.OnFootStep -= PlayMovementSFX;
     }
 }

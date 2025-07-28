@@ -8,7 +8,6 @@ using UnityEngine.InputSystem.LowLevel;
 
 public class HeadBobSystem : MonoBehaviour
 {
-    // use for update
     [Header("Settings")]
     [Range(0.001f, 0.01f)]
     [SerializeField] private float _amount = 0.002f;
