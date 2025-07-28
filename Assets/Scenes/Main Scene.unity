@@ -8036,7 +8036,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    ImpulseDuration: 0.5
+    ImpulseDuration: 1
     ImpulseType: 2
     DissipationRate: 0.25
     RawSignal: {fileID: 0}
@@ -8067,7 +8067,7 @@ MonoBehaviour:
     DissipationMode: 2
     DissipationDistance: 100
     PropagationSpeed: 343
-  DefaultVelocity: {x: -0.6, y: -0.6, z: 0.2}
+  DefaultVelocity: {x: -0.5, y: 0, z: 0.2}
 --- !u!1 &1495954224
 GameObject:
   m_ObjectHideFlags: 0
@@ -9212,6 +9212,11 @@ PrefabInstance:
       propertyPath: _rotationSpeed
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 2941309017633258084, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3400471409530388425, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: m_Enabled
@@ -9307,6 +9312,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7129494351679836739, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7803437798793453404, guid: 420acbcd244e33c458689f1c7dd27739, type: 3}
     - {fileID: 380651654416615055, guid: 420acbcd244e33c458689f1c7dd27739, type: 3}
@@ -9341,6 +9351,12 @@ MonoBehaviour:
 --- !u!4 &1644669755 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4948476045185317781, guid: 420acbcd244e33c458689f1c7dd27739,
+    type: 3}
+  m_PrefabInstance: {fileID: 1644669750}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &1657219786 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 2941309017633258084, guid: 420acbcd244e33c458689f1c7dd27739,
     type: 3}
   m_PrefabInstance: {fileID: 1644669750}
   m_PrefabAsset: {fileID: 0}
@@ -9400,6 +9416,11 @@ PrefabInstance:
       propertyPath: _blink
       value: 
       objectReference: {fileID: 782980207}
+    - target: {fileID: 2379177456640904075, guid: 0e57169cd037edd48988aee0e8a9e543,
+        type: 3}
+      propertyPath: _redLight
+      value: 
+      objectReference: {fileID: 1657219786}
     - target: {fileID: 2379177456640904075, guid: 0e57169cd037edd48988aee0e8a9e543,
         type: 3}
       propertyPath: CameraEnemy
@@ -9511,7 +9532,7 @@ PrefabInstance:
     - target: {fileID: 1635152570786551296, guid: ee06e5aac8ad8fd4988c2eabcd6ec37a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.075968
+      value: 58.2
       objectReference: {fileID: 0}
     - target: {fileID: 1635152570786551296, guid: ee06e5aac8ad8fd4988c2eabcd6ec37a,
         type: 3}
