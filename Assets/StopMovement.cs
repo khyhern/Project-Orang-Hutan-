@@ -18,5 +18,6 @@ public class StopMovement : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _enemy.speed = 2f;
+        animator.SetBool("Look", false);
     }
 }

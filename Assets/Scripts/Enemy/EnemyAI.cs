@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 //using System.Collections.Generic;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -21,6 +22,7 @@ public class EnemyAI : MonoBehaviour, IHear
     public CinemachineCamera CameraPlayer;
     public CinemachineCamera CameraEnemy;
     public Light RedLight;
+    public Light WhiteLight;
     public GameObject Blood;
 
     #region Internal
@@ -95,6 +97,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void Patroling()
     {
+        _animator.SetBool("Run", false);
         if (!_walkPointSet) SearchWalkPoint();
 
         if (_walkPointSet)
@@ -105,7 +108,6 @@ public class EnemyAI : MonoBehaviour, IHear
         Vector3 distanceToWalkPoint = transform.position - _walkPoint;
         if (distanceToWalkPoint.magnitude < 1.5f)
         {
-            _animator.SetTrigger("Look");
             _walkPointSet = false;
         }
     }
@@ -117,8 +119,8 @@ public class EnemyAI : MonoBehaviour, IHear
         _walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
         if (Physics.Raycast(_walkPoint, -transform.up, 2f, whatIsGround))
         {
+            _animator.SetTrigger("Look");
             _walkPointSet = true;
-            _animator.SetBool("Run", false);
         }
         
     }
@@ -132,6 +134,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void SearchSound()
     {
+        _animator.SetBool("Run", false);
         if (!_searchPointSet) SearchSoundPoint();
 
         if (_searchPointSet)
@@ -162,34 +165,55 @@ public class EnemyAI : MonoBehaviour, IHear
     private void AttackPlayer()
     {
         _enemy.SetDestination(transform.position);
+        _animator.SetBool("Run", false);
 
         transform.LookAt(_player);
 
+        int attack = UnityEngine.Random.Range(0, 2);
+
         if (!_alreadyAttacked)
         {
+            WhiteLight.enabled = true;
             CameraManager.SwitchCamera(CameraEnemy);
-            RedLight.enabled = true;
-            Blood.SetActive(true);
             _impulseSource.GenerateImpulse();
-            OnEnemyAttack?.Invoke(false);
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
-            BodyPart bodyPart = BodyPartsProbability();
-            
-            _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 100);
-            StartCoroutine(Stop());
+
+            switch (attack)
+            {
+                case 0:
+                    _animator.SetTrigger("Attack1");
+                    _alreadyAttacked = true;
+                    break;
+                case 1:
+                    _animator.SetTrigger("Attack2");
+                    _alreadyAttacked = true;
+                    break;
+            }
         }
+    }
+
+    public void DamagePlayer()
+    {
+        WhiteLight.enabled = false;
+        RedLight.enabled = true;
+        Blood.SetActive(true);
+        
+        OnEnemyAttack?.Invoke(false);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
+        BodyPart bodyPart = BodyPartsProbability();
+
+        _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 100);
+        StartCoroutine(Stop());
     }
 
     private IEnumerator Stop()
     {
-        _alreadyAttacked = true;
         yield return new WaitForSeconds(2.5f);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.Breath);
         _runAway = true;    
         _blink.SetTrigger("Blink");
         RedLight.enabled = false;
         yield return new WaitForSeconds(1f);
-        CameraManager.SwitchCamera(CameraPlayer);
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.Breath);
+        CameraManager.SwitchCamera(CameraPlayer); 
         Blood.SetActive(false);
         yield return new WaitForSeconds(1.5f);
         OnEnemyAttack?.Invoke(true);
@@ -211,7 +235,7 @@ public class EnemyAI : MonoBehaviour, IHear
             _respawnPointSet = false;
             _walkPointSet = false;
             _blink.ResetTrigger("Blink");
-
+            _animator.SetBool("Run", false);
         }
     }
 
