@@ -352,6 +352,7 @@ GameObject:
   - component: {fileID: 5431191911666137500}
   - component: {fileID: 6401322178869448303}
   - component: {fileID: 3400471409530388425}
+  - component: {fileID: 8669462602064548435}
   m_Layer: 6
   m_Name: Player 1
   m_TagString: Player
@@ -481,8 +482,8 @@ MonoBehaviour:
   _moveSpeed: 3
   _stamina: 50
   _maxStamina: 50
-  HeadBobSystem: {fileID: 0}
-  Body: {fileID: 0}
+  HeadBobSystem: {fileID: 3262015508088472422}
+  Body: {fileID: 3699167388841154212}
   isCarryingFriend: 0
   carryingSpeed: 2.5
   canMove: 1
@@ -501,7 +502,7 @@ MonoBehaviour:
   _whatIsEnemy:
     serializedVersion: 2
     m_Bits: 2176
-  _rotationSpeed: 0
+  _rotationSpeed: 20
 --- !u!114 &5969082494536676894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,6 +614,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8669462602064548435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6655764239279335478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eff1b63969868b4697dc284aff416b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCamera: {fileID: 0}
 --- !u!1 &7694550852960495603
 GameObject:
   m_ObjectHideFlags: 0
