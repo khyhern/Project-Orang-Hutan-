@@ -176,7 +176,7 @@ public class EnemyAI : MonoBehaviour, IHear
             WhiteLight.enabled = true;
             CameraManager.SwitchCamera(CameraEnemy);
             AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
-            _impulseSource.GenerateImpulse();
+            StartCoroutine(ScreenShake());
 
             switch (attack)
             {
@@ -189,6 +189,24 @@ public class EnemyAI : MonoBehaviour, IHear
                     _alreadyAttacked = true;
                     break;
             }
+        }
+    }
+
+    private IEnumerator ScreenShake()
+    {
+        float time = 0;
+
+        while (time < 4f)
+        {
+            float x = UnityEngine.Random.Range(-0.3f, 0.3f);
+            float y = UnityEngine.Random.Range(-0.3f, 0.3f);
+
+            Vector3 shakeVelocity = new Vector3(x, y, 0.2f);
+
+            _impulseSource.GenerateImpulseWithVelocity(shakeVelocity);
+            yield return new WaitForSeconds(0.3f);
+
+            time += 0.3f;
         }
     }
 
