@@ -175,6 +175,7 @@ public class EnemyAI : MonoBehaviour, IHear
         {
             WhiteLight.enabled = true;
             CameraManager.SwitchCamera(CameraEnemy);
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
             _impulseSource.GenerateImpulse();
 
             switch (attack)
@@ -196,11 +197,11 @@ public class EnemyAI : MonoBehaviour, IHear
         WhiteLight.enabled = false;
         RedLight.enabled = true;
         Blood.SetActive(true);
-        
+        AudioManager.Instance.PlaySFXBlood();
         OnEnemyAttack?.Invoke(false);
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
+        
         BodyPart bodyPart = BodyPartsProbability();
-
+        AudioManager.Instance.PlaySFXBreath();
         _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 100);
         StartCoroutine(Stop());
     }
@@ -208,7 +209,7 @@ public class EnemyAI : MonoBehaviour, IHear
     private IEnumerator Stop()
     {
         yield return new WaitForSeconds(2.5f);
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.Breath);
+        
         _runAway = true;    
         _blink.SetTrigger("Blink");
         RedLight.enabled = false;
