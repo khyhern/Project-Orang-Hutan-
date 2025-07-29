@@ -47,6 +47,14 @@ public class PlayerInteraction : MonoBehaviour
                     return;
                 }
 
+                // Check for 'showPrompt' if this is a Door
+                if (interactable is Door door && !door.showPrompt)
+                {
+                    interactText.enabled = false;
+                    currentTarget = null;
+                    return;
+                }
+
                 currentTarget = interactable;
 
                 if (interactText != null)

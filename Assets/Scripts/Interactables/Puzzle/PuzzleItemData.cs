@@ -1,22 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class ItemCombination
+[CreateAssetMenu(menuName = "Items/Puzzle Item")]
+public class PuzzleItemData : BaseItemData
 {
-    public PuzzleItemData otherItem;
-    public PuzzleItemData resultItem;
-}
-
-[CreateAssetMenu(menuName = "Puzzle/Item Data")]
-public class PuzzleItemData : ScriptableObject
-{
-    public string itemName;
-    public Sprite icon;
-    public GameObject prefab;
-    [TextArea] public string description;
     public bool isCombinable;
-
-    [Header("Combinations")]
     public List<ItemCombination> combinableWith;
+
+    public override ItemType GetItemType() => ItemType.Puzzle;
 }

@@ -14,12 +14,13 @@ public class InventoryUI : MonoBehaviour
 
     public static InventoryUI Instance { get; private set; }
 
-    private PuzzleItemData selectedItem;
+    private BaseItemData selectedItem;
+    private BaseItemData combineCandidate;
     private GameObject selectedButton;
     private readonly List<GameObject> buttonInstances = new();
 
-    private PuzzleItemData combineCandidate = null;
     private bool wasOpenedFromSlot = false;
+    private PlayerMovement playerMovement;
 
     private void Awake()
     {
@@ -38,7 +39,14 @@ public class InventoryUI : MonoBehaviour
     private void OnEnable() => TryRegisterToInventory();
     private void OnDisable() => UnregisterFromInventory();
 
-    private void Start() => StartCoroutine(RegisterWhenReady());
+    private void Start()
+    {
+        StartCoroutine(RegisterWhenReady());
+        playerMovement = FindObjectOfType<PlayerMovement>();
+
+        ApplyButtonHighlightColors(useButton);
+        ApplyButtonHighlightColors(combineButton);
+    }
 
     private System.Collections.IEnumerator RegisterWhenReady()
     {
@@ -71,9 +79,15 @@ public class InventoryUI : MonoBehaviour
     private void ToggleInventory()
     {
         if (inventoryCanvas.activeSelf)
+        {
             inventoryCanvas.SetActive(false);
+            if (playerMovement != null)
+                playerMovement.canMove = true;
+        }
         else
+        {
             OpenInventory(false);
+        }
     }
 
     public void OpenInventory(bool fromSlot = false)
@@ -81,6 +95,9 @@ public class InventoryUI : MonoBehaviour
         wasOpenedFromSlot = fromSlot;
         inventoryCanvas.SetActive(true);
         RefreshDisplay();
+
+        if (playerMovement != null)
+            playerMovement.canMove = false;
     }
 
     public void RefreshDisplay()
@@ -100,7 +117,8 @@ public class InventoryUI : MonoBehaviour
             buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = item.itemName;
 
             var button = buttonObj.GetComponent<Button>();
-            button.onClick.AddListener(() => OnItemSelected(item, buttonObj));
+            button.onClick.AddListener(() => OnItemSelected(item));
+            button.colors = GetButtonColors(false);
 
             if (firstSelectable == null)
                 firstSelectable = buttonObj;
@@ -112,21 +130,32 @@ public class InventoryUI : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(firstSelectable);
     }
 
-    private void OnItemSelected(PuzzleItemData item, GameObject buttonObj)
+    private void OnItemSelected(BaseItemData item)
     {
         selectedItem = item;
 
-        foreach (var btn in buttonInstances)
-            btn.GetComponent<Image>().color = Color.white;
+        foreach (var buttonGO in buttonInstances)
+        {
+            var btn = buttonGO.GetComponent<Button>();
+            var isThis = btn.gameObject.GetComponentInChildren<TextMeshProUGUI>().text == item.itemName;
+            btn.colors = GetButtonColors(isThis);
+        }
 
-        selectedButton = buttonObj;
-        selectedButton.GetComponent<Image>().color = Color.yellow;
+        GameObject current = EventSystem.current.currentSelectedGameObject;
+        if (current != null && current.GetComponent<Button>() != null)
+        {
+            EventSystem.current.SetSelectedGameObject(current);
+        }
 
         if (combineCandidate != null && combineCandidate != selectedItem)
         {
-            TryPerformCombination(combineCandidate, selectedItem);
+            if (combineCandidate is PuzzleItemData a && selectedItem is PuzzleItemData b)
+                TryPerformCombination(a, b);
+
             combineCandidate = null;
         }
+
+        UpdateButtonStates();
 
         Debug.Log($"[InventoryUI] Selected: {item.itemName}");
     }
@@ -137,7 +166,11 @@ public class InventoryUI : MonoBehaviour
         combineCandidate = null;
 
         foreach (var btn in buttonInstances)
-            btn.GetComponent<Image>().color = Color.white;
+        {
+            btn.GetComponent<Button>().colors = GetButtonColors(false);
+        }
+
+        UpdateButtonStates();
     }
 
     private void OnUse()
@@ -148,32 +181,63 @@ public class InventoryUI : MonoBehaviour
             return;
         }
 
-        if (PuzzleSlotInteractable.ActiveSlot != null)
+        switch (selectedItem.GetItemType())
         {
-            PuzzleSlotInteractable.ActiveSlot.PlaceItem(selectedItem);
+            case ItemType.Puzzle:
+                if (PuzzleSlotInteractable.ActiveSlot != null && selectedItem is PuzzleItemData puzzleItem)
+                {
+                    PuzzleSlotInteractable.ActiveSlot.PlaceItem(puzzleItem);
+                    DeselectItem();
 
-            if (wasOpenedFromSlot)
-            {
-                inventoryCanvas.SetActive(false);
-                wasOpenedFromSlot = false;
-            }
-        }
-        else
-        {
-            Debug.Log("[InventoryUI] No puzzle slot is active to use this item on.");
+                    if (wasOpenedFromSlot)
+                    {
+                        inventoryCanvas.SetActive(false);
+                        wasOpenedFromSlot = false;
+
+                        if (playerMovement != null)
+                            playerMovement.canMove = true;
+                    }
+                }
+                else
+                {
+                    Debug.Log("[InventoryUI] No puzzle slot is active to use this item on.");
+                }
+                break;
+
+            case ItemType.Consumable:
+                if (wasOpenedFromSlot)
+                {
+                    Debug.Log("[InventoryUI] Cannot use consumables when inventory was opened from puzzle slot.");
+                    return;
+                }
+
+                if (selectedItem is ConsumableItemData consumable)
+                {
+                    consumable.ApplyEffect();
+                    InventorySystem.Instance.RemoveItem(consumable);
+                    DeselectItem();
+                    RefreshDisplay();
+                }
+                break;
+
+
+            default:
+                Debug.Log("[USE] This item type has no defined use.");
+                break;
         }
     }
 
     private void OnCombine()
     {
-        if (selectedItem == null || !selectedItem.isCombinable)
+        if (selectedItem is PuzzleItemData puzzleItem && puzzleItem.isCombinable)
+        {
+            combineCandidate = puzzleItem;
+            Debug.Log($"[COMBINE] Now select item to combine with: {puzzleItem.itemName}");
+        }
+        else
         {
             Debug.Log("[COMBINE] No valid item selected.");
-            return;
         }
-
-        combineCandidate = selectedItem;
-        Debug.Log($"[COMBINE] Now select item to combine with: {combineCandidate.itemName}");
     }
 
     private void TryPerformCombination(PuzzleItemData a, PuzzleItemData b)
@@ -181,6 +245,7 @@ public class InventoryUI : MonoBehaviour
         if (InventorySystem.Instance.TryCombineItems(a, b, out var result))
         {
             Debug.Log($"[COMBINE SUCCESS] {a.itemName} + {b.itemName} = {result.itemName}");
+            DeselectItem();
             RefreshDisplay();
         }
         else
@@ -189,5 +254,36 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    public PuzzleItemData GetSelectedItem() => selectedItem;
+    private static ColorBlock GetButtonColors(bool isSelected = false)
+    {
+        return new ColorBlock
+        {
+            normalColor = isSelected ? new Color(1f, 0.85f, 0.3f) : new Color(0.9f, 0.9f, 0.9f),
+            highlightedColor = new Color(1f, 1f, 1f),
+            pressedColor = new Color(0.75f, 0.75f, 0.75f),
+            selectedColor = new Color(1f, 0.85f, 0.3f),
+            disabledColor = new Color(0.5f, 0.5f, 0.5f),
+            colorMultiplier = 1f,
+            fadeDuration = 0.1f
+        };
+    }
+
+    private void ApplyButtonHighlightColors(Button button)
+    {
+        var colors = button.colors;
+        colors.normalColor = new Color(0.9f, 0.9f, 0.9f);
+        colors.highlightedColor = new Color(1f, 1f, 1f);
+        colors.pressedColor = new Color(0.7f, 0.7f, 0.7f);
+        colors.selectedColor = new Color(1f, 0.85f, 0.3f);
+        colors.disabledColor = new Color(0.5f, 0.5f, 0.5f);
+        button.colors = colors;
+    }
+
+    private void UpdateButtonStates()
+    {
+        useButton.interactable = selectedItem != null;
+        combineButton.interactable = selectedItem is PuzzleItemData p && p.isCombinable;
+    }
+
+    public BaseItemData GetSelectedItem() => selectedItem;
 }
