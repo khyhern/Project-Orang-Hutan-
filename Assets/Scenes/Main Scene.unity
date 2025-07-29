@@ -1531,7 +1531,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 602342863}
     CustomLookAtTarget: 1
   Lens:
-    FieldOfView: 45
+    FieldOfView: 40
     OrthographicSize: 2
     NearClipPlane: 0.01
     FarClipPlane: 100
