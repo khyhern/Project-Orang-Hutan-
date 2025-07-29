@@ -24,6 +24,7 @@ public class EnemyAI : MonoBehaviour, IHear
     public GameObject Blood;
 
     #region Internal
+    private Animator _animator;
     private Transform _player;
     private NavMeshAgent _enemy;
     private float _speed;
@@ -60,6 +61,7 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         _player = GameObject.FindWithTag("Player").transform;
         _enemy = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
         _speed = _enemy.speed;
     }
 
@@ -103,9 +105,9 @@ public class EnemyAI : MonoBehaviour, IHear
         Vector3 distanceToWalkPoint = transform.position - _walkPoint;
         if (distanceToWalkPoint.magnitude < 1.5f)
         {
+            _animator.SetTrigger("Look");
             _walkPointSet = false;
         }
-        _enemy.speed = _speed;
     }
 
     private void SearchWalkPoint()
@@ -116,6 +118,7 @@ public class EnemyAI : MonoBehaviour, IHear
         if (Physics.Raycast(_walkPoint, -transform.up, 2f, whatIsGround))
         {
             _walkPointSet = true;
+            _animator.SetBool("Run", false);
         }
         
     }
@@ -124,6 +127,7 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         _enemy.SetDestination(_player.position);
         _enemy.speed = _speed * 2f;
+        _animator.SetBool("Run", true); 
     }
 
     private void SearchSound()

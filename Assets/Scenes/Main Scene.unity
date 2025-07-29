@@ -11314,7 +11314,7 @@ GameObject:
   - component: {fileID: 5866666021493237473}
   - component: {fileID: 5866666021493237472}
   m_Layer: 11
-  m_Name: Enemy (1)
+  m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12835,7 +12835,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 1.3
   m_Speed: 2
-  m_Acceleration: 8
+  m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 200
   m_StoppingDistance: 0
@@ -12891,7 +12891,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   _enemyAttackPoint: {fileID: 1479416935}
-  _sightRange: 7
+  _sightRange: 12
   _attackRange: 1
   _walkPointRange: 15
   _searchRange: 3
