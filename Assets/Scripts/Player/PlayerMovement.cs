@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //use for update
     [Header("Settings")]
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _stamina;
@@ -13,7 +12,6 @@ public class PlayerMovement : MonoBehaviour
     public HeadBobSystem HeadBobSystem;
     public Transform Body;
 
-    #region Internal
     private CharacterController _controller;
     private PlayerConditions _conditions;
     private Animator _animator;
@@ -23,9 +21,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float carryingSpeed = 1.5f;
     private float _defaultMoveSpeed = 3f;
 
-    public bool canMove = true; // ✅ Added movement lock flag
+    public bool canMove = true;
     public PlayerConditions Conditions => _conditions;
-    #endregion
 
     private void Start()
     {
@@ -49,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovePlayer(Vector2 input)
     {
-        if (!canMove) return; // ✅ Prevent movement if sitting
+        if (!canMove) return;
 
         if (input != Vector2.zero)
         {
@@ -63,7 +60,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         float speedMultiplier = 1f;
-
         if (PlayerHealth.Instance != null)
         {
             speedMultiplier = PlayerHealth.Instance.GetMovementSpeedMultiplier();
@@ -71,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = new Vector3(input.x, 0, input.y);
         _controller.Move(transform.TransformDirection(moveDir) * _moveSpeed * speedMultiplier * Time.deltaTime);
-        HeadBobSystem.ReduceHeadBob((speedMultiplier * _moveSpeed) / 7.5f);
+        HeadBobSystem.ReduceHeadBob((_moveSpeed * speedMultiplier) / 7.5f);
         ApplyGravity();
     }
 
@@ -88,6 +84,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void Sprint()
     {
+        if (PlayerHealth.Instance != null && PlayerHealth.Instance.CountBrokenLegs() >= 1)
+        {
+            Debug.Log("[Player] Cannot sprint with broken leg(s).");
+            return;
+        }
+
         _conditions.IsSprinting = true;
         _moveSpeed *= 2.5f;
         HeadBobSystem.IncreaseHeadBob();
@@ -107,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
         if (_conditions.IsSprinting)
         {
             _stamina -= 20f * Time.deltaTime;
+
             if (Body.localPosition.z < 2f)
             {
                 Body.Translate(Vector3.forward * 1.5f * Time.deltaTime);
@@ -138,7 +141,6 @@ public class PlayerMovement : MonoBehaviour
         {
             AudioManager.Instance.PlaySFXWalk();
             var sound = new Sound(transform.position, 8f);
-
             Sounds.MakeSound(sound);
         }
         else if (_conditions.IsGrounded && _conditions.IsSprinting)

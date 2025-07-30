@@ -23,6 +23,8 @@ public class PlayerInteraction : MonoBehaviour
     {
         CheckForInteractable();
 
+        if (InputBlocker.IsInputBlocked) return;
+
         if (currentTarget != null && Input.GetKeyDown(interactKey))
         {
             currentTarget.Interact();

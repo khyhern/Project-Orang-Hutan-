@@ -15,12 +15,6 @@ public class SuspicionCheckManager : MonoBehaviour
     [Tooltip("Optional: If true, player must be seated during check.")]
     [SerializeField] private bool requirePlayerSeated = true;
 
-    [Tooltip("Object activated if reset is successful.")]
-    [SerializeField] private GameObject successEvent;
-
-    [Tooltip("Object activated if reset failed.")]
-    [SerializeField] private GameObject failureEvent;
-
     [Header("UI")]
     [Tooltip("Reference to Timer UI component.")]
     [SerializeField] private TimerUI timerUI;
@@ -92,7 +86,7 @@ public class SuspicionCheckManager : MonoBehaviour
                 TriggerFailure();
                 return;
             }
-
+            InputBlocker.IsInputBlocked = true;
             Debug.Log("✅ [SuspicionCheck] Player is seated.");
         }
 
@@ -139,13 +133,13 @@ public class SuspicionCheckManager : MonoBehaviour
     {
         Debug.Log("✅ Puzzle success. Disabling PuzzleA interactables.");
         InteractionManager.DisableGroup(InteractionGroup.PuzzleA);
-        successEvent?.SetActive(true);
+        FindObjectOfType<CutsceneController>().PlaySuccess();
     }
 
 
     private void TriggerFailure()
     {
         Debug.Log("❌ [SuspicionCheck] Failure: puzzle or posture incorrect.");
-        failureEvent?.SetActive(true);
+        FindObjectOfType<CutsceneController>().PlayFail();
     }
 }

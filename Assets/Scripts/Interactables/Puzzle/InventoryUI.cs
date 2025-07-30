@@ -72,6 +72,8 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
+        if (InputBlocker.IsInputBlocked) return;
+
         if (Input.GetKeyDown(KeyCode.I))
             ToggleInventory();
     }
