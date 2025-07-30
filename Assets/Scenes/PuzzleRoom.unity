@@ -453,12 +453,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168452291}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!108 &180107397 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 7634487832023368064, guid: 79811260e06d54f44be699471537fb0a,
-    type: 3}
-  m_PrefabInstance: {fileID: 7708939297554527030}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &219958005 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7042800679199655127, guid: e919c1ae18abbd443851a3329ae2f448,
@@ -2407,12 +2401,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a74376b008f3ee4bbfe861d01b77a13, type: 3}
---- !u!1 &947348925 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 591523214735035949, guid: 79811260e06d54f44be699471537fb0a,
-    type: 3}
-  m_PrefabInstance: {fileID: 7708939297554527030}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &955031331
 GameObject:
   m_ObjectHideFlags: 0
@@ -2526,11 +2514,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3946965041761718862, guid: 420acbcd244e33c458689f1c7dd27739,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4882850247107332362, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
@@ -4358,12 +4341,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756567648}
   m_CullTransparentMesh: 1
---- !u!108 &1763634766 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 6172202182572482760, guid: 79811260e06d54f44be699471537fb0a,
-    type: 3}
-  m_PrefabInstance: {fileID: 7708939297554527030}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1766034795
 GameObject:
   m_ObjectHideFlags: 0
@@ -5109,16 +5086,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1986908487}
     m_Modifications:
-    - target: {fileID: 1692231842990934579, guid: ec990a1e2ad604940816b5365c9006af,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.829
-      objectReference: {fileID: 0}
-    - target: {fileID: 1692231842990934579, guid: ec990a1e2ad604940816b5365c9006af,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.261
-      objectReference: {fileID: 0}
     - target: {fileID: 2499041902573203181, guid: ec990a1e2ad604940816b5365c9006af,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5446,48 +5413,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7708939297554527030}
   m_PrefabAsset: {fileID: 0}
---- !u!195 &5205240109006861010
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 947348925}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 2
-  m_Speed: 2
-  m_Acceleration: 10
-  avoidancePriority: 50
-  m_AngularSpeed: 200
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 6
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
---- !u!114 &5205240109006861013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 947348925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee9ad5ea74d2fd347aeb95ddaf29a239, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chaseSpeed: 5
-  attackRange: 2
-  damageAmount: 10
-  impulseSource: {fileID: 315541901}
-  bloodEffect: {fileID: 972192025}
-  redLight: {fileID: 180107397}
-  whiteLight: {fileID: 1763634766}
-  cameraPlayer: {fileID: 1727007889}
 --- !u!20 &5598416578654791249
 Camera:
   m_ObjectHideFlags: 0
@@ -5558,16 +5483,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: CutsceneEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 817317580814298175, guid: 79811260e06d54f44be699471537fb0a,
+    - target: {fileID: 2857558695884881647, guid: 79811260e06d54f44be699471537fb0a,
         type: 3}
-      propertyPath: m_Direction
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6172202182572482760, guid: 79811260e06d54f44be699471537fb0a,
+      propertyPath: bloodEffect
+      value: 
+      objectReference: {fileID: 972192025}
+    - target: {fileID: 2857558695884881647, guid: 79811260e06d54f44be699471537fb0a,
         type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: cameraPlayer
+      value: 
+      objectReference: {fileID: 1727007889}
+    - target: {fileID: 2857558695884881647, guid: 79811260e06d54f44be699471537fb0a,
+        type: 3}
+      propertyPath: impulseSource
+      value: 
+      objectReference: {fileID: 315541901}
     - target: {fileID: 7339217290460183667, guid: 79811260e06d54f44be699471537fb0a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5618,43 +5548,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7634487832023368064, guid: 79811260e06d54f44be699471537fb0a,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7810527773748263169, guid: 79811260e06d54f44be699471537fb0a,
-        type: 3}
-      propertyPath: bloodEffect
-      value: 
-      objectReference: {fileID: 972192025}
-    - target: {fileID: 7810527773748263169, guid: 79811260e06d54f44be699471537fb0a,
-        type: 3}
-      propertyPath: cameraPlayer
-      value: 
-      objectReference: {fileID: 296702754}
-    - target: {fileID: 7810527773748263169, guid: 79811260e06d54f44be699471537fb0a,
-        type: 3}
-      propertyPath: blinkAnimator
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7810527773748263169, guid: 79811260e06d54f44be699471537fb0a,
-        type: 3}
-      propertyPath: impulseSource
-      value: 
-      objectReference: {fileID: 315541901}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 591523214735035949, guid: 79811260e06d54f44be699471537fb0a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5205240109006861010}
-    - targetCorrespondingSourceObject: {fileID: 591523214735035949, guid: 79811260e06d54f44be699471537fb0a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5205240109006861013}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79811260e06d54f44be699471537fb0a, type: 3}
 --- !u!1001 &8305413228809763324
 PrefabInstance:

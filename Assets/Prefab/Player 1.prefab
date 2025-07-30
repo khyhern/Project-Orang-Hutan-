@@ -990,6 +990,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: vfx_BloodSplash
       objectReference: {fileID: 0}
+    - target: {fileID: 4927399572601662819, guid: 11fe1dfd390f05444b66b2ca6c551fc7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5297172905216950494, guid: 11fe1dfd390f05444b66b2ca6c551fc7,
         type: 3}
       propertyPath: m_LocalPosition.x

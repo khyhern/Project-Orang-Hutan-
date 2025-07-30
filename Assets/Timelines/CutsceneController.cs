@@ -9,19 +9,24 @@ public class CutsceneController : MonoBehaviour
     [SerializeField] private TimelineAsset successTimeline;
     [SerializeField] private TimelineAsset failTimeline;
 
+    private bool shouldUnblockInputAfterCutscene = false;
+
     public void PlaySuccess()
     {
+        shouldUnblockInputAfterCutscene = true;
         PlayCutscene(successTimeline);
     }
 
     public void PlayFail()
     {
+        shouldUnblockInputAfterCutscene = false;
         PlayCutscene(failTimeline);
     }
 
     private void PlayCutscene(TimelineAsset timeline)
     {
-        if (director == null || timeline == null) return;
+        if (director == null || timeline == null)
+            return;
 
         InputBlocker.IsInputBlocked = true;
 
@@ -34,6 +39,8 @@ public class CutsceneController : MonoBehaviour
     private IEnumerator WaitForCutsceneToEnd()
     {
         yield return new WaitUntil(() => director.state != PlayState.Playing);
-        InputBlocker.IsInputBlocked = false;
+
+        if (shouldUnblockInputAfterCutscene)
+            InputBlocker.IsInputBlocked = false;
     }
 }

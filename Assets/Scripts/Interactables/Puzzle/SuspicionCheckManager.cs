@@ -77,7 +77,7 @@ public class SuspicionCheckManager : MonoBehaviour
             {
                 Debug.Log("❌ [SuspicionCheck] Player is not seated.");
                 // Enable Cutscene Chase AI
-                FindObjectOfType<CutsceneChaseAI>()?.EnableChase();
+                FindObjectOfType<CutsceneEnemyController>()?.BeginChase();
                 return;
             }
 
