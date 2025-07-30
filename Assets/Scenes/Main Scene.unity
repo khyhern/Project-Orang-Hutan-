@@ -1500,7 +1500,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268608284}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.022000976, y: 0.84165436, z: 0.034388494, w: 0.5384713}
+  m_LocalRotation: {x: -0.016518675, y: 0.842671, z: 0.02589481, w: 0.5375521}
   m_LocalPosition: {x: -15.3540325, y: 13.417923, z: -31.034653}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1531,7 +1531,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 602342863}
     CustomLookAtTarget: 1
   Lens:
-    FieldOfView: 40
+    FieldOfView: 35
     OrthographicSize: 2
     NearClipPlane: 0.01
     FarClipPlane: 100
@@ -9342,6 +9342,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3262015508088472422, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: _amount
+      value: 0.007
+      objectReference: {fileID: 0}
     - target: {fileID: 3946965041761718862, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: m_IsActive
@@ -11455,6 +11460,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4232683377781400764, guid: b9b14c85e139ee6489634e3a084b92f1,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4232683377781400764, guid: b9b14c85e139ee6489634e3a084b92f1,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4232683377781400764, guid: b9b14c85e139ee6489634e3a084b92f1,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4232683377781400764, guid: b9b14c85e139ee6489634e3a084b92f1,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.9761357
       objectReference: {fileID: 0}
@@ -11502,6 +11522,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354158141664356119, guid: b9b14c85e139ee6489634e3a084b92f1,
+        type: 3}
+      propertyPath: m_Radius
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
         type: 3}

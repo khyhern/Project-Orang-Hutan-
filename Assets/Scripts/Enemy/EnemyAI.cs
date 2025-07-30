@@ -237,7 +237,7 @@ public class EnemyAI : MonoBehaviour, IHear
         yield return new WaitForSeconds(1f);
         CameraManager.SwitchCamera(CameraPlayer); 
         Blood.SetActive(false);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
         _blink.SetTrigger("BlinkOpen");
         OnEnemyAttack?.Invoke(true);
     }
