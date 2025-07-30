@@ -32,6 +32,8 @@ public class PlayerSittingController : MonoBehaviour
 
     void Update()
     {
+        if (InputBlocker.IsInputBlocked) return;
+
         if (isSitting && Time.time - sitTime > sitInputDelay && Input.GetKeyDown(KeyCode.E))
         {
             StandUp();

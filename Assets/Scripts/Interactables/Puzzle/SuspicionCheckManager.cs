@@ -86,7 +86,7 @@ public class SuspicionCheckManager : MonoBehaviour
                 TriggerFailure();
                 return;
             }
-
+            InputBlocker.IsInputBlocked = true;
             Debug.Log("✅ [SuspicionCheck] Player is seated.");
         }
 
@@ -140,5 +140,6 @@ public class SuspicionCheckManager : MonoBehaviour
     private void TriggerFailure()
     {
         Debug.Log("❌ [SuspicionCheck] Failure: puzzle or posture incorrect.");
+        FindObjectOfType<CutsceneController>().PlayFail();
     }
 }

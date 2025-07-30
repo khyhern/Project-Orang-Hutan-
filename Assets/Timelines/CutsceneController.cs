@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -10,13 +11,29 @@ public class CutsceneController : MonoBehaviour
 
     public void PlaySuccess()
     {
-        director.playableAsset = successTimeline;
-        director.Play();
+        PlayCutscene(successTimeline);
     }
 
     public void PlayFail()
     {
-        director.playableAsset = failTimeline;
+        PlayCutscene(failTimeline);
+    }
+
+    private void PlayCutscene(TimelineAsset timeline)
+    {
+        if (director == null || timeline == null) return;
+
+        InputBlocker.IsInputBlocked = true;
+
+        director.playableAsset = timeline;
         director.Play();
+
+        StartCoroutine(WaitForCutsceneToEnd());
+    }
+
+    private IEnumerator WaitForCutsceneToEnd()
+    {
+        yield return new WaitUntil(() => director.state != PlayState.Playing);
+        InputBlocker.IsInputBlocked = false;
     }
 }

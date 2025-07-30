@@ -627,7 +627,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 296702749}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.08095685, y: 0.32471102, z: 0.027908247, w: 0.9419288}
+  m_LocalRotation: {x: -0.080703065, y: 0.30380633, z: 0.025836872, w: 0.9489579}
   m_LocalPosition: {x: -3.6040318, y: 13.018923, z: -44.39165}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2452,12 +2452,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 955031331}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1986908487}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!320 &955031334
 PlayableDirector:
@@ -2469,7 +2469,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 08a893509676f8b4e998ac65780e4c99, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -2477,6 +2477,10 @@ PlayableDirector:
   - key: {fileID: 1183063821942446701, guid: 08a893509676f8b4e998ac65780e4c99, type: 2}
     value: {fileID: 2499223812991906279}
   - key: {fileID: 2605620208914186111, guid: 08a893509676f8b4e998ac65780e4c99, type: 2}
+    value: {fileID: 2499223812991906279}
+  - key: {fileID: 1183063821942446701, guid: df332c3b54b86ae498b944f8188d5ad8, type: 2}
+    value: {fileID: 2499223812991906279}
+  - key: {fileID: 2605620208914186111, guid: df332c3b54b86ae498b944f8188d5ad8, type: 2}
     value: {fileID: 2499223812991906279}
   m_ExposedReferences:
     m_References: []
@@ -2494,7 +2498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   director: {fileID: 955031334}
   successTimeline: {fileID: 11400000, guid: 08a893509676f8b4e998ac65780e4c99, type: 2}
-  failTimeline: {fileID: 0}
+  failTimeline: {fileID: 11400000, guid: df332c3b54b86ae498b944f8188d5ad8, type: 2}
 --- !u!114 &965684655 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5287773269512599784, guid: 28563b858b8538440bb05a9ee855dfa3,
@@ -4835,6 +4839,8 @@ Transform:
   - {fileID: 2038264426}
   - {fileID: 1702104207}
   - {fileID: 847742335}
+  - {fileID: 955031333}
+  - {fileID: 5205240109006861009}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2037439703
@@ -5930,13 +5936,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'mixamorig:LeftFoot'\n\tTransform 'mixamorig:LeftHandThumb2'\n\tTransform
-    'mixamorig:LeftHandIndex1'\n\tTransform 'mixamorig:LeftHandPinky2'\n\tTransform
-    'mixamorig:RightHandRing2'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
-    'mixamorig:LeftHandThumb3'\n\tTransform 'mixamorig:RightArm'\n\tTransform 'mixamorig:LeftLeg'\n\tand
-    more ..."
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -6731,15 +6731,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6354533663379629566}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.52, y: -10.999999, z: 2.76}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.52, y: -11, z: 2.76}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3581570804323528045}
   - {fileID: 152746813573906023}
   - {fileID: 736966641}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1986908487}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5276782451951706406
 GameObject:
@@ -7217,6 +7217,7 @@ GameObject:
   - component: {fileID: 5205240109006861009}
   - component: {fileID: 2499223812991906279}
   - component: {fileID: 3243826711328703957}
+  - component: {fileID: 6354533663379629567}
   m_Layer: 11
   m_Name: Enemy v1
   m_TagString: Enemy
@@ -7224,6 +7225,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6354533663379629567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354533663379629566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6a7f1082b4510f4792aaa772a5506b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 25
 --- !u!4 &6443867786499453146
 Transform:
   m_ObjectHideFlags: 0
@@ -7836,7 +7850,5 @@ SceneRoots:
   - {fileID: 790750322}
   - {fileID: 1717921464}
   - {fileID: 1986908487}
-  - {fileID: 955031333}
   - {fileID: 900457553}
-  - {fileID: 5205240109006861009}
   - {fileID: 1143217900}
