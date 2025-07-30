@@ -18,7 +18,7 @@ public class PauseMenuUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Tab)) //ESC key to pause game
+        if(Input.GetKeyDown(KeyCode.Escape)) //ESC key to pause game
 		{
 			if(isPaused)
 			{
@@ -36,11 +36,6 @@ public class PauseMenuUI : MonoBehaviour
 		PauseMenu.SetActive(true);
 		Time.timeScale = 0f;
 		isPaused = true;
-		
-		
-		// Show and unlock the cursor
-		Cursor.visible = true;
-		Cursor.lockState = CursorLockMode.None;
 	}
 	
 	public void ResumeGame()
@@ -49,8 +44,5 @@ public class PauseMenuUI : MonoBehaviour
 		PauseMenu.SetActive(false);
 		Time.timeScale = 1f;
 		isPaused = false;
-		
-		Cursor.visible = false;
-		Cursor.lockState = CursorLockMode.Locked;
 	}
 }

@@ -69,6 +69,6 @@ public class BtnManager : MonoBehaviour
 		PauseMenu.SetActive(false);
 		Time.timeScale = 1f;
 		isPaused = false;
-		SceneManager.LoadScene("MainMenu");
+		SceneManager.LoadScene("Main Menu");
     }
 }
