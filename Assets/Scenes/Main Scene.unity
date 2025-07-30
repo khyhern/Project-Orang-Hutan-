@@ -423,7 +423,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.7
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -431,8 +431,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 15
+  MinDistance: 4
+  MaxDistance: 25
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -451,8 +451,8 @@ AudioSource:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.2482605
-      value: 0.3908081
+      time: 0.25891876
+      value: 0.41044617
       inSlope: -2.0008
       outSlope: -2.0008
       tangentMode: 0
@@ -461,7 +461,7 @@ AudioSource:
       outWeight: 0
     - serializedVersion: 3
       time: 0.50050354
-      value: 0.12095642
+      value: 0.21524048
       inSlope: -0.5002
       outSlope: -0.5002
       tangentMode: 0
@@ -469,8 +469,8 @@ AudioSource:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.98876953
-      value: 0
+      time: 1
+      value: 0.11392212
       inSlope: -0.12505
       outSlope: -0.12505
       tangentMode: 0
@@ -500,7 +500,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.0027777778
+      value: 0.16666667
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -3683,7 +3683,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 130
+  Priority: 120
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -6086,6 +6086,7 @@ MonoBehaviour:
   _sfxGeneral: {fileID: 1079278044}
   _sfxBreath: {fileID: 339782058}
   _sfxBlood: {fileID: 2027032252}
+  _sfxEnemyFootstep: {fileID: 40154121}
   Bgm: {fileID: 8300000, guid: 80a6e39c6ce89a643a31f7d296757739, type: 3}
   Walking: {fileID: 8300000, guid: b8b30d6c31d2e7848ad28e67fc5fec5c, type: 3}
   HeartBeat: {fileID: 8300000, guid: 2ce6f3f1b564ba34aa7f16be596e4748, type: 3}
@@ -6093,6 +6094,7 @@ MonoBehaviour:
   MurdererAttack: {fileID: 8300000, guid: 1aa4b2c132e73cc4aaa3ad537b75c8ee, type: 3}
   Breath: {fileID: 8300000, guid: 1b3c48739a343c141bce07919fd9139a, type: 3}
   Blood: {fileID: 8300000, guid: c908658231caf49438ff697e6f28fbcb, type: 3}
+  EnemyFootstep: {fileID: 8300000, guid: fad2eacf9052e2e4799de0dc63543b6c, type: 3}
 --- !u!4 &1117276257
 Transform:
   m_ObjectHideFlags: 0
@@ -11703,5 +11705,5 @@ SceneRoots:
   - {fileID: 535500289}
   - {fileID: 92761933}
   - {fileID: 1644669750}
-  - {fileID: 1117276257}
   - {fileID: 4515769358112751856}
+  - {fileID: 1117276257}

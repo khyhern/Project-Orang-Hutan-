@@ -130,7 +130,7 @@ public class EnemyAI : MonoBehaviour, IHear
     private void ChasePlayer()
     {
         _enemy.SetDestination(_player.position);
-        _enemy.speed = _speed * 2f;
+        _enemy.speed = _speed * 2.5f;
         _animator.SetBool("Run", true); 
     }
 
@@ -320,5 +320,10 @@ public class EnemyAI : MonoBehaviour, IHear
             }
         }
         return (BodyPart)_probs.Length - 1;      
+    }
+
+    public void PlayFootsteps()
+    {
+        AudioManager.Instance.PlayEnemyFootstep();
     }
 }
