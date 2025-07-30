@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +6,7 @@ public class InventorySystem : MonoBehaviour
 {
     public static InventorySystem Instance { get; private set; }
 
-    private readonly List<BaseItemData> items = new(); // 🔄 Now stores all item types
-    private const int MaxInventorySize = 4;
+    private readonly List<PuzzleItemData> items = new();
 
     public event Action OnInventoryChanged;
 
@@ -22,25 +21,16 @@ public class InventorySystem : MonoBehaviour
         Instance = this;
     }
 
-    public bool PickUp(BaseItemData item)
+    public void PickUp(PuzzleItemData item)
     {
-        if (item == null)
-            return false;
-
-        if (items.Count >= MaxInventorySize)
-        {
-            Debug.LogWarning("[Inventory] Cannot pick up item: Inventory is full.");
-            return false;
-        }
+        if (item == null) return;
 
         items.Add(item);
         Debug.Log($"[Inventory] Picked up: {item.itemName}");
         OnInventoryChanged?.Invoke();
-        return true;
     }
 
-
-    public void RemoveItem(BaseItemData item)
+    public void RemoveItem(PuzzleItemData item)
     {
         if (items.Remove(item))
         {
@@ -49,33 +39,29 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    public IReadOnlyList<BaseItemData> GetAllItems() => items;
+    public IReadOnlyList<PuzzleItemData> GetAllItems() => items;
 
-    public bool HasItem(BaseItemData item) => items.Contains(item);
+    public bool HasItem(PuzzleItemData item) => items.Contains(item);
 
-    public bool TryCombineItems(BaseItemData a, BaseItemData b, out BaseItemData result)
+    public bool TryCombineItems(PuzzleItemData a, PuzzleItemData b, out PuzzleItemData result)
     {
         result = null;
 
-        // ✅ Only allow combination if both are PuzzleItemData
-        if (a is PuzzleItemData puzzleA && b is PuzzleItemData puzzleB)
+        if (a == null || b == null || !a.isCombinable || !b.isCombinable)
+            return false;
+
+        foreach (var combo in a.combinableWith)
         {
-            if (!puzzleA.isCombinable || !puzzleB.isCombinable)
-                return false;
-
-            foreach (var combo in puzzleA.combinableWith)
+            if (combo.otherItem == b)
             {
-                if (combo.otherItem == puzzleB)
-                {
-                    result = combo.resultItem;
+                result = combo.resultItem;
 
-                    RemoveItem(puzzleA);
-                    RemoveItem(puzzleB);
-                    PickUp(result);
+                RemoveItem(a);
+                RemoveItem(b);
+                PickUp(result);
 
-                    Debug.Log($"[Inventory] Combined {puzzleA.itemName} + {puzzleB.itemName} -> {result.itemName}");
-                    return true;
-                }
+                Debug.Log($"[Inventory] Combined {a.itemName} + {b.itemName} -> {result.itemName}");
+                return true;
             }
         }
 

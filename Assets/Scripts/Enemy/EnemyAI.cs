@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 //using System.Collections.Generic;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,13 +21,7 @@ public class EnemyAI : MonoBehaviour, IHear
     public CinemachineCamera CameraPlayer;
     public CinemachineCamera CameraEnemy;
 
-    [Header("Lights and Effects")]
-    public Light RedLight;
-    public Light WhiteLight;
-    public GameObject Blood;
-
     #region Internal
-    private Animator _animator;
     private Transform _player;
     private NavMeshAgent _enemy;
     private float _speed;
@@ -65,7 +58,6 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         _player = GameObject.FindWithTag("Player").transform;
         _enemy = GetComponent<NavMeshAgent>();
-        _animator = GetComponent<Animator>();
         _speed = _enemy.speed;
     }
 
@@ -99,7 +91,6 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void Patroling()
     {
-        _animator.SetBool("Run", false);
         if (!_walkPointSet) SearchWalkPoint();
 
         if (_walkPointSet)
@@ -112,6 +103,7 @@ public class EnemyAI : MonoBehaviour, IHear
         {
             _walkPointSet = false;
         }
+        _enemy.speed = _speed;
     }
 
     private void SearchWalkPoint()
@@ -121,7 +113,6 @@ public class EnemyAI : MonoBehaviour, IHear
         _walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
         if (Physics.Raycast(_walkPoint, -transform.up, 2f, whatIsGround))
         {
-            _animator.SetTrigger("Look");
             _walkPointSet = true;
         }
         
@@ -131,12 +122,10 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         _enemy.SetDestination(_player.position);
         _enemy.speed = _speed * 2f;
-        _animator.SetBool("Run", true); 
     }
 
     private void SearchSound()
     {
-        _animator.SetBool("Run", false);
         if (!_searchPointSet) SearchSoundPoint();
 
         if (_searchPointSet)
@@ -167,78 +156,32 @@ public class EnemyAI : MonoBehaviour, IHear
     private void AttackPlayer()
     {
         _enemy.SetDestination(transform.position);
-        _animator.SetBool("Run", false);
 
         transform.LookAt(_player);
 
-        int attack = UnityEngine.Random.Range(0, 2);
-
         if (!_alreadyAttacked)
         {
-            OnEnemyAttack?.Invoke(false);
-            WhiteLight.enabled = true;
             CameraManager.SwitchCamera(CameraEnemy);
+            _impulseSource.GenerateImpulse();
+            OnEnemyAttack?.Invoke(false);
             AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
-            StartCoroutine(ScreenShake());
-
-            switch (attack)
-            {
-                case 0:
-                    _animator.SetTrigger("Attack1");
-                    _alreadyAttacked = true;
-                    break;
-                case 1:
-                    _animator.SetTrigger("Attack2");
-                    _alreadyAttacked = true;
-                    break;
-            }
+            BodyPart bodyPart = BodyPartsProbability();
+            
+            _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 20); // Example damage, adjust as needed
+            StartCoroutine(Stop());
         }
-    }
-
-    private IEnumerator ScreenShake()
-    {
-        float time = 0;
-
-        while (time < 4f)
-        {
-            float x = UnityEngine.Random.Range(-0.3f, 0.3f);
-            float y = UnityEngine.Random.Range(-0.3f, 0.3f);
-
-            Vector3 shakeVelocity = new Vector3(x, y, 0.2f);
-
-            _impulseSource.GenerateImpulseWithVelocity(shakeVelocity);
-            yield return new WaitForSeconds(0.3f);
-
-            time += 0.3f;
-        }
-    }
-
-    public void DamagePlayer()
-    {
-        WhiteLight.enabled = false;
-        RedLight.enabled = true;
-        Blood.SetActive(true);
-        AudioManager.Instance.PlaySFXBlood();
-        
-        
-        BodyPart bodyPart = BodyPartsProbability();
-        AudioManager.Instance.PlaySFXBreath();
-        _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 100);
-        StartCoroutine(Stop());
     }
 
     private IEnumerator Stop()
     {
+        _alreadyAttacked = true;
         yield return new WaitForSeconds(2.5f);
-        
         _runAway = true;    
         _blink.SetTrigger("Blink");
-        RedLight.enabled = false;
         yield return new WaitForSeconds(1f);
-        CameraManager.SwitchCamera(CameraPlayer); 
-        Blood.SetActive(false);
+        CameraManager.SwitchCamera(CameraPlayer);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.Breath);
         yield return new WaitForSeconds(1.5f);
-        _blink.SetTrigger("BlinkOpen");
         OnEnemyAttack?.Invoke(true);
     }
 
@@ -258,7 +201,7 @@ public class EnemyAI : MonoBehaviour, IHear
             _respawnPointSet = false;
             _walkPointSet = false;
             _blink.ResetTrigger("Blink");
-            _animator.SetBool("Run", false);
+
         }
     }
 
