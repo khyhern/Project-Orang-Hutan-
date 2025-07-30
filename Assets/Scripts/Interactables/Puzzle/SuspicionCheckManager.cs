@@ -69,13 +69,6 @@ public class SuspicionCheckManager : MonoBehaviour
     private void CheckSlotStatesAndSeating()
     {
 
-        if (drawerToCheck != null && drawerToCheck.IsOpen)
-        {
-            Debug.Log("❌ [SuspicionCheck] Drawer is open during inspection.");
-            TriggerFailure();
-            return;
-        }
-
         // Step 1: Check player seating
         if (requirePlayerSeated)
         {
@@ -83,11 +76,21 @@ public class SuspicionCheckManager : MonoBehaviour
             if (sitter == null || !sitter.IsSitting())
             {
                 Debug.Log("❌ [SuspicionCheck] Player is not seated.");
-                TriggerFailure();
+                // Enable Cutscene Chase AI
+                FindObjectOfType<CutsceneChaseAI>()?.EnableChase();
                 return;
             }
+
+            // Player is seated
             InputBlocker.IsInputBlocked = true;
             Debug.Log("✅ [SuspicionCheck] Player is seated.");
+        }
+
+        if (drawerToCheck != null && drawerToCheck.IsOpen)
+        {
+            Debug.Log("❌ [SuspicionCheck] Drawer is open during inspection.");
+            TriggerFailure();
+            return;
         }
 
         // Step 2: Check puzzle slots
