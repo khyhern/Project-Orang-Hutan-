@@ -43,7 +43,7 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
             }
             else
             {
-                Debug.LogWarning("[Drawer] 'InteractionDialogue' TextMeshProUGUI not found in scene.");
+                Debug.LogWarning("[DOOR] 'InteractionDialogue' TextMeshProUGUI not found in scene.");
             }
         }
     }
