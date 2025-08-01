@@ -6,7 +6,7 @@ using Unity.Cinemachine;
 [RequireComponent(typeof(NavMeshAgent))]
 public class CutsceneEnemyController : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Chase Settings")]
     [SerializeField] private float chaseSpeed = 3.5f;
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private int damageAmount = 10;
@@ -22,10 +22,15 @@ public class CutsceneEnemyController : MonoBehaviour
     private Animator animator;
     private Transform player;
 
-    private bool isChasing;
     private bool hasAttacked;
 
     public static bool IsChasing { get; private set; }
+
+    private const float ImpulseDuration = 4f;
+    private const float ImpulseInterval = 0.3f;
+    private const float ExitDelay1 = 2.5f;
+    private const float ExitDelay2 = 1f;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -38,8 +43,7 @@ public class CutsceneEnemyController : MonoBehaviour
 
     private void Update()
     {
-        if (!isChasing || player == null || hasAttacked)
-            return;
+        if (!IsChasing || player == null || hasAttacked) return;
 
         float distance = Vector3.Distance(transform.position, player.position);
 
@@ -55,33 +59,43 @@ public class CutsceneEnemyController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Begins the enemy chase.
+    /// </summary>
     public void BeginChase()
     {
         Debug.Log("[CutsceneEnemyController] BeginChase()");
-        isChasing = true;
+        IsChasing = true;
         hasAttacked = false;
         agent.isStopped = false;
         agent.speed = chaseSpeed;
     }
 
+    /// <summary>
+    /// Stops the enemy chase.
+    /// </summary>
     public void StopChase()
     {
-        isChasing = false;
+        IsChasing = false;
         agent.isStopped = true;
         animator.SetBool("Run", false);
     }
 
+    /// <summary>
+    /// Starts attack animation and halts movement.
+    /// </summary>
     private void PerformAttack()
     {
         agent.SetDestination(transform.position);
         transform.LookAt(player);
         animator.SetBool("Run", false);
         animator.SetTrigger("Attack1");
-
         hasAttacked = true;
     }
 
-    // CALLED BY ANIMATION EVENT ONLY
+    /// <summary>
+    /// Called by animation event to apply damage and effects.
+    /// </summary>
     public void DamagePlayer()
     {
         Debug.Log($"[CutsceneEnemyController] DamagePlayer() → {damageAmount}");
@@ -92,35 +106,40 @@ public class CutsceneEnemyController : MonoBehaviour
 
         AudioManager.Instance.PlaySFXBlood();
         AudioManager.Instance.PlaySFXBreath();
-
         PlayerHealth.Instance?.DamagePlayer(damageAmount);
 
         StartCoroutine(PlayImpulseShake());
         StartCoroutine(CutsceneExit());
     }
 
+    /// <summary>
+    /// Plays camera shake for dramatic effect.
+    /// </summary>
     private IEnumerator PlayImpulseShake()
     {
         float time = 0f;
-        while (time < 4f)
+        while (time < ImpulseDuration)
         {
             impulseSource.GenerateImpulseWithVelocity(new Vector3(
                 Random.Range(-0.3f, 0.3f),
                 Random.Range(-0.3f, 0.3f),
                 0.2f
             ));
-            yield return new WaitForSeconds(0.3f);
-            time += 0.3f;
+            yield return new WaitForSeconds(ImpulseInterval);
+            time += ImpulseInterval;
         }
     }
 
+    /// <summary>
+    /// Cleans up post-attack effects and returns control.
+    /// </summary>
     private IEnumerator CutsceneExit()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(ExitDelay1);
         redLight.enabled = false;
         bloodEffect.SetActive(false);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(ExitDelay2);
         CameraManager.SwitchCamera(cameraPlayer);
     }
 }
