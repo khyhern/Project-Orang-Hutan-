@@ -1,11 +1,19 @@
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class BtnManager : MonoBehaviour
 {	
 
 	public GameObject PauseMenu;
 	public static bool isPaused;
+	
+	public AudioMixer mixer;
+	
+	[SerializeField] private GameObject MainPanel;
+	[SerializeField] private GameObject OptionPanel;
 	
 	//Main Menu Buttons
 	
@@ -14,22 +22,17 @@ public class BtnManager : MonoBehaviour
 		SceneManager.LoadScene(""); //change to select save file / Level selection
 	}
 	
-	public void Level1Button() 
+	public void OptionButton() 
 	{
-		SceneManager.LoadScene("Level 1");
+		MainPanel.SetActive(false);
+		OptionPanel.SetActive(true);
 	}
 	
-	public void Level2Button() 
+	public void OptionBackButton() 
 	{
-		SceneManager.LoadScene("Level 2");
+		MainPanel.SetActive(true);
+		OptionPanel.SetActive(false);
 	}
-	
-	public void Level3Button() 
-	{
-		SceneManager.LoadScene("Level 3");
-	}
-	
-    // Quit the game (Main Menu, Game Over & Pause Game)
     public void QuitGameButton()
     {
         Application.Quit(); // For quitting the application when built
@@ -40,6 +43,25 @@ public class BtnManager : MonoBehaviour
     {
         SceneManager.LoadScene(""); // Replace "level 0" with your actual scene name
     }
+    
+    public void UpdateBGMVolume(float volume)
+    {
+	    mixer.SetFloat("BGMVolume", volume);
+    }
+    
+    public void UpdateSFXVolume(float volume)
+    {
+	    mixer.SetFloat("SFXVolume", volume);
+    }
+    
+    public void SaveVolume()
+    {
+	    mixer.GetFloat("BGMVolume", out float bgmVolume);
+	    PlayerPrefs.SetFloat("BGMVolume", bgmVolume);
+	    
+	    mixer.GetFloat("SFXVolume", out float sfxVolume);
+	    PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
+    }
 
     // Go to the main menu
     public void MainMenuButton()
@@ -47,6 +69,6 @@ public class BtnManager : MonoBehaviour
 		PauseMenu.SetActive(false);
 		Time.timeScale = 1f;
 		isPaused = false;
-		SceneManager.LoadScene("Main Menu");
+		SceneManager.LoadScene("MainMenu");
     }
 }
