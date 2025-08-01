@@ -16,7 +16,7 @@ public class DoorInteractable : MonoBehaviour, IDescriptiveInteractable
     [SerializeField] private Transform teleportTarget;
 
     [Header("Interaction Settings")]
-    [SerializeField] private bool showPrompt = true; // ? Added to match PlayerInteraction expectation
+    [SerializeField] private bool showPrompt = true;
     [SerializeField] private InteractionGroup interactionGroup = InteractionGroup.Default;
 
     private bool isUnlocked = false;
@@ -24,6 +24,21 @@ public class DoorInteractable : MonoBehaviour, IDescriptiveInteractable
     public void Interact()
     {
         if (isUnlocked) return;
+
+        // ? Edge Case 1: Enemy is chasing, block silently
+        if (CutsceneEnemyController.IsChasing)
+        {
+            Debug.Log("[DoorInteractable] Cannot unlock: enemy is chasing.");
+            return;
+        }
+
+        // ? Edge Case 2: Inspection countdown active, show warning
+        if (SuspicionCheckManager.Instance?.IsCountdownRunning == true)
+        {
+            SubtitleUI.Instance?.ShowSubtitle("It’s coming... I need to pretend to be asleep.", 3f);
+            Debug.Log("[DoorInteractable] Blocked door interaction during inspection countdown.");
+            return;
+        }
 
         if (InventorySystem.Instance == null || requiredItem == null)
         {
@@ -48,7 +63,7 @@ public class DoorInteractable : MonoBehaviour, IDescriptiveInteractable
         }
 
         Debug.Log("[DoorInteractable] Player does not have required item.");
-        // Optional: play fail SFX or show UI
+        SubtitleUI.Instance?.ShowSubtitle("It's locked.", 2f);
     }
 
     private void UnlockDoor()
@@ -91,10 +106,7 @@ public class DoorInteractable : MonoBehaviour, IDescriptiveInteractable
         }
     }
 
-
-    // ? Prompt compatibility with PlayerInteraction.cs
     public bool ShowPrompt => showPrompt;
-
     public string GetInteractionVerb() => isUnlocked ? "enter" : "unlock";
     public string GetObjectName() => gameObject.name;
     public string GetObjectID() => gameObject.name;

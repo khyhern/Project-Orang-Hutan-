@@ -25,6 +25,7 @@ public class CutsceneEnemyController : MonoBehaviour
     private bool isChasing;
     private bool hasAttacked;
 
+    public static bool IsChasing { get; private set; }
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();

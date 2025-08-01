@@ -27,6 +27,9 @@ public class SuspicionCheckManager : MonoBehaviour
     [Header("Escape Door Timeline")]
     [SerializeField] private PlayableDirector escapeDoorTimeline;
 
+    public bool IsCountdownRunning => checkRoutine != null;
+
+
 
 
     private Coroutine checkRoutine;
@@ -54,9 +57,17 @@ public class SuspicionCheckManager : MonoBehaviour
         if (checkRoutine != null)
             StopCoroutine(checkRoutine);
 
+        SubtitleUI.Instance.ShowSubtitle("It’s coming... I need to put everything back into place before he arrives...", 4f);
+        StartCoroutine(DelayedStartTimer(1.5f));
+    }
+
+    private IEnumerator DelayedStartTimer(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         timerUI?.StartTimer(resetTimeLimit);
         checkRoutine = StartCoroutine(InspectionCountdown());
     }
+
 
     /// <summary>
     /// Delays and then runs suspicion check.
