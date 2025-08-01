@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class SuspicionCheckManager : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class SuspicionCheckManager : MonoBehaviour
     [Header("Drawer Check")]
     [Tooltip("If assigned, drawer must be closed during inspection.")]
     [SerializeField] private OpenDrawer drawerToCheck;
+
+    [Header("Escape Door Timeline")]
+    [SerializeField] private PlayableDirector escapeDoorTimeline;
+
 
 
     private Coroutine checkRoutine;
@@ -76,10 +81,24 @@ public class SuspicionCheckManager : MonoBehaviour
             if (sitter == null || !sitter.IsSitting())
             {
                 Debug.Log("❌ [SuspicionCheck] Player is not seated.");
-                // Enable Cutscene Chase AI
+
+                // Play the escape door opening timeline (if assigned)
+                if (escapeDoorTimeline != null)
+                {
+                    escapeDoorTimeline.Play();
+                    Debug.Log("[SuspicionCheck] Escape door timeline played during chase.");
+                }
+                else
+                {
+                    Debug.LogWarning("[SuspicionCheck] Escape door timeline not assigned.");
+                }
+
+                // Start the enemy chase
                 FindObjectOfType<CutsceneEnemyController>()?.BeginChase();
+
                 return;
             }
+
 
             // Player is seated
             InputBlocker.IsInputBlocked = true;
