@@ -3,6 +3,7 @@
 [RequireComponent(typeof(Collider))]
 public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 {
+    [Header("Puzzle Settings")]
     [Tooltip("The item this slot expects (correct solution).")]
     public PuzzleItemData expectedItemData;
 
@@ -11,6 +12,16 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
 
     [Tooltip("Spawn point for item visual prefab.")]
     public Transform itemSpawnPoint;
+
+    [Header("Audio")]
+    [Tooltip("Optional dedicated audio source for SFX.")]
+    [SerializeField] private AudioSource sfxSource;
+
+    [Tooltip("Sound played when item is placed.")]
+    [SerializeField] private AudioClip placeItemSFX;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float sfxVolume = 1f;
 
     private PuzzleItemData placedItem;
     private GameObject spawnedInstance;
@@ -79,6 +90,8 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
         InventorySystem.Instance.RemoveItem(item);
         InventoryUI.Instance.RefreshDisplay();
 
+        PlaySFX(placeItemSFX);
+
         Debug.Log($"[PuzzleSlot] Placed {item.itemName} into slot (Expected: {expectedItemData?.itemName})");
 
         PuzzleManager.Instance?.CheckPuzzleState();
@@ -106,4 +119,18 @@ public class PuzzleSlotInteractable : MonoBehaviour, IInteractable
     }
 
     public InteractionGroup GetInteractionGroup() => InteractionGroup.PuzzleA;
+
+    private void PlaySFX(AudioClip clip)
+    {
+        if (clip == null) return;
+
+        if (sfxSource != null)
+        {
+            sfxSource.PlayOneShot(clip, sfxVolume);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(clip, transform.position, sfxVolume);
+        }
+    }
 }

@@ -19,20 +19,23 @@ public class DoorInteractable : MonoBehaviour, IDescriptiveInteractable
     [SerializeField] private bool showPrompt = true;
     [SerializeField] private InteractionGroup interactionGroup = InteractionGroup.Default;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip doorOpenSFX;
+    [SerializeField][Range(0f, 1f)] private float doorSFXVolume = 1f;
+
     private bool isUnlocked = false;
 
     public void Interact()
     {
         if (isUnlocked) return;
 
-        // ? Edge Case 1: Enemy is chasing, block silently
         if (CutsceneEnemyController.IsChasing)
         {
             Debug.Log("[DoorInteractable] Cannot unlock: enemy is chasing.");
             return;
         }
 
-        // ? Edge Case 2: Inspection countdown active, show warning
         if (SuspicionCheckManager.Instance?.IsCountdownRunning == true)
         {
             SubtitleUI.Instance?.ShowSubtitle("It’s coming... I need to pretend to be asleep.", 3f);
@@ -78,6 +81,22 @@ public class DoorInteractable : MonoBehaviour, IDescriptiveInteractable
         else
         {
             Debug.Log("[DoorInteractable] Door unlocked (no animation).");
+        }
+
+        PlayDoorSFX();
+    }
+
+    private void PlayDoorSFX()
+    {
+        if (doorOpenSFX == null) return;
+
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(doorOpenSFX, doorSFXVolume);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(doorOpenSFX, transform.position, doorSFXVolume);
         }
     }
 
