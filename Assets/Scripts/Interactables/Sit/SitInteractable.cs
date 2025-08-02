@@ -4,7 +4,7 @@
 public class SitInteractable : MonoBehaviour, IDescriptiveInteractable
 {
     [Tooltip("Sit position and rotation.")]
-    public Transform sitSpot; // ✅ Made public for direct access
+    public Transform sitSpot; // Made public for direct access
 
     public void Interact()
     {

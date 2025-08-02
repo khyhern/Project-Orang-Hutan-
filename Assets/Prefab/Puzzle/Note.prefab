@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &9174359112233897370
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -9202605092671148497, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_Name
+      value: Note
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.010944087
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.010944087
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.010944087
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -97.835
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -82.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4467138112451190354, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -9202605092671148497, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2468408865073372875}
+    - targetCorrespondingSourceObject: {fileID: -9202605092671148497, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2764315592913306985}
+  m_SourcePrefab: {fileID: 7446590082972375451, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+    type: 3}
+--- !u!1 &9158096702139491253 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -9202605092671148497, guid: aba21dbbef9eb7a40a0262c88879b2d4,
+    type: 3}
+  m_PrefabInstance: {fileID: 9174359112233897370}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2468408865073372875
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9158096702139491253}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 40.47646, y: 2.640622, z: 67.21398}
+  m_Center: {x: 0.11293422, y: 1.0169742, z: 2.7118182}
+--- !u!114 &2764315592913306985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9158096702139491253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0408fe4c06957174fbe0750706304217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noteContent: "I don\u2019t know how long I\u2019ve been here. Days? Weeks?\nThere
+    were others. I heard them. I think he took them first. One by one.\n\nShe left
+    a letter. Never sent it. I think it was for her brother. He was the loud one
+    \u2014 always talking. But then he stopped. The letter\u2019s still here.\n\nThe
+    other girl, she tried to keep that stupid plant alive. Said it reminded her of
+    her dorm room. I found it dead in the corner. Like everything else.\n\nAnd the
+    kid\u2026 god. That red scarf. She wouldn\u2019t take it off. Even when she cried
+    herself to sleep. I found it folded on the bed the next morning. But she was
+    gone.\n\nI think... I think he keeps what\u2019s left.\n\nI don\u2019t know why
+    I\u2019m writing this. Maybe if someone finds it. Maybe if you put their things
+    back where they were\u2026\n\nMaybe it\u2019ll leave you alone.\n\u2014A\n"
+  objectName: Note
+  objectID: Note001
+  interactionVerb: read
+  disableAfterReading: 0
+  interactionGroup: 0
