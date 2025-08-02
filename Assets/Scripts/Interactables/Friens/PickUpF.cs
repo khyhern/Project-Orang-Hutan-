@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PickUpF : MonoBehaviour
 {
@@ -12,16 +13,21 @@ public class PickUpF : MonoBehaviour
     public float carrySpeed = 2.5f;
     public float normalSpeed = 3f;
     [SerializeField] private float dropRange = 2f; // Max distance to drop friend
+    [SerializeField] private GameObject enemyPrefab; // Enemy to spawn in cutscene
+    [SerializeField] private Camera mainCamera; // Reference to main camera for screen shake
 
     private GameObject carriedFriend = null;
     private PlayerMovement playerMovement;
     private InputAction interactAction;
     private InputAction dropAction;
-    private Camera mainCamera;
+    private Camera cameraRef;
+    private int friendsDelivered = 0; // Track number of friends delivered
+    private Vector3 friendOffset = new Vector3(0, 1, -1); // Behind the player
+    private bool isInCutscene = false;
 
     void Awake()
     {
-        mainCamera = Camera.main;
+        cameraRef = Camera.main;
         var actions = InputSystem.actions;
         interactAction = actions.FindAction("Interact");
         dropAction = actions.FindAction("Drop");
@@ -48,7 +54,7 @@ public class PickUpF : MonoBehaviour
     {
         if (carriedFriend == null)
         {
-            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+            Ray ray = new Ray(cameraRef.transform.position, cameraRef.transform.forward);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, interactRange, friendLayer))
@@ -64,7 +70,10 @@ public class PickUpF : MonoBehaviour
         }
         else
         {
-            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+            // Update friend position to stay behind player
+            carriedFriend.transform.position = transform.position + transform.TransformDirection(friendOffset);
+            
+            Ray ray = new Ray(cameraRef.transform.position, cameraRef.transform.forward);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, interactRange, safepointLayer))
@@ -84,7 +93,7 @@ public class PickUpF : MonoBehaviour
     {
         if (carriedFriend == null)
         {
-            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+            Ray ray = new Ray(cameraRef.transform.position, cameraRef.transform.forward);
             RaycastHit hit;
             
             if (Physics.Raycast(ray, out hit, interactRange, friendLayer))
@@ -92,7 +101,7 @@ public class PickUpF : MonoBehaviour
                 Debug.Log("hi friend");
                 carriedFriend = hit.collider.gameObject;
                 carriedFriend.transform.SetParent(transform);
-                carriedFriend.transform.localPosition = new Vector3(0, 1, 1);
+                carriedFriend.transform.localPosition = friendOffset;
                 carriedFriend.GetComponent<Rigidbody>().isKinematic = true;
 
                 // Set carrying state and speed
@@ -104,7 +113,7 @@ public class PickUpF : MonoBehaviour
         else
         {
             // If looking at a safepoint, drop at safepoint
-            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+            Ray ray = new Ray(cameraRef.transform.position, cameraRef.transform.forward);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, interactRange, safepointLayer))
             {
@@ -117,7 +126,7 @@ public class PickUpF : MonoBehaviour
     {
         if (carriedFriend != null)
         {
-            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+            Ray ray = new Ray(cameraRef.transform.position, cameraRef.transform.forward);
             RaycastHit hit;
 
             Debug.DrawRay(ray.origin, ray.direction * dropRange, Color.white);
@@ -136,6 +145,8 @@ public class PickUpF : MonoBehaviour
     {
         if (carriedFriend != null)
         {
+            friendsDelivered++;
+            
             // Play the friend's delivery animation (child will be deleted after animation)
             FriendBehavior friendBehavior = carriedFriend.GetComponent<FriendBehavior>();
             if (friendBehavior != null)
@@ -150,7 +161,102 @@ public class PickUpF : MonoBehaviour
             // Reset carrying state and speed
             playerMovement.isCarryingFriend = false;
             playerMovement.SetMoveSpeed(normalSpeed);
+
+            // Change UI text for 3 seconds
+            StartCoroutine(ShowDeliveryMessage());
+
+            // If this is the second friend delivered, trigger cutscene
+            if (friendsDelivered == 2)
+            {
+                StartCoroutine(TriggerCutscene());
+            }
         }
+    }
+
+    private System.Collections.IEnumerator ShowDeliveryMessage()
+    {
+        // Store original text
+        TMP_Text originalText = null;
+        if (pickupUIObject != null)
+        {
+            originalText = pickupUIObject.GetComponentInChildren<TMP_Text>();
+        }
+
+        // Change text to delivery message
+        if (originalText != null)
+        {
+            string originalMessage = originalText.text;
+            originalText.text = "You put your friend";
+            
+            yield return new WaitForSeconds(3f);
+            
+            // Restore original text
+            originalText.text = originalMessage;
+        }
+    }
+
+    private System.Collections.IEnumerator TriggerCutscene()
+    {
+        isInCutscene = true;
+        
+        // Disable player movement
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = false;
+        }
+
+        // Rotate player 180 degrees
+        Vector3 targetRotation = transform.eulerAngles + new Vector3(0, 180, 0);
+        float rotationTime = 1f;
+        float elapsedTime = 0f;
+        Vector3 startRotation = transform.eulerAngles;
+
+        while (elapsedTime < rotationTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / rotationTime;
+            transform.eulerAngles = Vector3.Lerp(startRotation, targetRotation, t);
+            yield return null;
+        }
+
+        // Spawn enemy in front of player
+        if (enemyPrefab != null)
+        {
+            Vector3 spawnPosition = transform.position + transform.forward * 3f;
+            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        }
+
+        // Screen shake for 1.5 seconds
+        Vector3 originalCameraPosition = cameraRef.transform.localPosition;
+        float shakeTime = 1.5f;
+        elapsedTime = 0f;
+
+        while (elapsedTime < shakeTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float shakeAmount = 0.1f * (1f - elapsedTime / shakeTime); // Decrease shake over time
+            Vector3 shakeOffset = new Vector3(
+                Random.Range(-shakeAmount, shakeAmount),
+                Random.Range(-shakeAmount, shakeAmount),
+                0
+            );
+            cameraRef.transform.localPosition = originalCameraPosition + shakeOffset;
+            yield return null;
+        }
+
+        // Reset camera position
+        cameraRef.transform.localPosition = originalCameraPosition;
+
+        // Teleport player to specified coordinates
+        transform.position = new Vector3(-97.10668f, -10.08f, -83.05457f);
+
+        // Re-enable player movement
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = true;
+        }
+
+        isInCutscene = false;
     }
 
     public void PutDownFriend(Vector3 dropPosition)
