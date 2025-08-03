@@ -195,6 +195,7 @@ public class EnemyAI : MonoBehaviour, IHear
         }
     }
 
+    
     private IEnumerator ScreenShake()
     {
         float time = 0;

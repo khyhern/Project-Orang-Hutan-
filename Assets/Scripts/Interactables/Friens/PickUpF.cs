@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using Unity.Cinemachine;
 
 public class PickUpF : MonoBehaviour
 {
@@ -13,8 +14,6 @@ public class PickUpF : MonoBehaviour
     public float carrySpeed = 2.5f;
     public float normalSpeed = 3f;
     [SerializeField] private float dropRange = 2f; // Max distance to drop friend
-    [SerializeField] private GameObject enemyPrefab; // Enemy to spawn in cutscene
-    [SerializeField] private Camera mainCamera; // Reference to main camera for screen shake
 
     private GameObject carriedFriend = null;
     private PlayerMovement playerMovement;
@@ -177,9 +176,9 @@ public class PickUpF : MonoBehaviour
     {
         // Store original text
         TMP_Text originalText = null;
-        if (pickupUIObject != null)
+        if (safepointUIObject != null)
         {
-            originalText = pickupUIObject.GetComponentInChildren<TMP_Text>();
+            originalText = safepointUIObject.GetComponentInChildren<TMP_Text>();
         }
 
         // Change text to delivery message
@@ -188,7 +187,7 @@ public class PickUpF : MonoBehaviour
             string originalMessage = originalText.text;
             originalText.text = "You put your friend";
             
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1f);
             
             // Restore original text
             originalText.text = originalMessage;
@@ -199,64 +198,59 @@ public class PickUpF : MonoBehaviour
     {
         isInCutscene = true;
         
-        // Disable player movement
-        if (playerMovement != null)
+        // 1. Disable player input
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        if (playerInput != null) playerInput.enabled = false;
+        
+        // 2. Activate video GameObject first
+        GameObject videoGameObject = GameObject.Find("VideoPlayer"); // Change this to your video GameObject name
+        if (videoGameObject != null)
         {
-            playerMovement.enabled = false;
+            videoGameObject.SetActive(true);
+            
+            // Get the VideoPlayer component
+            UnityEngine.Video.VideoPlayer videoPlayer = videoGameObject.GetComponent<UnityEngine.Video.VideoPlayer>();
+            if (videoPlayer != null)
+            {
+                // Wait for video to finish playing
+                while (videoPlayer.isPlaying)
+                {
+                    yield return null;
+                }
+                
+                // Deactivate video GameObject after it finishes
+                videoGameObject.SetActive(false);
+            }
+            else
+            {
+                // If no VideoPlayer component, wait for a default duration
+                yield return new WaitForSeconds(5f); // Adjust time as needed
+                videoGameObject.SetActive(false);
+            }
         }
-
-        // Rotate player 180 degrees
-        Vector3 targetRotation = transform.eulerAngles + new Vector3(0, 180, 0);
-        float rotationTime = 1f;
-        float elapsedTime = 0f;
-        Vector3 startRotation = transform.eulerAngles;
-
-        while (elapsedTime < rotationTime)
+        
+        // 3. Play transition after video ends
+        GameObject screenTransition = GameObject.Find("ScreenTransition");
+        if (screenTransition != null)
         {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / rotationTime;
-            transform.eulerAngles = Vector3.Lerp(startRotation, targetRotation, t);
-            yield return null;
+            Animator transitionAnimator = screenTransition.GetComponent<Animator>();
+            if (transitionAnimator != null)
+            {
+                transitionAnimator.SetTrigger("End");
+                
+                // Wait for animation to complete (adjust time as needed)
+                yield return new WaitForSeconds(1f);
+                
+                // 4. End of animation, teleport player & trigger animation trigger "start"
+                transform.position = new Vector3(0, 0, 0);
+                
+                transitionAnimator.SetTrigger("Start");
+            }
         }
-
-        // Spawn enemy in front of player
-        if (enemyPrefab != null)
-        {
-            Vector3 spawnPosition = transform.position + transform.forward * 3f;
-            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        }
-
-        // Screen shake for 1.5 seconds
-        Vector3 originalCameraPosition = cameraRef.transform.localPosition;
-        float shakeTime = 1.5f;
-        elapsedTime = 0f;
-
-        while (elapsedTime < shakeTime)
-        {
-            elapsedTime += Time.deltaTime;
-            float shakeAmount = 0.1f * (1f - elapsedTime / shakeTime); // Decrease shake over time
-            Vector3 shakeOffset = new Vector3(
-                Random.Range(-shakeAmount, shakeAmount),
-                Random.Range(-shakeAmount, shakeAmount),
-                0
-            );
-            cameraRef.transform.localPosition = originalCameraPosition + shakeOffset;
-            yield return null;
-        }
-
-        // Reset camera position
-        cameraRef.transform.localPosition = originalCameraPosition;
-
-        // Teleport player to specified coordinates
-        transform.position = new Vector3(-97.10668f, -10.08f, -83.05457f);
-        //sitteleporterservice
-
-        // Re-enable player movement
-        if (playerMovement != null)
-        {
-            playerMovement.enabled = true;
-        }
-
+        
+        // Re-enable player components
+        if (playerInput != null) playerInput.enabled = true;
+        
         isInCutscene = false;
     }
 
