@@ -249,6 +249,7 @@ public class PickUpF : MonoBehaviour
 
         // Teleport player to specified coordinates
         transform.position = new Vector3(-97.10668f, -10.08f, -83.05457f);
+        //sitteleporterservice
 
         // Re-enable player movement
         if (playerMovement != null)
