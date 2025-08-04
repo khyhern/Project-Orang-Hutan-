@@ -843,7 +843,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 130
+  Priority: 128
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -980,6 +980,7 @@ MonoBehaviour:
   _sfxGeneral: {fileID: 2229981688692055062}
   _sfxBreath: {fileID: 1815029016788064584}
   _sfxBlood: {fileID: 2211823849342659178}
+  _sfxEnemyFootstep: {fileID: 3488440042816425526}
   Bgm: {fileID: 8300000, guid: 80a6e39c6ce89a643a31f7d296757739, type: 3}
   Walking: {fileID: 8300000, guid: b8b30d6c31d2e7848ad28e67fc5fec5c, type: 3}
   HeartBeat: {fileID: 8300000, guid: 2ce6f3f1b564ba34aa7f16be596e4748, type: 3}
@@ -987,6 +988,7 @@ MonoBehaviour:
   MurdererAttack: {fileID: 8300000, guid: 1aa4b2c132e73cc4aaa3ad537b75c8ee, type: 3}
   Breath: {fileID: 8300000, guid: 1b3c48739a343c141bce07919fd9139a, type: 3}
   Blood: {fileID: 8300000, guid: c908658231caf49438ff697e6f28fbcb, type: 3}
+  EnemyFootstep: {fileID: 8300000, guid: fad2eacf9052e2e4799de0dc63543b6c, type: 3}
 --- !u!1 &8754849714260048651
 GameObject:
   m_ObjectHideFlags: 0

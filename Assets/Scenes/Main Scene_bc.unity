@@ -7024,6 +7024,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: MinDistance
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8127298785674245819, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}
       propertyPath: m_Name
@@ -12458,7 +12468,7 @@ MonoBehaviour:
   requirePlayerSeated: 1
   timerUI: {fileID: 152421508}
   drawerToCheck: {fileID: 1392258397}
-  escapeDoorTimeline: {fileID: 2734492135019966117}
+  escapeDoorTimeline: {fileID: 0}
 --- !u!114 &1845731795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14573,6 +14583,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: MinDistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8127298785674245819, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}

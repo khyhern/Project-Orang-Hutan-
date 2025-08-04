@@ -12,6 +12,7 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioSource _sfxGeneral;
     [SerializeField] private AudioSource _sfxBreath;
     [SerializeField] private AudioSource _sfxBlood;
+    [SerializeField] private AudioSource _sfxEnemyFootstep;
 
     [Header("Audio Clips")]
     public AudioClip Bgm;
@@ -21,6 +22,7 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip MurdererAttack;
     public AudioClip Breath;
     public AudioClip Blood;
+    public AudioClip EnemyFootstep;
 
     private bool firstPlay = true;
 
@@ -70,7 +72,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public void IncreaseVolumeHB()
     {
-        if (_sfxHeartBeat.volume < 0.8f)
+        if (_sfxHeartBeat.volume < 0.7f)
         {
             _sfxHeartBeat.volume += 0.1f * Time.deltaTime;
         }
@@ -92,5 +94,12 @@ public class AudioManager : Singleton<AudioManager>
     public void PlaySFXBlood()
     {
         _sfxBlood.PlayOneShot(Blood);
+    }
+
+    public void PlayEnemyFootstep()
+    {
+        Debug.Log("playerfootstepEnemey");
+        _sfxEnemyFootstep.pitch = Random.Range(0.9f, 1.3f);
+        _sfxEnemyFootstep.PlayOneShot(EnemyFootstep);
     }
 }

@@ -322,4 +322,9 @@ public class EnemyAI : MonoBehaviour, IHear
         }
         return (BodyPart)_probs.Length - 1;      
     }
+
+    public void PlayFootsteps()
+    {
+        AudioManager.Instance.PlayEnemyFootstep();
+    }
 }
