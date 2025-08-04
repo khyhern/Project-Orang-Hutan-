@@ -7,18 +7,9 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
     public bool showPrompt = true;
 
     [Header("Lock Settings")]
-    [Tooltip("Is this door currently locked?")]
-    [SerializeField] private bool isLocked = true;
-
-    [Tooltip("Does this door require an item to unlock?")]
-    [SerializeField] private bool requiresKey = true;
-
-    [Tooltip("ID of the key required to unlock this door.")]
-    [SerializeField] private string requiredKeyID = "Rusty Key";
-
-    [Header("Identification")]
-    [Tooltip("Unique name or ID for this door.")]
-    [SerializeField] private string objectID = "Suspicious door";
+    public bool requiresKey = true;
+    public PuzzleItemData requiredKeyItem; // Assign in Inspector (ScriptableObject)
+    public bool consumeKeyOnUse = false;
 
     [Header("Messages")]
     [SerializeField] private string lockedMessage = "The door is locked.";
@@ -30,21 +21,15 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
 
     private bool isOpened = false;
 
-
     private void Awake()
     {
-        // Auto-find the dialogue text by name if not set in Inspector
         if (messageText == null)
         {
             GameObject obj = GameObject.Find("InteractionDialogue");
             if (obj != null && obj.TryGetComponent(out TextMeshProUGUI tmp))
-            {
                 messageText = tmp;
-            }
             else
-            {
-                Debug.LogWarning("[DOOR] 'InteractionDialogue' TextMeshProUGUI not found in scene.");
-            }
+                Debug.LogWarning("[DOOR] 'InteractionDialogue' TextMeshProUGUI not found.");
         }
     }
 
@@ -52,47 +37,51 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
     {
         if (isOpened) return;
 
-        // Completely locked — must be unlocked externally
-        if (isLocked)
+        if (requiresKey)
         {
-            DisplayMessage(lockedMessage, messageText, lockedTextColor);
-            return;
-        }
+            if (requiredKeyItem == null)
+            {
+                Debug.LogError("[Door] No PuzzleItemData key assigned.");
+                return;
+            }
 
-        // Unlock externally — check key (if required)
-        if (!requiresKey || InventoryManager.Instance.HasKeyItem(requiredKeyID))
-        {
-            TryOpenDoor();
-            DisplayMessage(successMessage, messageText, successTextColor);
+            if (InventorySystem.Instance.HasItem(requiredKeyItem))
+            {
+                OpenDoor();
+
+                if (consumeKeyOnUse)
+                    InventorySystem.Instance.RemoveItem(requiredKeyItem);
+            }
+            else
+            {
+                DisplayMessage(lockedMessage, lockedTextColor);
+            }
         }
         else
         {
-            DisplayMessage(lockedMessage, messageText, lockedTextColor);
+            OpenDoor();
         }
     }
 
-    private void TryOpenDoor()
+    private void OpenDoor()
     {
-        Debug.Log("[Door] Door opened.");
-
         isOpened = true;
-        showPrompt = false; // Hide interaction prompt after opening
-        enabled = false;
 
-        // TODO: Add animation, sound, or open logic
-        // Optional: InventoryManager.Instance.RemoveKeyItem(requiredKeyID);
+        // TODO: Play animation, sound, etc.
+        Debug.Log("[Door] Door opened.");
+        DisplayMessage(successMessage, successTextColor);
+
+        // Disable interaction prompt after opening
+        enabled = false;
     }
 
-    private void DisplayMessage(string message, TextMeshProUGUI targetText, Color textColor)
+    private void DisplayMessage(string message, Color color)
     {
-        if (string.IsNullOrWhiteSpace(message) || targetText == null)
-            return;
+        if (messageText == null) return;
 
-        Debug.Log("[Door] " + message);
-
-        targetText.text = message;
-        targetText.color = textColor;
-        targetText.enabled = true;
+        messageText.text = message;
+        messageText.color = color;
+        messageText.enabled = true;
 
         CancelInvoke(nameof(HideMessage));
         Invoke(nameof(HideMessage), messageDuration);
@@ -104,12 +93,9 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
             messageText.enabled = false;
     }
 
+    // For interaction prompt
     public string GetInteractionVerb() => "open";
     public string GetObjectName() => "door";
-    public string GetObjectID() => objectID;
+    public string GetObjectID() => "Door";
     public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
-
-    // Allow other scripts to control lock state
-    public void SetLocked(bool state) => isLocked = state;
-    public void SetRequiresKey(bool state) => requiresKey = state;
 }

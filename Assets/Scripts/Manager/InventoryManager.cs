@@ -12,9 +12,11 @@ public class InventoryManager : MonoBehaviour
 
     [Header("Flashlight")]
     private string flashlightID;
-    public GameObject flashlightPrefab;            
-    public Transform flashlightSpawnPoint;         
+    public GameObject flashlightPrefab;
+    public Transform flashlightSpawnPoint;
     private GameObject spawnedFlashlight;
+
+    private bool flashlightSpawned = false; // Added to ensure it only spawns once
 
     void Awake()
     {
@@ -41,7 +43,7 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
-        if (flashlightExists  && Input.GetKeyDown(KeyCode.Alpha1))
+        if (flashlightExists && !flashlightSpawned)
         {
             TrySpawnFlashlight();
         }
@@ -68,10 +70,10 @@ public class InventoryManager : MonoBehaviour
 
         // Ensure flashlight and its children are on the FPView layer
         spawnedFlashlight.layer = LayerMask.NameToLayer("FPView");
-        
+
         foreach (Transform child in spawnedFlashlight.transform)
         {
-            child.gameObject.layer = LayerMask.NameToLayer("FPView"); 
+            child.gameObject.layer = LayerMask.NameToLayer("FPView");
         }
 
         FlashlightController controller = spawnedFlashlight.GetComponent<FlashlightController>();
@@ -79,6 +81,8 @@ public class InventoryManager : MonoBehaviour
         {
             controller.Activate();
         }
+
+        flashlightSpawned = true; // Ensure it won't spawn again
 
         Debug.Log("Flashlight equipped.");
     }

@@ -154,4 +154,3 @@ public class FlashlightController : MonoBehaviour
         transform.rotation = targetRotation;
     }
 }
-

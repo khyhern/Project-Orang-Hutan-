@@ -97,6 +97,26 @@ public class InventorySystem : MonoBehaviour
 
         return false;
     }
+
+    public bool HasItemByName(string itemName)
+    {
+        foreach (var item in items)
+        {
+            if (item.itemName.Trim().Equals(itemName.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        return false;
+    }
+
+    public BaseItemData GetItemByName(string itemName)
+    {
+        foreach (var item in items)
+        {
+            if (item.itemName.Trim().Equals(itemName.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                return item;
+        }
+        return null;
+    }
 }
 
 /*
