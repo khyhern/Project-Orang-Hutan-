@@ -32,6 +32,19 @@ public class ConsumableItemData : BaseItemData
             case ConsumableEffectType.Custom:
                 Debug.Log("[Custom] You can hook into an event or animation here.");
                 break;
+
+            case ConsumableEffectType.Battery:
+                FlashlightController flashlight = GameObject.FindObjectOfType<FlashlightController>();
+                if (flashlight != null)
+                {
+                    flashlight.AddBattery(effectAmount);
+                    Debug.Log($"[Battery] Added {effectAmount} battery to flashlight.");
+                }
+                else
+                {
+                    Debug.LogWarning("[Battery] No flashlight found in scene.");
+                }
+                break;
         }
     }
 }

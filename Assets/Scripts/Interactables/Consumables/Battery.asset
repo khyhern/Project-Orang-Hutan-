@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20532e548479b5145a67915ced108e47, type: 3}
-  m_Name: Bandage
+  m_Name: Battery
   m_EditorClassIdentifier: 
-  itemName: Bandage
+  itemName: Battery
   icon: {fileID: 0}
   prefab: {fileID: 0}
   description: 
-  effectType: 0
-  effectAmount: 10
+  effectType: 3
+  effectAmount: 30
