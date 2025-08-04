@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Stopper
   - Enemy
+  - Consumable
   layers:
   - Default
   - TransparentFX

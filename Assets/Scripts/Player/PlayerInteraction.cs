@@ -83,6 +83,10 @@ public class PlayerInteraction : MonoBehaviour
                     {
                         interactText.text = $"Press [{interactKey}] to {descriptive.GetInteractionVerb()} {descriptive.GetObjectName()}";
                     }
+                    else if (interactable is MonoBehaviour mb && mb.CompareTag("Consumable"))
+                    {
+                        interactText.text = $"Press [{interactKey}] to pick up {mb.gameObject.name}";
+                    }
                     else
                     {
                         interactText.text = $"Press [{interactKey}] to interact";

@@ -1482,7 +1482,7 @@ GameObject:
   - component: {fileID: 178866687}
   m_Layer: 10
   m_Name: Soda (4)
-  m_TagString: Untagged
+  m_TagString: Consumable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2123,7 +2123,7 @@ GameObject:
   - component: {fileID: 267514569}
   m_Layer: 10
   m_Name: Soda (2)
-  m_TagString: Untagged
+  m_TagString: Consumable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2418,7 +2418,7 @@ GameObject:
   - component: {fileID: 280752407}
   m_Layer: 10
   m_Name: Soda (3)
-  m_TagString: Untagged
+  m_TagString: Consumable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6528,7 +6528,7 @@ GameObject:
   - component: {fileID: 854040275}
   m_Layer: 10
   m_Name: Soda (1)
-  m_TagString: Untagged
+  m_TagString: Consumable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11272,6 +11272,74 @@ Transform:
   - {fileID: 1860706033}
   m_Father: {fileID: 1389997928}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1584085368
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 366769767657601182, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_Name
+      value: Flashlight (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -98.35903
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -10.144
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -79.01152
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460554723436554948, guid: 5158e6545e88ee543ad3dd94075844ff,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5158e6545e88ee543ad3dd94075844ff, type: 3}
 --- !u!1001 &1586191304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13137,7 +13205,7 @@ PrefabInstance:
         type: 3}
       propertyPath: messageText
       value: 
-      objectReference: {fileID: 1379277382}
+      objectReference: {fileID: 0}
     - target: {fileID: 6947302227396176910, guid: 28563b858b8538440bb05a9ee855dfa3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13192,7 +13260,17 @@ PrefabInstance:
         type: 3}
       propertyPath: messageText
       value: 
-      objectReference: {fileID: 1379277382}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7432457677895862191, guid: 28563b858b8538440bb05a9ee855dfa3,
+        type: 3}
+      propertyPath: failMessages.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7432457677895862191, guid: 28563b858b8538440bb05a9ee855dfa3,
+        type: 3}
+      propertyPath: failMessages.Array.data[0]
+      value: locked
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -14273,7 +14351,7 @@ GameObject:
   - component: {fileID: 1947346348}
   m_Layer: 10
   m_Name: Soda
-  m_TagString: Untagged
+  m_TagString: Consumable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16325,3 +16403,4 @@ SceneRoots:
   - {fileID: 267514574}
   - {fileID: 280752412}
   - {fileID: 178866692}
+  - {fileID: 1584085368}
