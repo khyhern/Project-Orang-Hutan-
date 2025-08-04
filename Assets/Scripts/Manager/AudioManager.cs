@@ -23,20 +23,21 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip Breath;
     public AudioClip Blood;
     public AudioClip EnemyFootstep;
+    public AudioClip ScaryLaugh;
 
     private bool firstPlay = true;
 
     private void Start()
     {
-        PlayBGM(Bgm);
+        PlayBGM();
         PlayHeartBeat();
     }
 
-    private void PlayBGM(AudioClip clip)
+    private void PlayBGM()
     {
-        _bgm.clip = clip;
+        _bgm.clip = Bgm;
         _bgm.loop = true;
-        _bgm.Play();    
+        _bgm.Play();
     }
 
     public void PlaySFX(AudioClip clip)
@@ -98,7 +99,6 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PlayEnemyFootstep()
     {
-        Debug.Log("playerfootstepEnemey");
         _sfxEnemyFootstep.pitch = Random.Range(0.9f, 1.3f);
         _sfxEnemyFootstep.PlayOneShot(EnemyFootstep);
     }
