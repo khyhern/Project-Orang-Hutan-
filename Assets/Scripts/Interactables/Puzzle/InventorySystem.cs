@@ -27,10 +27,26 @@ public class InventorySystem : MonoBehaviour
         if (item == null)
             return false;
 
-        if (items.Count >= MaxInventorySize)
+        /*if (items.Count >= MaxInventorySize)
         {
             Debug.LogWarning("[Inventory] Cannot pick up item: Inventory is full.");
             return false;
+        }*/
+
+        if (item.GetItemType() == ItemType.Consumable)
+        {
+            int consumableCount = 0;
+            foreach (var i in items)
+            {
+                if (i.GetItemType() == ItemType.Consumable)
+                    consumableCount++;
+            }
+
+            if (consumableCount >= MaxInventorySize)
+            {
+                Debug.LogWarning("[Inventory] Cannot pick up consumable: Limit reached.");
+                return false;
+            }
         }
 
         items.Add(item);

@@ -25,6 +25,10 @@ public class PickupItem : MonoBehaviour, IInteractable
             Debug.Log($"[PickupItem] Inventory full. Could not pick up: {itemData.itemName}");
             // AudioManager.Instance?.PlaySFX("InventoryFull"); // optional
             // UIManager.Instance?.ShowMessage("Inventory is full."); // optional
+
+            PlayerInteraction player = FindObjectOfType<PlayerInteraction>();
+            if (player != null)
+                player.ShowMessage($"Cannot pick up {itemData.itemName}. Inventory is full.", 2f); // Duration 2 seconds
         }
     }
 

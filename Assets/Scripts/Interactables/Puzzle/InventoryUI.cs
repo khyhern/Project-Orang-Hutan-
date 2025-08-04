@@ -8,6 +8,7 @@ public class InventoryUI : MonoBehaviour
 {
     public GameObject inventoryCanvas;
     public Transform gridContainer;
+    public Transform consumableGridContainer;
     public GameObject itemButtonPrefab;
     public Button useButton;
     public Button combineButton;
@@ -114,6 +115,29 @@ public class InventoryUI : MonoBehaviour
 
     public void RefreshDisplay()
     {
+        /*foreach (var go in buttonInstances)
+            Destroy(go);
+        buttonInstances.Clear();
+
+        var items = InventorySystem.Instance.GetAllItems();
+
+        foreach (var item in items)
+        {
+            GameObject buttonObj = Instantiate(itemButtonPrefab, puzzleGridContainer);
+            buttonInstances.Add(buttonObj);
+
+            buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = item.itemName;
+
+            var button = buttonObj.GetComponent<Button>();
+            button.onClick.AddListener(() => OnItemSelected(item));
+            button.colors = GetButtonColors(false);
+        }
+
+        DeselectItem();
+
+        // 🧹 Clear EventSystem selection to prevent keyboard navigation
+        EventSystem.current.SetSelectedGameObject(null);*/
+
         foreach (var go in buttonInstances)
             Destroy(go);
         buttonInstances.Clear();
@@ -122,7 +146,9 @@ public class InventoryUI : MonoBehaviour
 
         foreach (var item in items)
         {
-            GameObject buttonObj = Instantiate(itemButtonPrefab, gridContainer);
+            Transform parentGrid = item.GetItemType() == ItemType.Consumable ? consumableGridContainer : gridContainer;
+
+            GameObject buttonObj = Instantiate(itemButtonPrefab, parentGrid);
             buttonInstances.Add(buttonObj);
 
             buttonObj.GetComponentInChildren<TextMeshProUGUI>().text = item.itemName;
@@ -136,6 +162,7 @@ public class InventoryUI : MonoBehaviour
 
         // 🧹 Clear EventSystem selection to prevent keyboard navigation
         EventSystem.current.SetSelectedGameObject(null);
+
     }
 
     private void OnItemSelected(BaseItemData item)

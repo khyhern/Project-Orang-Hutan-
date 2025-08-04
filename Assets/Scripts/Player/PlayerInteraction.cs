@@ -8,6 +8,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask interactLayer;
     [SerializeField] private TextMeshProUGUI interactText;
+    [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private Camera raycastCamera;
 
@@ -17,6 +18,23 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (raycastCamera == null)
             raycastCamera = Camera.main;
+    }
+
+    private void Start()
+    {
+        // Auto-assign text box by name if not set manually
+        if (messageText == null)
+        {
+            GameObject obj = GameObject.Find("InteractionDialogue");
+            if (obj != null && obj.TryGetComponent(out TextMeshProUGUI tmp))
+            {
+                messageText = tmp;
+            }
+            else
+            {
+                Debug.LogWarning("[Drawer] 'InteractionDialogue' TextMeshProUGUI not found.");
+            }
+        }
     }
 
     private void Update()
@@ -80,5 +98,30 @@ public class PlayerInteraction : MonoBehaviour
         currentTarget = null;
         if (interactText != null)
             interactText.enabled = false;
+    }
+
+    public void ShowMessage(string message, float duration)
+    {
+        StopAllCoroutines(); // Stop previous fades if any
+        StartCoroutine(ShowMessageRoutine(message, duration));
+    }
+
+    private System.Collections.IEnumerator ShowMessageRoutine(string message, float duration)
+    {
+        messageText.text = message;
+        messageText.alpha = 1f;
+
+        yield return new WaitForSeconds(duration);
+
+        float fadeTime = 1f;
+        float t = 0f;
+        while (t < fadeTime)
+        {
+            t += Time.deltaTime;
+            messageText.alpha = Mathf.Lerp(1f, 0f, t / fadeTime);
+            yield return null;
+        }
+
+        messageText.text = "";
     }
 }
