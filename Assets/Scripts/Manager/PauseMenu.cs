@@ -5,52 +5,50 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuUI : MonoBehaviour
 {
-    public GameObject PauseMenu;
-    public static bool isPaused;
-
+	public GameObject PauseMenu;
+	public static bool isPaused;
+	
     void Start()
     {
         PauseMenu.SetActive(false);
-        isPaused = false;
-        Time.timeScale = 1f;
+		isPaused = false;
+		Time.timeScale = 1f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Tab)) //ESC key to pause game
-        {
-            if(isPaused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
-        }
+        if(Input.GetKeyDown(KeyCode.Escape)) //ESC key to pause game
+		{
+			if(isPaused)
+			{
+				ResumeGame();
+			}
+			else
+			{
+				PauseGame();
+			}
+		}
     }
-
-    public void PauseGame()
-    {
-        PauseMenu.SetActive(true);
-        Time.timeScale = 0f;
-        isPaused = true;
-
-
-        // Show and unlock the cursor
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-    }
-
-    public void ResumeGame()
-    {
-
-        PauseMenu.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+	
+	public void PauseGame()
+	{
+		PauseMenu.SetActive(true);
+		Time.timeScale = 0f;
+		isPaused = true;
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
+		
+	}
+	
+	public void ResumeGame()
+	{
+		
+		PauseMenu.SetActive(false);
+		Time.timeScale = 1f;
+		isPaused = false;
+		
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+	}
 }

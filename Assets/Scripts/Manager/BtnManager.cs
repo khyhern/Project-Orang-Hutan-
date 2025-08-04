@@ -15,8 +15,6 @@ public class BtnManager : MonoBehaviour
 	[SerializeField] private GameObject MainPanel;
 	[SerializeField] private GameObject OptionPanel;
 	
-	//Main Menu Buttons
-	
 	public void PlayButton() 
 	{
 		SceneManager.LoadScene(""); //change to select save file / Level selection
@@ -28,22 +26,17 @@ public class BtnManager : MonoBehaviour
 		OptionPanel.SetActive(true);
 	}
 	
-	public void OptionBackButton() 
-	{
-		MainPanel.SetActive(true);
-		OptionPanel.SetActive(false);
-	}
     public void QuitGameButton()
     {
         Application.Quit(); // For quitting the application when built
     }
-
-    // Restart the level
+    
     public void RestartButton()
     {
         SceneManager.LoadScene(""); // Replace "level 0" with your actual scene name
     }
-    
+
+       
     public void UpdateBGMVolume(float volume)
     {
 	    mixer.SetFloat("BGMVolume", volume);
@@ -62,7 +55,7 @@ public class BtnManager : MonoBehaviour
 	    mixer.GetFloat("SFXVolume", out float sfxVolume);
 	    PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
     }
-
+    
     // Go to the main menu
     public void MainMenuButton()
     {

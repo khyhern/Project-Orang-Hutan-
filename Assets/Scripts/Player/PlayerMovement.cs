@@ -51,12 +51,12 @@ public class PlayerMovement : MonoBehaviour
         if (input != Vector2.zero)
         {
             _conditions.IsWalking = true;
-            _animator.SetBool("Walk", true);
+            //_animator.SetBool("Walk", true);
         }
         else
         {
             _conditions.IsWalking = false;
-            _animator.SetBool("Walk", false);
+            //_animator.SetBool("Walk", false);
         }
 
         float speedMultiplier = 1f;
@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
         _conditions.IsSprinting = true;
         _moveSpeed *= 2.5f;
         HeadBobSystem.IncreaseHeadBob();
-        _animator.SetBool("Sprint", true);
+        //_animator.SetBool("Sprint", true);
     }
 
     public void ResetSpeed()
@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
         _moveSpeed = isCarryingFriend ? carryingSpeed : _defaultMoveSpeed;
         _conditions.IsSprinting = false;
         HeadBobSystem.ResetHeadBob();
-        _animator.SetBool("Sprint", false);
+        //_animator.SetBool("Sprint", false);
     }
 
     private void CheckSprint()

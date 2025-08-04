@@ -167,6 +167,8 @@ public class SuspicionCheckManager : MonoBehaviour
         Debug.Log("✅ Puzzle success. Disabling PuzzleA interactables.");
         InteractionManager.DisableGroup(InteractionGroup.PuzzleA);
         FindObjectOfType<CutsceneController>().PlaySuccess();
+
+        checkRoutine = null;
     }
 
 
@@ -174,5 +176,7 @@ public class SuspicionCheckManager : MonoBehaviour
     {
         Debug.Log("❌ [SuspicionCheck] Failure: puzzle or posture incorrect.");
         FindObjectOfType<CutsceneController>().PlayFail();
+
+        checkRoutine = null;
     }
 }

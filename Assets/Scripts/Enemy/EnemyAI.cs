@@ -35,6 +35,10 @@ public class EnemyAI : MonoBehaviour, IHear
     private Vector3 _dirToPlayer;
     private float[] _probs = { 0.2f, 0.2f, 0.2f, 0.2f, 0.15f, 0.05f };
 
+    // Camera
+    private CinemachineInputAxisController _playerCameraController;
+    private CinemachinePanTilt _cameraPanTilt;
+
     // Run Away
     private Vector3 _respawnPoint;
     private bool _respawnPointSet;
@@ -66,6 +70,8 @@ public class EnemyAI : MonoBehaviour, IHear
         _player = GameObject.FindWithTag("Player").transform;
         _enemy = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
+        _playerCameraController = CameraPlayer.GetComponent<CinemachineInputAxisController>();
+        _cameraPanTilt = CameraPlayer.GetComponent<CinemachinePanTilt>();
         _speed = _enemy.speed;
     }
 
@@ -195,6 +201,7 @@ public class EnemyAI : MonoBehaviour, IHear
         }
     }
 
+    
     private IEnumerator ScreenShake()
     {
         float time = 0;
@@ -219,8 +226,7 @@ public class EnemyAI : MonoBehaviour, IHear
         RedLight.enabled = true;
         Blood.SetActive(true);
         AudioManager.Instance.PlaySFXBlood();
-        
-        
+
         BodyPart bodyPart = BodyPartsProbability();
         AudioManager.Instance.PlaySFXBreath();
         _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 100);
@@ -231,15 +237,31 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         yield return new WaitForSeconds(2.5f);
         
-        _runAway = true;    
-        _blink.SetTrigger("Blink");
+        transform.Translate(Vector3.back * 1f);
+        //yield return new WaitForSeconds(1f);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.ScaryLaugh);
+           
+        
+        _playerCameraController.enabled = false;
         RedLight.enabled = false;
-        yield return new WaitForSeconds(1f);
-        CameraManager.SwitchCamera(CameraPlayer); 
+        yield return new WaitForSeconds(1.5f);
+        _blink.SetTrigger("Blink");
+        _runAway = true;
+        _cameraPanTilt.TiltAxis.Value = -30f;
+        
         Blood.SetActive(false);
-        yield return new WaitForSeconds(2f);
+        CameraManager.SwitchCamera(CameraPlayer); 
+        
+        
+        yield return new WaitForSeconds(3f);
+        
         _blink.SetTrigger("BlinkOpen");
+        AudioManager.Instance.PlaySFXBreath();
+
         OnEnemyAttack?.Invoke(true);
+        yield return new WaitForSeconds(1f);
+        _playerCameraController.enabled = true;
+
     }
 
     private void RunAway()
@@ -248,7 +270,8 @@ public class EnemyAI : MonoBehaviour, IHear
         if (!_respawnPointSet) SearchRespawnPoint();
 
         transform.LookAt(_player);
-        _enemy.speed = _speed * 4f;
+        
+        _enemy.speed = _speed*3;
         _enemy.SetDestination(_respawnPoint);
         Vector3 distanceToRespawnPoint = transform.position - _respawnPoint;
         if (distanceToRespawnPoint.magnitude < 1.5f)
@@ -320,5 +343,10 @@ public class EnemyAI : MonoBehaviour, IHear
             }
         }
         return (BodyPart)_probs.Length - 1;      
+    }
+
+    public void PlayFootsteps()
+    {
+        AudioManager.Instance.PlayEnemyFootstep();
     }
 }
