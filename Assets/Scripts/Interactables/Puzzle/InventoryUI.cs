@@ -86,9 +86,10 @@ public class InventoryUI : MonoBehaviour
             if (playerMovement != null)
                 playerMovement.canMove = true;
 
-            // Lock cursor
+            // Alan change - Lock cursor
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            Time.timeScale = 1f;
         }
         else
         {
@@ -105,9 +106,10 @@ public class InventoryUI : MonoBehaviour
         if (playerMovement != null)
             playerMovement.canMove = false;
         
-        // Unlock cursor
+        // Alan change - Unlock cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        Time.timeScale = 0f;
     }
 
     public void RefreshDisplay()
@@ -202,6 +204,11 @@ public class InventoryUI : MonoBehaviour
 
                         if (playerMovement != null)
                             playerMovement.canMove = true;
+
+                        // Alan change 
+                        Cursor.lockState = CursorLockMode.Locked;
+                        Cursor.visible = false;
+                        Time.timeScale = 1f;
                     }
                 }
                 else
