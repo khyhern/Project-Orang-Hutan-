@@ -14850,6 +14850,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
         type: 3}
+      propertyPath: arm
+      value: 
+      objectReference: {fileID: 5445108329838777379, guid: f4c527ffa5afaae41a0343e2cc6bc094,
+        type: 3}
+    - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
+        type: 3}
+      propertyPath: leg
+      value: 
+      objectReference: {fileID: 1402964742081955862, guid: 421c53496c38b0d4d84a684af7e82b3c,
+        type: 3}
+    - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
+        type: 3}
       propertyPath: Blood
       value: 
       objectReference: {fileID: 1644669752}

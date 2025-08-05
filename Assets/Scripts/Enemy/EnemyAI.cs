@@ -27,6 +27,10 @@ public class EnemyAI : MonoBehaviour, IHear
     public Light WhiteLight;
     public GameObject Blood;
 
+    [Header("leg and arm models")]
+    public GameObject leg;
+    public GameObject arm;
+
     #region Internal
     private Animator _animator;
     private Transform _player;
@@ -230,6 +234,16 @@ public class EnemyAI : MonoBehaviour, IHear
         BodyPart bodyPart = BodyPartsProbability();
         AudioManager.Instance.PlaySFXBreath();
         _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 100);
+
+        if (bodyPart == BodyPart.LeftArm || bodyPart == BodyPart.RightArm)
+        {
+            Instantiate(arm, _player.position, Quaternion.identity);
+        }
+        else if (bodyPart == BodyPart.LeftLeg || bodyPart == BodyPart.RightLeg)
+        {
+            Instantiate(leg, _player.position, Quaternion.identity);
+        }
+
         StartCoroutine(Stop());
     }
 

@@ -53,7 +53,7 @@ public class PlayerHealth : MonoBehaviour
         if (IsDead()) return;
 
         currentHealth = Mathf.Max(currentHealth - amount, 0);
-        Debug.Log($"Player took {amount} global damage. Current HP: {currentHealth}");
+        //Debug.Log($"Player took {amount} global damage. Current HP: {currentHealth}");
 
         if (IsDead())
         {
