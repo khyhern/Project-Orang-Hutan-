@@ -188,6 +188,7 @@ public class EnemyAI : MonoBehaviour, IHear
             OnEnemyAttack?.Invoke(false);
             WhiteLight.enabled = true;
             CameraManager.SwitchCamera(CameraEnemy);
+            Debug.Log("enemy camera" );
             AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
             StartCoroutine(ScreenShake());
 
