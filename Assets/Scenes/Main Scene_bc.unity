@@ -3646,6 +3646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryCanvas: {fileID: 379806527}
   gridContainer: {fileID: 583632183}
+  consumableGridContainer: {fileID: 0}
   itemButtonPrefab: {fileID: 6347307126128128693, guid: 589b7099731c3ad45904a75199333df1,
     type: 3}
   useButton: {fileID: 1522388096}
@@ -3674,9 +3675,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093bdab20e3b7714fac394b551d45e4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateA: -10
+  rotateB: -4
   flashlightPrefab: {fileID: 366769767657601182, guid: 5158e6545e88ee543ad3dd94075844ff,
     type: 3}
-  flashlightSpawnPoint: {fileID: 1644669751}
 --- !u!4 &542776707
 Transform:
   m_ObjectHideFlags: 0
@@ -5042,10 +5044,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showPrompt: 1
-  isLocked: 1
   requiresKey: 1
-  requiredKeyID: Rusty Key
-  objectID: Suspicious door
+  requiredKeyItem: {fileID: 0}
+  consumeKeyOnUse: 0
   lockedMessage: The door is locked.
   successMessage: The door opens.
   lockedTextColor: {r: 1, g: 0, b: 0, a: 1}
@@ -6974,6 +6975,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 313933143919761625, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: ScaryLaugh
+      value: 
+      objectReference: {fileID: 8300000, guid: ffad223d1f6160447a14a89dff841c39, type: 3}
     - target: {fileID: 2707760683211339861, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7034,6 +7040,12 @@ PrefabInstance:
       propertyPath: MinDistance
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -1871137825461908813, guid: 62b63636583f90c429748c88b8d9e18c,
+        type: 2}
     - target: {fileID: 8127298785674245819, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}
       propertyPath: m_Name
@@ -7264,7 +7276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0f23a262dca1204ea684395bb0c8b35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemID: Rusty Key
+  puzzleItemData: {fileID: 0}
 --- !u!135 &1063183730
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -11595,12 +11607,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1644669754}
   m_SourcePrefab: {fileID: 100100000, guid: 420acbcd244e33c458689f1c7dd27739, type: 3}
---- !u!4 &1644669751 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3787382651685629953, guid: 420acbcd244e33c458689f1c7dd27739,
-    type: 3}
-  m_PrefabInstance: {fileID: 1644669750}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1644669752 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3946965041761718862, guid: 420acbcd244e33c458689f1c7dd27739,
@@ -14646,8 +14652,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}
+      propertyPath: m_Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
       propertyPath: m_Volume
-      value: 0.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}
@@ -14659,6 +14670,12 @@ PrefabInstance:
       propertyPath: MinDistance
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3488440042816425526, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -1871137825461908813, guid: 62b63636583f90c429748c88b8d9e18c,
+        type: 2}
     - target: {fileID: 8127298785674245819, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}
       propertyPath: m_Name
