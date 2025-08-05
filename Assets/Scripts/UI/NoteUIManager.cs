@@ -16,12 +16,17 @@ public class NoteUIManager : MonoBehaviour
     [Header("Settings")]
     public KeyCode closeKey = KeyCode.E;
 
+    // Track note state internally and expose globally
     private bool isNoteOpen = false;
+    public static bool IsNoteOpen { get; private set; }
 
     private void Start()
     {
         if (notePanel != null)
             notePanel.SetActive(false);
+
+        isNoteOpen = false;
+        IsNoteOpen = false;
     }
 
     private void Update()
@@ -34,7 +39,7 @@ public class NoteUIManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Ensure cursor stays hidden during note reading (Unity sometimes enables it unexpectedly)
+        // Ensure cursor stays hidden during note reading
         if (isNoteOpen && Cursor.visible)
         {
             Cursor.visible = false;
@@ -48,15 +53,16 @@ public class NoteUIManager : MonoBehaviour
         noteText.text = content;
         notePanel.SetActive(true);
         isNoteOpen = true;
+        IsNoteOpen = true;
 
         Time.timeScale = 0f;
 
         ToggleGameplayUI(false);
 
-        // Optional: block player input
+        // Block player input if using a global input blocker
         InputBlocker.IsInputBlocked = true;
 
-        // Lock mouse inside window & hide it (prevents flicker)
+        // Lock mouse inside window and hide it
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
@@ -67,15 +73,16 @@ public class NoteUIManager : MonoBehaviour
 
         notePanel.SetActive(false);
         isNoteOpen = false;
+        IsNoteOpen = false;
 
         Time.timeScale = 1f;
 
         ToggleGameplayUI(true);
 
-        // Optional: unblock player input
+        // Unblock player input
         InputBlocker.IsInputBlocked = false;
 
-        // Lock and hide cursor for first-person gameplay
+        // Lock and hide cursor for gameplay
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
