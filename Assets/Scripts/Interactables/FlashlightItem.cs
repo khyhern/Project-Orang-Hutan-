@@ -8,7 +8,7 @@ public class FlashlightItem : MonoBehaviour, IDescriptiveInteractable
 
     public void Interact()
     {
-        InventoryManager.Instance.SetFlashlightExists(true);
+        FlashlightSpawn.Instance.SetFlashlightExists(true);
         Debug.Log($"[Flashlight] {itemID} collected.");
         Destroy(gameObject);
     }

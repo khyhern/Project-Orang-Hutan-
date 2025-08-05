@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,7 +42,6 @@ public class FlashlightController : MonoBehaviour
             isDepleted = false;
         }
 
-
         if (batteryFillImage == null)
         {
             GameObject uiObj = GameObject.Find("Battery lifetime bar");
@@ -72,8 +70,6 @@ public class FlashlightController : MonoBehaviour
         {
             DrainBattery();
         }
-
-        FaceCenterOfScreen();
     }
 
     void ToggleLight()
@@ -100,8 +96,6 @@ public class FlashlightController : MonoBehaviour
             isDepleted = true;
 
             animator.SetBool("DepletedLight", true); // Transition to Depleted
-
-            // Disable flashlight behavior after depletion
             this.enabled = false;
         }
 
@@ -110,11 +104,9 @@ public class FlashlightController : MonoBehaviour
 
     public void AddBattery(int amount)
     {
-        // If the flashlight was disabled, re-enable it
         if (!this.enabled)
             this.enabled = true;
 
-        // Add battery correctly (without resetting to max!)
         currentLifetime += amount;
         currentLifetime = Mathf.Clamp(currentLifetime, 0f, maxLifetime);
 
@@ -139,18 +131,5 @@ public class FlashlightController : MonoBehaviour
                 }
             }
         }
-    }
-
-    void FaceCenterOfScreen()
-    {
-        if (Camera.main == null) return;
-
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        Vector3 lookDirection = ray.direction;
-
-        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-        targetRotation *= Quaternion.Euler(90f, -4f, 0f);
-
-        transform.rotation = targetRotation;
     }
 }
