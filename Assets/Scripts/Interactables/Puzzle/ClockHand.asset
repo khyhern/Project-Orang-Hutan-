@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 807982da5e58877449dab5d2c7a06371, type: 3}
   m_Name: ClockHand
   m_EditorClassIdentifier: 
-  itemName: ClockHand
+  itemName: Clock Hand
   icon: {fileID: 0}
   prefab: {fileID: 5179861035758970114, guid: ffff9c1dfe8d35142b5919ebce271196, type: 3}
   description: 
