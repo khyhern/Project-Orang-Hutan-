@@ -11,13 +11,17 @@ public class FlashlightSpawn : MonoBehaviour
 
     private Transform flashlightSpawnPointA; // Flashlight point (R)
     private Transform flashlightSpawnPointB; // Flashlight point (L)
+    private Transform flashlightSpawnPointFallback; // Flashlight point (Fallback)
     private Transform currentSpawnPoint;
+
     [SerializeField] private float rotateA = -10f;
     [SerializeField] private float rotateB = -4f;
 
     public GameObject flashlightPrefab;
     private GameObject spawnedFlashlight;
     private bool flashlightSpawned = false;
+
+    private bool manualSwitchAllowed = true; // Lock switching when needed
 
     void Awake()
     {
@@ -28,15 +32,18 @@ public class FlashlightSpawn : MonoBehaviour
 
     void Start()
     {
-        // Auto-find spawn points by name in the scene
         GameObject pointAObj = GameObject.Find("Flashlight point (R)");
         GameObject pointBObj = GameObject.Find("Flashlight point (L)");
+        GameObject pointFallbackObj = GameObject.Find("Flashlight point (N)");
 
         if (pointAObj != null) flashlightSpawnPointA = pointAObj.transform;
         else Debug.LogError("Flashlight point (R) not found.");
 
         if (pointBObj != null) flashlightSpawnPointB = pointBObj.transform;
         else Debug.LogError("Flashlight point (L) not found.");
+
+        if (pointFallbackObj != null) flashlightSpawnPointFallback = pointFallbackObj.transform;
+        else Debug.LogError("Flashlight point (N) not found.");
 
         currentSpawnPoint = flashlightSpawnPointA;
     }
@@ -51,8 +58,9 @@ public class FlashlightSpawn : MonoBehaviour
         if (flashlightSpawned)
         {
             FaceFlashlightToScreenCenter();
+            CheckHandDamageState();
 
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (manualSwitchAllowed && Input.GetKeyDown(KeyCode.Tab))
             {
                 SwitchFlashlightPosition();
             }
@@ -93,7 +101,6 @@ public class FlashlightSpawn : MonoBehaviour
         spawnedFlashlight.transform.SetParent(currentSpawnPoint);
         spawnedFlashlight.transform.localScale = currentSpawnPoint.localScale;
 
-        // Set FPView layer
         spawnedFlashlight.layer = LayerMask.NameToLayer("FPView");
         foreach (Transform child in spawnedFlashlight.transform)
             child.gameObject.layer = LayerMask.NameToLayer("FPView");
@@ -110,16 +117,18 @@ public class FlashlightSpawn : MonoBehaviour
         if (spawnedFlashlight == null || flashlightSpawnPointA == null || flashlightSpawnPointB == null)
             return;
 
-        // Toggle spawn point
         currentSpawnPoint = (currentSpawnPoint == flashlightSpawnPointA) ? flashlightSpawnPointB : flashlightSpawnPointA;
 
-        // Re-parent and reposition flashlight
+        ReattachFlashlight();
+        Debug.Log($"Flashlight switched to {currentSpawnPoint.name}");
+    }
+
+    void ReattachFlashlight()
+    {
         spawnedFlashlight.transform.SetParent(currentSpawnPoint);
         spawnedFlashlight.transform.localPosition = Vector3.zero;
         spawnedFlashlight.transform.localRotation = Quaternion.identity;
-        spawnedFlashlight.transform.localScale = currentSpawnPoint.localScale;
-
-        Debug.Log($"Flashlight switched to {currentSpawnPoint.name}");
+        spawnedFlashlight.transform.localScale = Vector3.one; // Force normal size
     }
 
     void FaceFlashlightToScreenCenter()
@@ -131,15 +140,61 @@ public class FlashlightSpawn : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
 
-        // Slight right offset when at (L) point
         if (currentSpawnPoint == flashlightSpawnPointB)
-            targetRotation *= Quaternion.Euler(90f, rotateA, 0f); // More right
+            targetRotation *= Quaternion.Euler(90f, rotateA, 0f);
+        else if (currentSpawnPoint == flashlightSpawnPointA)
+            targetRotation *= Quaternion.Euler(90f, rotateB, 0f);
         else
-            targetRotation *= Quaternion.Euler(90f, rotateB, 0f);  // Default
+            targetRotation *= Quaternion.Euler(90f, 0f, 0f); // Fallback is centered
 
         spawnedFlashlight.transform.rotation = targetRotation;
     }
+
+    void CheckHandDamageState()
+    {
+        var health = PlayerHealth.Instance;
+        if (health == null) return;
+
+        bool rightBroken = health.IsPartDestroyed(BodyPart.RightArm);
+        bool leftBroken = health.IsPartDestroyed(BodyPart.LeftArm);
+
+        if (rightBroken && leftBroken)
+        {
+            if (currentSpawnPoint != flashlightSpawnPointFallback)
+            {
+                currentSpawnPoint = flashlightSpawnPointFallback;
+                ReattachFlashlight();
+                Debug.Log("Both arms are broken. Flashlight moved to fallback position.");
+            }
+            manualSwitchAllowed = false;
+        }
+        else if (rightBroken)
+        {
+            if (currentSpawnPoint != flashlightSpawnPointB)
+            {
+                currentSpawnPoint = flashlightSpawnPointB;
+                ReattachFlashlight();
+                Debug.Log("Right arm broken. Flashlight switched to left hand.");
+            }
+            manualSwitchAllowed = false;
+        }
+        else if (leftBroken)
+        {
+            if (currentSpawnPoint != flashlightSpawnPointA)
+            {
+                currentSpawnPoint = flashlightSpawnPointA;
+                ReattachFlashlight();
+                Debug.Log("Left arm broken. Flashlight switched to right hand.");
+            }
+            manualSwitchAllowed = false;
+        }
+        else
+        {
+            manualSwitchAllowed = true;
+        }
+    }
 }
+
 
 
 

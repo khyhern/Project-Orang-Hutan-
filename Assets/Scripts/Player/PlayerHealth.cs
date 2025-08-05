@@ -25,6 +25,18 @@ public class PlayerHealth : MonoBehaviour
 
         if (bodyParts == null || bodyParts.Count == 0)
             InitializeBodyParts();
+
+        // Auto-link UI Icons for each body part
+        foreach (var part in bodyParts)
+            part.InitializeUIReference();
+    }
+
+    private void Update()
+    {
+        foreach (var part in bodyParts)
+        {
+            part.ForceUpdateUI();
+        }
     }
 
     private void InitializeBodyParts()
