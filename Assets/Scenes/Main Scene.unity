@@ -3646,6 +3646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryCanvas: {fileID: 379806527}
   gridContainer: {fileID: 583632183}
+  consumableGridContainer: {fileID: 0}
   itemButtonPrefab: {fileID: 6347307126128128693, guid: 589b7099731c3ad45904a75199333df1,
     type: 3}
   useButton: {fileID: 1522388096}
@@ -3674,9 +3675,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 093bdab20e3b7714fac394b551d45e4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateA: -10
+  rotateB: -4
   flashlightPrefab: {fileID: 366769767657601182, guid: 5158e6545e88ee543ad3dd94075844ff,
     type: 3}
-  flashlightSpawnPoint: {fileID: 1644669751}
 --- !u!4 &542776707
 Transform:
   m_ObjectHideFlags: 0
@@ -4758,6 +4760,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759ba569873407e46afa4df7b13de7c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &772066874
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1766034796}
+    m_Modifications:
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.666295
+      objectReference: {fileID: 0}
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.98437023
+      objectReference: {fileID: 0}
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.09069214
+      objectReference: {fileID: 0}
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2318790638390068072, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_Name
+      value: ScreenTransition
+      objectReference: {fileID: 0}
+    - target: {fileID: 2318790638390068072, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 38409917e049ae244b011698e527a4cf, type: 3}
 --- !u!1 &775015676
 GameObject:
   m_ObjectHideFlags: 0
@@ -5042,10 +5117,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showPrompt: 1
-  isLocked: 1
   requiresKey: 1
-  requiredKeyID: Rusty Key
-  objectID: Suspicious door
+  requiredKeyItem: {fileID: 0}
+  consumeKeyOnUse: 0
   lockedMessage: The door is locked.
   successMessage: The door opens.
   lockedTextColor: {r: 1, g: 0, b: 0, a: 1}
@@ -5860,6 +5934,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 889889712}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &868976972 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 80814979381689361, guid: 38409917e049ae244b011698e527a4cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 772066874}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &878586485
 GameObject:
   m_ObjectHideFlags: 0
@@ -6358,7 +6438,7 @@ PrefabInstance:
         type: 3}
       propertyPath: expectedItemData
       value: 
-      objectReference: {fileID: 11400000, guid: e3dc2ad47cca8c540aba520819f74c19,
+      objectReference: {fileID: 11400000, guid: c220d11f9e586024ba5c7b868253a4f9,
         type: 2}
     - target: {fileID: 7138416875388080131, guid: 2119db3022b9589419151b226346ec47,
         type: 3}
@@ -7254,7 +7334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0f23a262dca1204ea684395bb0c8b35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemID: Rusty Key
+  puzzleItemData: {fileID: 0}
 --- !u!135 &1063183730
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7714,7 +7794,7 @@ PrefabInstance:
         type: 3}
       propertyPath: expectedItemData
       value: 
-      objectReference: {fileID: 11400000, guid: c220d11f9e586024ba5c7b868253a4f9,
+      objectReference: {fileID: 11400000, guid: 49bc70a8fcd85464c83dcc8853ce464c,
         type: 2}
     - target: {fileID: 7138416875388080131, guid: 2119db3022b9589419151b226346ec47,
         type: 3}
@@ -11585,12 +11665,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1644669754}
   m_SourcePrefab: {fileID: 100100000, guid: 420acbcd244e33c458689f1c7dd27739, type: 3}
---- !u!4 &1644669751 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3787382651685629953, guid: 420acbcd244e33c458689f1c7dd27739,
-    type: 3}
-  m_PrefabInstance: {fileID: 1644669750}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1644669752 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3946965041761718862, guid: 420acbcd244e33c458689f1c7dd27739,
@@ -11977,6 +12051,7 @@ Transform:
   - {fileID: 84236146}
   - {fileID: 425058225}
   - {fileID: 163718661}
+  - {fileID: 868976972}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1801467808
@@ -12664,6 +12739,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pillar
       objectReference: {fileID: 0}
+    - target: {fileID: 7138416875388080131, guid: 2119db3022b9589419151b226346ec47,
+        type: 3}
+      propertyPath: expectedItemData
+      value: 
+      objectReference: {fileID: 11400000, guid: e3dc2ad47cca8c540aba520819f74c19,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -142,4 +142,12 @@ public class CutsceneEnemyController : MonoBehaviour
         yield return new WaitForSeconds(ExitDelay2);
         CameraManager.SwitchCamera(cameraPlayer);
     }
+
+    /// <summary>
+    /// Called by animation event to play footstep SFX.
+    /// </summary>
+    public void PlayFootsteps()
+    {
+        AudioManager.Instance.PlayEnemyFootstep();
+    }
 }
