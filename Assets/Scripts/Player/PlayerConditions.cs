@@ -9,6 +9,8 @@ public class PlayerConditions
     public bool IsSprinting { get; set; }
     public bool IsWalking { get; set; }
 
+    public bool IsCollide { get; set; }
+
     public void Reset()
     {
         IsSprinting = false;

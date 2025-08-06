@@ -3732,7 +3732,6 @@ MonoBehaviour:
     type: 3}
   useButton: {fileID: 1090003122}
   combineButton: {fileID: 1575036285}
-  fpCamera: {fileID: 0}
 --- !u!114 &542776705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16011,7 +16010,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 1
-    Time: 2
+    Time: 0
     CustomCurve:
       serializedVersion: 2
       m_Curve: []

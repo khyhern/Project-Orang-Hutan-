@@ -147,6 +147,7 @@ public class EnemyAI : MonoBehaviour, IHear
     private void SearchSound()
     {
         _animator.SetBool("Run", false);
+        _animator.SetBool("Look", false);
         if (!_searchPointSet) SearchSoundPoint();
 
         if (_searchPointSet)
@@ -252,16 +253,15 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         yield return new WaitForSeconds(2.5f);
         
-        transform.Translate(Vector3.back * 1f);
-        //yield return new WaitForSeconds(1f);
         AudioManager.Instance.PlaySFX(AudioManager.Instance.ScaryLaugh);
-           
-        
+
+        _runAway = true;
+
         _playerCameraController.enabled = false;
         RedLight.enabled = false;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
         _blink.SetTrigger("Blink");
-        _runAway = true;
+        
         _cameraPanTilt.TiltAxis.Value = -30f;
         
         Blood.SetActive(false);
@@ -303,11 +303,11 @@ public class EnemyAI : MonoBehaviour, IHear
     private void SearchRespawnPoint()
     {
         
-        float randomZ = UnityEngine.Random.Range(-_respawnRange, _respawnRange);
+        float randomZ = UnityEngine.Random.Range(-_respawnRange, 0);
         float randomX = UnityEngine.Random.Range(-_respawnRange, _respawnRange);
         randomZ = Mathf.Abs(randomZ) < 20f ? 20f : randomZ; // Ensure minimum distance
         randomX = Mathf.Abs(randomX) < 20f ? 20f : randomX; // Ensure minimum distance
-        _respawnPoint = new Vector3(_player.transform.position.x + randomX, _player.transform.position.y, _player.transform.position.z + randomZ);
+        _respawnPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
         if (Physics.Raycast(_respawnPoint, -transform.up, 2f, whatIsGround))
         {
             _respawnPointSet = true;

@@ -31,6 +31,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         PlayBGM();
         PlayHeartBeat();
+        _sfxEnemyFootstep = GameObject.Find("SFX - EnemyWalk").GetComponent<AudioSource>();
     }
 
     private void PlayBGM()

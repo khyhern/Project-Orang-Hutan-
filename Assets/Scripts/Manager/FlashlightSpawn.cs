@@ -128,7 +128,7 @@ public class FlashlightSpawn : MonoBehaviour
         spawnedFlashlight.transform.SetParent(currentSpawnPoint);
         spawnedFlashlight.transform.localPosition = Vector3.zero;
         spawnedFlashlight.transform.localRotation = Quaternion.identity;
-        spawnedFlashlight.transform.localScale = Vector3.one; // Force normal size
+        spawnedFlashlight.transform.localScale = currentSpawnPoint.localScale; // Force normal size
     }
 
     void FaceFlashlightToScreenCenter()

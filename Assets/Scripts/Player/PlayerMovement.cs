@@ -108,18 +108,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_conditions.IsSprinting)
         {
+            Debug.Log(_conditions.IsCollide);
             _stamina -= 20f * Time.deltaTime;
 
-            if (Body.localPosition.z < 2f)
+            if (Body.localPosition.z < 2f && !_conditions.IsCollide)
             {
                 Body.Translate(Vector3.forward * 1.5f * Time.deltaTime);
             }
         }
         else
         {
-            if (Body.localPosition.z > 0f)
+            if (Body.localPosition.z > 0f && !_conditions.IsCollide)
             {
-                Body.Translate(Vector3.back * 2f * Time.deltaTime);
+                Body.Translate(Vector3.back * 1f * Time.deltaTime);
             }
 
             _stamina += 20f * Time.deltaTime;
@@ -157,6 +158,18 @@ public class PlayerMovement : MonoBehaviour
         _stamina = Mathf.Clamp(_stamina, 0f, _maxStamina);
         UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
         Debug.Log($"[Player] Restored {amount} stamina. Current: {_stamina}/{_maxStamina}");
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.layer != 7 && !_conditions.IsSprinting) // level components layer "wall"
+        {
+            _conditions.IsCollide = false;
+        }
+        else if (hit.gameObject.layer == 7)
+        {
+            _conditions.IsCollide = true;
+        }
     }
 
     private void OnDrawGizmos()
