@@ -26,6 +26,7 @@ public class EnemyAI : MonoBehaviour, IHear
     public Light RedLight;
     public Light WhiteLight;
     public GameObject Blood;
+    public GameObject BloodOverlay;
 
     [Header("leg and arm models")]
     public GameObject leg;
@@ -147,7 +148,6 @@ public class EnemyAI : MonoBehaviour, IHear
     private void SearchSound()
     {
         _animator.SetBool("Run", false);
-        _animator.SetBool("Look", false);
         if (!_searchPointSet) SearchSoundPoint();
 
         if (_searchPointSet)
@@ -171,6 +171,7 @@ public class EnemyAI : MonoBehaviour, IHear
         _searchPoint = new Vector3(_soundPos.x + randomX, _soundPos.y, _soundPos.z + randomZ);
         if (Physics.Raycast(_searchPoint, -transform.up, 2f, whatIsGround))
         {
+            _animator.SetBool("Look", false);
             _searchPointSet = true;
         }
     }
@@ -230,6 +231,7 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         WhiteLight.enabled = false;
         RedLight.enabled = true;
+        BloodOverlay.SetActive(true);   
         Blood.SetActive(true);
         AudioManager.Instance.PlaySFXBlood();
 
