@@ -5,6 +5,7 @@ using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class EnemyAI : MonoBehaviour, IHear
 {
@@ -39,6 +40,7 @@ public class EnemyAI : MonoBehaviour, IHear
     private float _speed;
     private Vector3 _dirToPlayer;
     private float[] _probs = { 0.2f, 0.2f, 0.2f, 0.2f, 0.15f, 0.05f };
+    private int _bodyPartLeft = 4;
 
     // Camera
     private CinemachineInputAxisController _playerCameraController;
@@ -231,7 +233,7 @@ public class EnemyAI : MonoBehaviour, IHear
     {
         WhiteLight.enabled = false;
         RedLight.enabled = true;
-        BloodOverlay.SetActive(true);   
+
         Blood.SetActive(true);
         AudioManager.Instance.PlaySFXBlood();
 
@@ -271,7 +273,7 @@ public class EnemyAI : MonoBehaviour, IHear
         
         
         yield return new WaitForSeconds(3f);
-        
+        BloodOverlay.SetActive(true);
         _blink.SetTrigger("BlinkOpen");
         AudioManager.Instance.PlaySFXBreath();
 
@@ -352,6 +354,24 @@ public class EnemyAI : MonoBehaviour, IHear
         {
             if (randomPoint < _probs[i])
             {
+                if ((BodyPart)i == BodyPart.LeftLeg ||
+                    (BodyPart)i == BodyPart.RightLeg ||
+                    (BodyPart)i == BodyPart.LeftArm ||
+                    (BodyPart)i == BodyPart.RightArm)
+                {
+                    float probIncrement = _probs[i] / _bodyPartLeft;
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (j != i && _probs[j] != 0)
+                        {
+                            _probs[j] += probIncrement; // Increase the probability of other body parts
+                        }
+                    }
+                    _probs[i] = 0f; // Reset the probability of the selected body part
+                    _bodyPartLeft--;
+                }
+
+                Debug.Log("Probs for body parts " + string.Join(", ", _probs));
                 return (BodyPart)i;       
             }
             else 
