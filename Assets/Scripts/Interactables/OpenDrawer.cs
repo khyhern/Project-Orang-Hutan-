@@ -29,14 +29,14 @@ public class OpenDrawer : MonoBehaviour, IDescriptiveInteractable
         // Auto-assign text box by name if not set manually
         if (messageText == null)
         {
-            GameObject obj = GameObject.Find("InteractionDialogue");
+            GameObject obj = GameObject.Find("SubtitleText");
             if (obj != null && obj.TryGetComponent(out TextMeshProUGUI tmp))
             {
                 messageText = tmp;
             }
             else
             {
-                Debug.LogWarning("[Drawer] 'InteractionDialogue' TextMeshProUGUI not found.");
+                Debug.LogWarning("[Drawer] 'SubtitleText' TextMeshProUGUI not found.");
             }
         }
     }

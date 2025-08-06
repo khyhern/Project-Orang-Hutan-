@@ -25,11 +25,11 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
     {
         if (messageText == null)
         {
-            GameObject obj = GameObject.Find("InteractionDialogue");
+            GameObject obj = GameObject.Find("SubtitleText");
             if (obj != null && obj.TryGetComponent(out TextMeshProUGUI tmp))
                 messageText = tmp;
             else
-                Debug.LogWarning("[DOOR] 'InteractionDialogue' TextMeshProUGUI not found.");
+                Debug.LogWarning("[DOOR] 'SubtitleText' TextMeshProUGUI not found.");
         }
     }
 
