@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 807982da5e58877449dab5d2c7a06371, type: 3}
   m_Name: HairPin
   m_EditorClassIdentifier: 
-  itemName: HairPin
+  itemName: Hair Pin
   icon: {fileID: 0}
   prefab: {fileID: 5520472919067988567, guid: 30e28f56a506108478d049512a442be7, type: 3}
   description: 

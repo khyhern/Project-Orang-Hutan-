@@ -14,6 +14,10 @@ public class BodyPartHealth
     public Color injuredColor = Color.yellow;
     public Color criticalColor = Color.red;
 
+    [Header("Destroyed State Settings")]
+    public bool disableUIOnDestroyed = false;  
+    public Color destroyedColor = Color.gray;
+
     public bool isBleeding { get; private set; }
     public bool IsDestroyed => currentHealth <= 0;
 
@@ -96,6 +100,22 @@ public class BodyPartHealth
     private void UpdateUI()
     {
         if (UIIcon == null) return;
+
+        if (IsDestroyed)
+        {
+            if (disableUIOnDestroyed)
+            {
+                UIIcon.gameObject.SetActive(false);
+            }
+            else
+            {
+                UIIcon.gameObject.SetActive(true);
+                UIIcon.color = destroyedColor;
+            }
+            return;
+        }
+
+        UIIcon.gameObject.SetActive(true);
 
         float healthPercent = (float)currentHealth / maxHealth;
 

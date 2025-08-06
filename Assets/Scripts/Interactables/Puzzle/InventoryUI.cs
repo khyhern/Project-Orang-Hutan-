@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.Cinemachine;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class InventoryUI : MonoBehaviour
     public GameObject itemButtonPrefab;
     public Button useButton;
     public Button combineButton;
+    private GameObject fpCamera; // FPCamera 
+    private MonoBehaviour inputAxisController;  // Cinemachine Input Axis Controller
 
     public static InventoryUI Instance { get; private set; }
 
@@ -44,6 +47,27 @@ public class InventoryUI : MonoBehaviour
     {
         StartCoroutine(RegisterWhenReady());
         playerMovement = FindObjectOfType<PlayerMovement>();
+
+        // Alan change - Auto-find the CinemachineInputAxisController script under Main Camera
+        fpCamera = GameObject.Find("FPCamera");
+        if (fpCamera == null)
+        {
+            // Alternative: Search in children if naming convention is uncertain
+            Transform fpCamTransform = transform.root.Find("FPCamera");
+            if (fpCamTransform != null)
+                fpCamera = fpCamTransform.gameObject;
+        }
+
+        if (fpCamera != null)
+        {
+            inputAxisController = fpCamera.GetComponent<CinemachineInputAxisController>();
+            if (inputAxisController == null)
+                Debug.LogWarning("CinemachineInputAxisController not found on FPCamera!");
+        }
+        else
+        {
+            Debug.LogError("FPCamera GameObject not found. Please ensure it is named 'FPCamera' in the hierarchy.");
+        }
 
         ApplyButtonHighlightColors(useButton);
         ApplyButtonHighlightColors(combineButton);
@@ -87,10 +111,12 @@ public class InventoryUI : MonoBehaviour
             if (playerMovement != null)
                 playerMovement.canMove = true;
 
-            // Alan change - Lock cursor
+            // Alan change - Re-enable Camera Control
+            if (inputAxisController != null)
+                inputAxisController.enabled = true;
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            Time.timeScale = 1f;
         }
         else
         {
@@ -106,11 +132,14 @@ public class InventoryUI : MonoBehaviour
 
         if (playerMovement != null)
             playerMovement.canMove = false;
-        
+
         // Alan change - Unlock cursor
+        // Disable Camera Control
+        if (inputAxisController != null)
+            inputAxisController.enabled = false;
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Time.timeScale = 0f;
     }
 
     public void RefreshDisplay()
@@ -233,9 +262,12 @@ public class InventoryUI : MonoBehaviour
                             playerMovement.canMove = true;
 
                         // Alan change 
+                        // Re-enable Camera Control
+                        if (inputAxisController != null)
+                            inputAxisController.enabled = true;
+
                         Cursor.lockState = CursorLockMode.Locked;
                         Cursor.visible = false;
-                        Time.timeScale = 1f;
                     }
                 }
                 else

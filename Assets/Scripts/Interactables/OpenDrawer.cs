@@ -14,7 +14,7 @@ public class OpenDrawer : MonoBehaviour, IDescriptiveInteractable
     [SerializeField] private Color lockedTextColor = Color.red;
 
     [Header("Message Display")]
-    [SerializeField] private TextMeshProUGUI messageText;
+    private TextMeshProUGUI messageText;
     [SerializeField] private float messageDuration = 3f;
 
     [Header("Lock Settings")]

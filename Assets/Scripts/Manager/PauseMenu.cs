@@ -18,20 +18,23 @@ public class PauseMenuUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)) //ESC key to pause game
-		{
-			if(isPaused)
-			{
-				ResumeGame();
-			}
-			else
-			{
-				PauseGame();
-			}
-		}
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (NoteUIManager.IsNoteOpen) return; // Don't allow pausing when note is open
+
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
     }
-	
-	public void PauseGame()
+
+
+    public void PauseGame()
 	{
 		PauseMenu.SetActive(true);
 		Time.timeScale = 0f;
