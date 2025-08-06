@@ -1,7 +1,11 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
+//using System.Collections.Generic;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class EnemyAI : MonoBehaviour, IHear
 {
@@ -11,12 +15,41 @@ public class EnemyAI : MonoBehaviour, IHear
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private float _walkPointRange;
     [SerializeField] private float _searchRange;
+    [SerializeField] private float _respawnRange;
+
+    [Header("Camera")]
+    [SerializeField] private CinemachineImpulseSource _impulseSource;
+    [SerializeField] private Animator _blink;
+    public CinemachineCamera CameraPlayer;
+    public CinemachineCamera CameraEnemy;
+
+    [Header("Lights and Effects")]
+    public Light RedLight;
+    public Light WhiteLight;
+    public GameObject Blood;
+    public GameObject BloodOverlay;
+
+    [Header("leg and arm models")]
+    public GameObject leg;
+    public GameObject arm;
 
     #region Internal
+    private Animator _animator;
     private Transform _player;
     private NavMeshAgent _enemy;
     private float _speed;
-    private Vector3 dirToPlayer;
+    private Vector3 _dirToPlayer;
+    private float[] _probs = { 0.2f, 0.2f, 0.2f, 0.2f, 0.15f, 0.05f };
+    private int _bodyPartLeft = 4;
+
+    // Camera
+    private CinemachineInputAxisController _playerCameraController;
+    private CinemachinePanTilt _cameraPanTilt;
+
+    // Run Away
+    private Vector3 _respawnPoint;
+    private bool _respawnPointSet;
+    private bool _runAway;
 
     // Searching
     private Vector3 _soundPos;
@@ -30,25 +63,30 @@ public class EnemyAI : MonoBehaviour, IHear
     
 
     // Attacking
-    private float _timeBetweenAttacks;
     private bool _alreadyAttacked;
 
     // States
     private bool _playerInSightRange, _playerInAttackRange;
+
+    // Event
+    public static Action<bool> OnEnemyAttack;
     #endregion
 
     private void Start()
     {
         _player = GameObject.FindWithTag("Player").transform;
         _enemy = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
+        _playerCameraController = CameraPlayer.GetComponent<CinemachineInputAxisController>();
+        _cameraPanTilt = CameraPlayer.GetComponent<CinemachinePanTilt>();
         _speed = _enemy.speed;
     }
 
     private void Update()
     {
         // Check for sight and attack ranges
-        dirToPlayer = _player.position - transform.position;
-        Ray ray = new Ray(transform.position, dirToPlayer.normalized);
+        _dirToPlayer = _player.position - transform.position;
+        Ray ray = new Ray(transform.position, _dirToPlayer.normalized);
         if (Physics.Raycast(ray, out RaycastHit hit, _sightRange, whatIsThis))
         {
             if (hit.collider.CompareTag("Player"))
@@ -64,14 +102,17 @@ public class EnemyAI : MonoBehaviour, IHear
        
 
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
-        if (_searching && !_playerInSightRange) SearchSound();
-        if (!_playerInSightRange && !_playerInAttackRange && !_searching) Patroling();
-        if (_playerInSightRange && !_playerInAttackRange) ChasePlayer();
-        if (_playerInAttackRange && _playerInSightRange) AttackPlayer(); 
+        if (_runAway) RunAway();
+        if (_searching && !_playerInSightRange && !_runAway) SearchSound();
+        if (!_playerInSightRange && !_playerInAttackRange && !_searching && !_runAway) Patroling();
+        if (_playerInSightRange && !_playerInAttackRange && !_runAway) ChasePlayer();
+        if (_playerInAttackRange && _playerInSightRange && !_runAway) AttackPlayer();
+        
     }
 
     private void Patroling()
     {
+        _animator.SetBool("Run", false);
         if (!_walkPointSet) SearchWalkPoint();
 
         if (_walkPointSet)
@@ -84,16 +125,16 @@ public class EnemyAI : MonoBehaviour, IHear
         {
             _walkPointSet = false;
         }
-        _enemy.speed = _speed;
     }
 
     private void SearchWalkPoint()
     {
-        float randomZ = Random.Range(-_walkPointRange, _walkPointRange);
-        float randomX = Random.Range(-_walkPointRange, _walkPointRange);
+        float randomZ = UnityEngine.Random.Range(-_walkPointRange, _walkPointRange);
+        float randomX = UnityEngine.Random.Range(-_walkPointRange, _walkPointRange);
         _walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
         if (Physics.Raycast(_walkPoint, -transform.up, 2f, whatIsGround))
         {
+            _animator.SetTrigger("Look");
             _walkPointSet = true;
         }
         
@@ -102,11 +143,13 @@ public class EnemyAI : MonoBehaviour, IHear
     private void ChasePlayer()
     {
         _enemy.SetDestination(_player.position);
-        _enemy.speed = _speed * 2.5f;
+        _enemy.speed = _speed * 2f;
+        _animator.SetBool("Run", true); 
     }
 
     private void SearchSound()
     {
+        _animator.SetBool("Run", false);
         if (!_searchPointSet) SearchSoundPoint();
 
         if (_searchPointSet)
@@ -114,8 +157,7 @@ public class EnemyAI : MonoBehaviour, IHear
             _enemy.SetDestination(_searchPoint);
         }
         
-        Vector3 distanceToSearchPoint = transform.position - _searchPoint;
-        Debug.Log("Finding sound");
+        Vector3 distanceToSearchPoint = transform.position - _searchPoint;    
         if (distanceToSearchPoint.magnitude < 1.5f)
         {
             _searchPointSet = false;
@@ -126,11 +168,12 @@ public class EnemyAI : MonoBehaviour, IHear
 
     private void SearchSoundPoint()
     {
-        float randomZ = Random.Range(-_searchRange, _searchRange);
-        float randomX = Random.Range(-_searchRange, _searchRange);
+        float randomZ = UnityEngine.Random.Range(-_searchRange, _searchRange);
+        float randomX = UnityEngine.Random.Range(-_searchRange, _searchRange);
         _searchPoint = new Vector3(_soundPos.x + randomX, _soundPos.y, _soundPos.z + randomZ);
         if (Physics.Raycast(_searchPoint, -transform.up, 2f, whatIsGround))
         {
+            _animator.SetBool("Look", false);
             _searchPointSet = true;
         }
     }
@@ -138,26 +181,146 @@ public class EnemyAI : MonoBehaviour, IHear
     private void AttackPlayer()
     {
         _enemy.SetDestination(transform.position);
+        _animator.SetBool("Run", false);
 
         transform.LookAt(_player);
 
+        int attack = UnityEngine.Random.Range(0, 2);
+
         if (!_alreadyAttacked)
         {
-            // Attack code here (Ryan)
-            Debug.Log("Attack!");
-            _alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), _timeBetweenAttacks);
+            OnEnemyAttack?.Invoke(false);
+            WhiteLight.enabled = true;
+            CameraManager.SwitchCamera(CameraEnemy);
+            Debug.Log("enemy camera" );
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.MurdererAttack);
+            StartCoroutine(ScreenShake());
+
+            switch (attack)
+            {
+                case 0:
+                    _animator.SetTrigger("Attack1");
+                    _alreadyAttacked = true;
+                    break;
+                case 1:
+                    _animator.SetTrigger("Attack2");
+                    _alreadyAttacked = true;
+                    break;
+            }
         }
     }
 
-    private void ResetAttack()
+    
+    private IEnumerator ScreenShake()
     {
-        _alreadyAttacked = false;
+        float time = 0;
+
+        while (time < 4f)
+        {
+            float x = UnityEngine.Random.Range(-0.3f, 0.3f);
+            float y = UnityEngine.Random.Range(-0.3f, 0.3f);
+
+            Vector3 shakeVelocity = new Vector3(x, y, 0.2f);
+
+            _impulseSource.GenerateImpulseWithVelocity(shakeVelocity);
+            yield return new WaitForSeconds(0.3f);
+
+            time += 0.3f;
+        }
+    }
+
+    public void DamagePlayer()
+    {
+        WhiteLight.enabled = false;
+        RedLight.enabled = true;
+
+        Blood.SetActive(true);
+        AudioManager.Instance.PlaySFXBlood();
+
+        BodyPart bodyPart = BodyPartsProbability();
+        AudioManager.Instance.PlaySFXBreath();
+        _player.GetComponent<PlayerHealth>().DamagePart(bodyPart, 100);
+
+        if (bodyPart == BodyPart.LeftArm || bodyPart == BodyPart.RightArm)
+        {
+            Instantiate(arm, _player.position, Quaternion.identity);
+        }
+        else if (bodyPart == BodyPart.LeftLeg || bodyPart == BodyPart.RightLeg)
+        {
+            Instantiate(leg, _player.position, Quaternion.identity);
+        }
+
+        StartCoroutine(Stop());
+    }
+
+    private IEnumerator Stop()
+    {
+        yield return new WaitForSeconds(2.5f);
+        
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.ScaryLaugh);
+
+        _runAway = true;
+
+        _playerCameraController.enabled = false;
+        RedLight.enabled = false;
+        yield return new WaitForSeconds(2f);
+        _blink.SetTrigger("Blink");
+        
+        _cameraPanTilt.TiltAxis.Value = -30f;
+        
+        Blood.SetActive(false);
+        CameraManager.SwitchCamera(CameraPlayer); 
+        
+        
+        yield return new WaitForSeconds(3f);
+        BloodOverlay.SetActive(true);
+        _blink.SetTrigger("BlinkOpen");
+        AudioManager.Instance.PlaySFXBreath();
+
+        OnEnemyAttack?.Invoke(true);
+        yield return new WaitForSeconds(1f);
+        _playerCameraController.enabled = true;
+
+    }
+
+    private void RunAway()
+    {
+        _searching = false;
+        if (!_respawnPointSet) SearchRespawnPoint();
+
+        transform.LookAt(_player);
+        
+        _enemy.speed = _speed*3;
+        _enemy.SetDestination(_respawnPoint);
+        Vector3 distanceToRespawnPoint = transform.position - _respawnPoint;
+        if (distanceToRespawnPoint.magnitude < 1.5f)
+        {
+            _alreadyAttacked = false;
+            _runAway = false;
+            _respawnPointSet = false;
+            _walkPointSet = false;
+            _blink.ResetTrigger("Blink");
+            _animator.SetBool("Run", false);
+        }
+    }
+
+    private void SearchRespawnPoint()
+    {
+        
+        float randomZ = UnityEngine.Random.Range(-_respawnRange, 0);
+        float randomX = UnityEngine.Random.Range(-_respawnRange, _respawnRange);
+        randomZ = Mathf.Abs(randomZ) < 20f ? 20f : randomZ; // Ensure minimum distance
+        randomX = Mathf.Abs(randomX) < 20f ? 20f : randomX; // Ensure minimum distance
+        _respawnPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+        if (Physics.Raycast(_respawnPoint, -transform.up, 2f, whatIsGround))
+        {
+            _respawnPointSet = true;
+        }
     }
 
     private void OnDrawGizmosSelected()
     {
-        Debug.DrawRay(transform.position, dirToPlayer.normalized * _sightRange, Color.green);
+        Debug.DrawRay(transform.position, _dirToPlayer.normalized * _sightRange, Color.green);
         
         if (_enemyAttackPoint != null)
         {
@@ -174,5 +337,53 @@ public class EnemyAI : MonoBehaviour, IHear
         _searchPointSet = false;
         _searching = true;
         _soundPos = sound.Pos;
+    }
+
+    private BodyPart BodyPartsProbability()
+    {
+        float total = 0f;
+
+        foreach (float prob in _probs)
+        {
+            total += prob;
+        }
+
+        float randomPoint = UnityEngine.Random.value * total;
+
+        for (int i = 0; i < _probs.Length; i++)
+        {
+            if (randomPoint < _probs[i])
+            {
+                if ((BodyPart)i == BodyPart.LeftLeg ||
+                    (BodyPart)i == BodyPart.RightLeg ||
+                    (BodyPart)i == BodyPart.LeftArm ||
+                    (BodyPart)i == BodyPart.RightArm)
+                {
+                    float probIncrement = _probs[i] / _bodyPartLeft;
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (j != i && _probs[j] != 0)
+                        {
+                            _probs[j] += probIncrement; // Increase the probability of other body parts
+                        }
+                    }
+                    _probs[i] = 0f; // Reset the probability of the selected body part
+                    _bodyPartLeft--;
+                }
+
+                Debug.Log("Probs for body parts " + string.Join(", ", _probs));
+                return (BodyPart)i;       
+            }
+            else 
+            { 
+                randomPoint -= _probs[i];
+            }
+        }
+        return (BodyPart)_probs.Length - 1;      
+    }
+
+    public void PlayFootsteps()
+    {
+        AudioManager.Instance.PlayEnemyFootstep();
     }
 }

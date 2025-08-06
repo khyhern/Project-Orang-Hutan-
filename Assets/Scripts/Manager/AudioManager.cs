@@ -9,26 +9,41 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioSource _sfxWalking;
     [SerializeField] private AudioSource _sfxSeeEnemy;
     [SerializeField] private AudioSource _sfxHeartBeat;
+    [SerializeField] private AudioSource _sfxGeneral;
+    [SerializeField] private AudioSource _sfxBreath;
+    [SerializeField] private AudioSource _sfxBlood;
+    [SerializeField] private AudioSource _sfxEnemyFootstep;
 
     [Header("Audio Clips")]
     public AudioClip Bgm;
     public AudioClip Walking;
     public AudioClip HeartBeat;
     public AudioClip MurdererCome;
+    public AudioClip MurdererAttack;
+    public AudioClip Breath;
+    public AudioClip Blood;
+    public AudioClip EnemyFootstep;
+    public AudioClip ScaryLaugh;
 
     private bool firstPlay = true;
 
     private void Start()
     {
-        PlayBGM(Bgm);
+        PlayBGM();
         PlayHeartBeat();
+        _sfxEnemyFootstep = GameObject.Find("SFX - EnemyWalk").GetComponent<AudioSource>();
     }
 
-    private void PlayBGM(AudioClip clip)
+    private void PlayBGM()
     {
-        _bgm.clip = clip;
+        _bgm.clip = Bgm;
         _bgm.loop = true;
-        _bgm.Play();    
+        _bgm.Play();
+    }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        _sfxGeneral.PlayOneShot(clip);
     }
 
     private void PlayHeartBeat()
@@ -59,7 +74,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public void IncreaseVolumeHB()
     {
-        if (_sfxHeartBeat.volume < 0.8f)
+        if (_sfxHeartBeat.volume < 0.7f)
         {
             _sfxHeartBeat.volume += 0.1f * Time.deltaTime;
         }
@@ -71,5 +86,21 @@ public class AudioManager : Singleton<AudioManager>
         {
             _sfxHeartBeat.volume -= 0.1f * Time.deltaTime;
         }
+    }
+
+    public void PlaySFXBreath()
+    {
+        _sfxBreath.PlayOneShot(Breath);
+    }
+
+    public void PlaySFXBlood()
+    {
+        _sfxBlood.PlayOneShot(Blood);
+    }
+
+    public void PlayEnemyFootstep()
+    {
+        _sfxEnemyFootstep.pitch = Random.Range(0.9f, 1.3f);
+        _sfxEnemyFootstep.PlayOneShot(EnemyFootstep);
     }
 }

@@ -1,12 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
-    [SerializeField] private LayerMask whatIsEnemy;
+    [Header("Settings")]
+    [SerializeField] private LayerMask _whatIsEnemy;
+    [SerializeField] private float _rotationSpeed;
+
     private Camera _mainCamera;
     private float _seeDistance = 100f;
+
+    public static Action<bool> OnPlayerSeeEnemy;
 
     private void Start()
     {
@@ -27,12 +34,12 @@ public class PlayerLook : MonoBehaviour
         if (_mainCamera != null)
         {
             Vector3 cameraForward = _mainCamera.transform.forward;
-            cameraForward.y = 0f; // Ignore the y-axis rotation
 
             if (cameraForward != Vector3.zero)
             {
                 Quaternion newRotation = Quaternion.LookRotation(cameraForward);
-                transform.rotation = newRotation;
+                // Smooth out rotation to prevent jitteriness
+                transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * _rotationSpeed);
             }
         }
     }
@@ -42,12 +49,21 @@ public class PlayerLook : MonoBehaviour
         Ray ray = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, _seeDistance, whatIsEnemy))
+        Debug.DrawRay(ray.origin, ray.direction * _seeDistance, Color.red);
+
+        if (Physics.Raycast(ray, out hit, _seeDistance, _whatIsEnemy))
         {
             if (hit.collider.CompareTag("Enemy"))
             {
+                Debug.Log("Player sees an enemy: " + hit.collider.name);
                 // If the raycast hits an enemy, play the see enemy sound effect
                 AudioManager.Instance.PlaySFXseeEnemy();
+                OnPlayerSeeEnemy?.Invoke(true);
+            }
+            else
+            {
+                // If the raycast does not hit an enemy, invoke with false
+                OnPlayerSeeEnemy?.Invoke(false);
             }
         }
     }

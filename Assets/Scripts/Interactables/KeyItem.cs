@@ -1,50 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyItem : Interactable
+[RequireComponent(typeof(Collider))]
+public class KeyItem : MonoBehaviour, IDescriptiveInteractable
 {
-    public string itemID = "Rusty Key"; // Unique name or ID
+    [SerializeField] private PuzzleItemData puzzleItemData;  // Assign this in Inspector
 
-    public override void Interact()
+    public void Interact()
     {
-        InventoryManager.Instance.AddKeyItem(itemID);
-        Destroy(gameObject);
+        if (puzzleItemData != null)
+        {
+            bool success = InventorySystem.Instance.PickUp(puzzleItemData);
+            if (success)
+            {
+                Debug.Log($"[KeyItem] {puzzleItemData.itemName} added to inventory.");
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.Log($"[KeyItem] Could not pick up {puzzleItemData.itemName}. Inventory might be full.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[KeyItem] PuzzleItemData is not assigned.");
+        }
     }
 
-    public override string GetInteractionVerb()
-    {
-        return "pick up";
-    }
-
-    public override string GetObjectID()
-    {
-        return itemID;
-    }
-
-    public override string GetObjectName()
-    {
-        return itemID.ToLower();     // convert string ID into all lowercase
-    }
+    public string GetInteractionVerb() => "pick up";
+    public string GetObjectID() => puzzleItemData != null ? puzzleItemData.itemName : "Key Item";
+    public string GetObjectName() => puzzleItemData != null ? puzzleItemData.itemName.ToLower() : "key item";
+    public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
 }
-
-/*
- * public class KeyItem : Interactable
-{
-    public override void Interact()
-    {
-        Debug.Log("Key collected!");
-        Destroy(gameObject);
-    }
-
-    public override string GetInteractionVerb()
-    {
-        return "pick up";
-    }
-
-    public override string GetObjectName()
-    {
-        return "key";
-    }
-}
-*/

@@ -1,77 +1,135 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FlashlightController : MonoBehaviour
 {
-    public Light spotlight;
-    public GameObject onVisual;
-    public GameObject offVisual;
+    [System.Serializable]
+    public struct BatteryColorStage
+    {
+        public Color color;
+        public float threshold; // Battery level required to switch to this color
+    }
 
+    [Header("References")]
+    [SerializeField] private Light spotlight;
+    [SerializeField] private GameObject onVisual;
+    [SerializeField] private GameObject offVisual;
+    [SerializeField] private Animator animator;
+
+    [Header("Battery Settings")]
+    [SerializeField] private int maxLifetime = 100;
+    [SerializeField] private float drainRate = 1f;
+    [SerializeField] private float currentLifetime;
     private bool isOn = false;
+    private bool isDepleted = false;
+
+    [Header("Battery UI")]
+    private Image batteryFillImage;
+    [SerializeField] private List<BatteryColorStage> colorStages;
 
     public void Activate()
     {
         this.enabled = true;
 
-        // Ensure it starts off
         spotlight.enabled = false;
         onVisual.SetActive(false);
         offVisual.SetActive(true);
+
+        if (currentLifetime <= 0f)
+        {
+            currentLifetime = maxLifetime;
+            isDepleted = false;
+        }
+
+        if (batteryFillImage == null)
+        {
+            GameObject uiObj = GameObject.Find("Battery lifetime bar");
+            if (uiObj != null)
+            {
+                batteryFillImage = uiObj.GetComponent<Image>();
+                batteryFillImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                Debug.LogWarning("[FlashlightController] UI object 'Battery lifetime bar' not found.");
+            }
+        }
+
+        UpdateAnimatorValues();
     }
 
     void Update()
     {
-        if (PressedOtherNumberKey())
-        {
-            UnequipFlashlight();
-        }
-
         if (Input.GetMouseButtonDown(2))
         {
             ToggleLight();
         }
 
-        FaceCenterOfScreen();
-    }
-
-    bool PressedOtherNumberKey()
-    {
-        for (int i = 0; i <= 9; i++)
+        if (isOn)
         {
-            KeyCode key = KeyCode.Alpha0 + i;
-            if (key != KeyCode.Alpha1 && Input.GetKeyDown(key))
-                return true;
+            DrainBattery();
         }
-        return false;
     }
 
     void ToggleLight()
     {
+        if (currentLifetime <= 0f) return;
+
         isOn = !isOn;
         spotlight.enabled = isOn;
         onVisual.SetActive(isOn);
         offVisual.SetActive(!isOn);
     }
 
-    void FaceCenterOfScreen()
+    void DrainBattery()
     {
-        if (Camera.main == null) return;
+        currentLifetime -= drainRate * Time.deltaTime;
+        currentLifetime = Mathf.Max(currentLifetime, 0f);
 
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        Vector3 lookDirection = ray.direction;
+        if (currentLifetime <= 0f && !isDepleted)
+        {
+            isOn = false;
+            spotlight.enabled = false;
+            onVisual.SetActive(false);
+            offVisual.SetActive(true);
+            isDepleted = true;
 
-        // Face the same direction as the camera (with optional offset)
-        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+            animator.SetBool("DepletedLight", true); // Transition to Depleted
+            this.enabled = false;
+        }
 
-        // Optionally apply X-axis correction if flashlight model is tilted
-        targetRotation *= Quaternion.Euler(90f, -4f, 0f); // Adjust this if needed
-
-        transform.rotation = targetRotation;
+        UpdateAnimatorValues();
     }
 
-    void UnequipFlashlight()
+    public void AddBattery(int amount)
     {
-        Destroy(gameObject);
+        if (!this.enabled)
+            this.enabled = true;
+
+        currentLifetime += amount;
+        currentLifetime = Mathf.Clamp(currentLifetime, 0f, maxLifetime);
+
+        UpdateAnimatorValues();
+    }
+
+    void UpdateAnimatorValues()
+    {
+        if (animator != null)
+            animator.SetInteger("Lifetime", Mathf.RoundToInt(currentLifetime));
+
+        if (batteryFillImage != null)
+        {
+            batteryFillImage.fillAmount = currentLifetime / maxLifetime;
+
+            foreach (var stage in colorStages)
+            {
+                if (currentLifetime >= stage.threshold)
+                {
+                    batteryFillImage.color = stage.color;
+                    break;
+                }
+            }
+        }
     }
 }

@@ -14,7 +14,6 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton setup
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -26,6 +25,18 @@ public class PlayerHealth : MonoBehaviour
 
         if (bodyParts == null || bodyParts.Count == 0)
             InitializeBodyParts();
+
+        // Auto-link UI Icons for each body part
+        foreach (var part in bodyParts)
+            part.InitializeUIReference();
+    }
+
+    private void Update()
+    {
+        foreach (var part in bodyParts)
+        {
+            part.ForceUpdateUI();
+        }
     }
 
     private void InitializeBodyParts()
@@ -37,6 +48,20 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void DamagePlayer(int amount)
+    {
+        if (IsDead()) return;
+
+        currentHealth = Mathf.Max(currentHealth - amount, 0);
+        //Debug.Log($"Player took {amount} global damage. Current HP: {currentHealth}");
+
+        if (IsDead())
+        {
+            Debug.Log("Player has died.");
+            // TODO: trigger death logic
+        }
+    }
+
     public void DamagePart(BodyPart part, int amount)
     {
         GetBodyPart(part)?.ApplyDamage(amount);
@@ -45,20 +70,6 @@ public class PlayerHealth : MonoBehaviour
     public void BandageLimb(BodyPart part)
     {
         GetBodyPart(part)?.Bandage();
-    }
-
-    public void DamagePlayer(int amount)
-    {
-        if (IsDead()) return;
-
-        currentHealth = Mathf.Max(currentHealth - amount, 0);
-        Debug.Log($"Player took {amount} global damage. Current HP: {currentHealth}");
-
-        if (IsDead())
-        {
-            Debug.Log("Player has died.");
-            // TODO: trigger death logic
-        }
     }
 
     public bool IsDead()
@@ -76,22 +87,27 @@ public class PlayerHealth : MonoBehaviour
         return bodyParts.Find(p => p.part == part);
     }
 
+    public int CountBrokenLegs()
+    {
+        int count = 0;
+        if (IsPartDestroyed(BodyPart.LeftLeg)) count++;
+        if (IsPartDestroyed(BodyPart.RightLeg)) count++;
+        return count;
+    }
+
     public float GetMovementSpeedMultiplier()
     {
-        int brokenLegs = 0;
-        int brokenArms = 0;
+        int brokenLegs = CountBrokenLegs();
 
-        if (IsPartDestroyed(BodyPart.LeftLeg)) brokenLegs++;
-        if (IsPartDestroyed(BodyPart.RightLeg)) brokenLegs++;
-        if (IsPartDestroyed(BodyPart.LeftArm)) brokenArms++;
-        if (IsPartDestroyed(BodyPart.RightArm)) brokenArms++;
+        if (brokenLegs == 2)
+            return 0.8f; // 80% speed if both legs broken
 
-        if (brokenLegs == 2 && brokenArms == 2) return 0.1f;
-        if (brokenLegs == 2 && brokenArms >= 1) return 0.25f;
-        if (brokenLegs == 2) return 0.4f;
-        if (brokenLegs == 1) return 0.7f;
+        return 1f; // full speed if 0–1 leg broken
+    }
 
-        return 1f;
+    public float InstanceHealthPercent()
+    {
+        return maxHealth > 0 ? (float)currentHealth / maxHealth : 0f;
     }
 
     public int CountActiveBleedingLimbs()
@@ -104,4 +120,5 @@ public class PlayerHealth : MonoBehaviour
         }
         return count;
     }
+
 }

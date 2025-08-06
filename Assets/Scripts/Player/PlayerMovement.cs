@@ -1,28 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _stamina;
     [SerializeField] private float _maxStamina = 50f;
 
-    #region Internal
+    public HeadBobSystem HeadBobSystem;
+    public Transform Body;
+
     private CharacterController _controller;
     private PlayerConditions _conditions;
     private Animator _animator;
     private Vector3 _velocity;
     private float _gravity = -9.81f;
     [HideInInspector] public bool isCarryingFriend = false;
-    [HideInInspector] public float carryingSpeed = 2.5f;
-    private float _defaultMoveSpeed = 5f;
-    
+    [HideInInspector] public float carryingSpeed = 1.5f;
+    private float _defaultMoveSpeed = 3f;
 
+    public bool canMove = true;
     public PlayerConditions Conditions => _conditions;
-    #endregion
 
     private void Start()
     {
@@ -38,29 +38,28 @@ public class PlayerMovement : MonoBehaviour
         _conditions.IsGrounded = _controller.isGrounded;
         CheckSprint();
 
-        // No stamina no sprint
         if (_stamina == 0f)
         {
             ResetSpeed();
         }
     }
 
-    #region Movement
     public void MovePlayer(Vector2 input)
     {
+        if (!canMove) return;
+
         if (input != Vector2.zero)
         {
             _conditions.IsWalking = true;
-            _animator.SetBool("Walk", true);
+            //_animator.SetBool("Walk", true);
         }
         else
         {
             _conditions.IsWalking = false;
-            _animator.SetBool("Walk", false);
+            //_animator.SetBool("Walk", false);
         }
 
         float speedMultiplier = 1f;
-
         if (PlayerHealth.Instance != null)
         {
             speedMultiplier = PlayerHealth.Instance.GetMovementSpeedMultiplier();
@@ -68,8 +67,10 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = new Vector3(input.x, 0, input.y);
         _controller.Move(transform.TransformDirection(moveDir) * _moveSpeed * speedMultiplier * Time.deltaTime);
+        HeadBobSystem.ReduceHeadBob((_moveSpeed * speedMultiplier) / 7.5f);
         ApplyGravity();
     }
+
     private void ApplyGravity()
     {
         _velocity.y += _gravity * Time.deltaTime;
@@ -77,46 +78,57 @@ public class PlayerMovement : MonoBehaviour
         {
             _velocity.y = -1f;
         }
-        
-        _controller.Move(_velocity * Time.deltaTime);     
+
+        _controller.Move(_velocity * Time.deltaTime);
     }
-    #region Sprinting
+
     public void Sprint()
     {
-        if (_conditions.IsWalking) 
-        { 
-            _conditions.IsSprinting = true;
-            _moveSpeed *= 2.5f;
+        if (PlayerHealth.Instance != null && PlayerHealth.Instance.CountBrokenLegs() >= 1)
+        {
+            Debug.Log("[Player] Cannot sprint with broken leg(s).");
+            return;
         }
+
+        _conditions.IsSprinting = true;
+        _moveSpeed *= 2.5f;
+        HeadBobSystem.IncreaseHeadBob();
+        //_animator.SetBool("Sprint", true);
     }
 
     public void ResetSpeed()
     {
-        if (isCarryingFriend)
-            _moveSpeed = carryingSpeed;
-        else
-            _moveSpeed = _defaultMoveSpeed;
-
+        _moveSpeed = isCarryingFriend ? carryingSpeed : _defaultMoveSpeed;
         _conditions.IsSprinting = false;
-        Debug.Log("Player move speed reset to: " + _moveSpeed);
+        HeadBobSystem.ResetHeadBob();
+        //_animator.SetBool("Sprint", false);
     }
 
     private void CheckSprint()
     {
         if (_conditions.IsSprinting)
         {
-            _stamina -= 25f * Time.deltaTime;
+            Debug.Log(_conditions.IsCollide);
+            _stamina -= 20f * Time.deltaTime;
+
+            if (Body.localPosition.z < 2f && !_conditions.IsCollide)
+            {
+                Body.Translate(Vector3.forward * 1.5f * Time.deltaTime);
+            }
         }
         else
         {
-            _stamina += 2f * Time.deltaTime;
+            if (Body.localPosition.z > 0f && !_conditions.IsCollide)
+            {
+                Body.Translate(Vector3.back * 1f * Time.deltaTime);
+            }
+
+            _stamina += 20f * Time.deltaTime;
         }
 
-        _stamina = Mathf.Clamp(_stamina, 0f, 50f);
-        
+        _stamina = Mathf.Clamp(_stamina, 0f, _maxStamina);
         UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
     }
-   
 
     public void SetMoveSpeed(float newSpeed)
     {
@@ -124,25 +136,55 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("Player move speed set to: " + _moveSpeed);
     }
 
-    #endregion
-    #region Move SFX
-    public void PlayWalkSFX()
+    public void PlayMovementSFX()
     {
-        if (_conditions.IsGrounded && _conditions.IsSprinting == false && _conditions.IsWalking)
+        if (_conditions.IsGrounded && !_conditions.IsSprinting && _conditions.IsWalking)
         {
             AudioManager.Instance.PlaySFXWalk();
-            var sound = new Sound(transform.position, 11f);
-
+            var sound = new Sound(transform.position, 8f);
             Sounds.MakeSound(sound);
+        }
+        else if (_conditions.IsGrounded && _conditions.IsSprinting)
+        {
+            AudioManager.Instance.PlaySFXWalk();
+            var sound = new Sound(transform.position, 12f);
+            Sounds.MakeSound(sound);
+        }
+    }
+
+    public void RestoreStamina(float amount)
+    {
+        _stamina += amount;
+        _stamina = Mathf.Clamp(_stamina, 0f, _maxStamina);
+        UIManager.Instance.UpdateStamina(_stamina, _maxStamina);
+        Debug.Log($"[Player] Restored {amount} stamina. Current: {_stamina}/{_maxStamina}");
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.layer != 7 && !_conditions.IsSprinting) // level components layer "wall"
+        {
+            _conditions.IsCollide = false;
+        }
+        else if (hit.gameObject.layer == 7)
+        {
+            _conditions.IsCollide = true;
         }
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, 11f);
+        Gizmos.DrawWireSphere(transform.position, 12f);
     }
-    #endregion
-    #endregion
 
+    private void OnEnable()
+    {
+        HeadBobSystem.OnFootStep += PlayMovementSFX;
+    }
+
+    private void OnDisable()
+    {
+        HeadBobSystem.OnFootStep -= PlayMovementSFX;
+    }
 }

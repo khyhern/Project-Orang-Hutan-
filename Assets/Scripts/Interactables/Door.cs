@@ -1,70 +1,101 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class DoorInteractable : Interactable
+[RequireComponent(typeof(Collider))]
+public class Door : MonoBehaviour, IDescriptiveInteractable
 {
-    public string requiredKeyID = "Rusty Key";
+    public bool showPrompt = true;
 
-    public string objectID = "Suspicious door";
+    [Header("Lock Settings")]
+    public bool requiresKey = true;
+    public PuzzleItemData requiredKeyItem; // Assign in Inspector (ScriptableObject)
+    public bool consumeKeyOnUse = false;
+
+    [Header("Messages")]
+    [SerializeField] private string lockedMessage = "The door is locked.";
+    [SerializeField] private string successMessage = "The door opens.";
+    [SerializeField] private Color lockedTextColor = Color.red;
+    [SerializeField] private Color successTextColor = Color.green;
+    [SerializeField] private TextMeshProUGUI messageText;
+    [SerializeField] private float messageDuration = 3f;
 
     private bool isOpened = false;
 
-    public override void Interact()
+    private void Awake()
+    {
+        if (messageText == null)
+        {
+            GameObject obj = GameObject.Find("InteractionDialogue");
+            if (obj != null && obj.TryGetComponent(out TextMeshProUGUI tmp))
+                messageText = tmp;
+            else
+                Debug.LogWarning("[DOOR] 'InteractionDialogue' TextMeshProUGUI not found.");
+        }
+    }
+
+    public void Interact()
     {
         if (isOpened) return;
 
-        if (InventoryManager.Instance.HasKeyItem(requiredKeyID))
+        if (requiresKey)
         {
-            Debug.Log("Door opened.");
-            // TODO: Add door animation or open logic here
+            if (requiredKeyItem == null)
+            {
+                Debug.LogError("[Door] No PuzzleItemData key assigned.");
+                return;
+            }
 
-            // Removes key (One-time use item)
-            //InventoryManager.Instance.RemoveKeyItem(requiredKeyID);
+            if (InventorySystem.Instance.HasItem(requiredKeyItem))
+            {
+                OpenDoor();
 
-            isOpened = true;
-            this.enabled = false; // Disable this script so it can't be interacted with again
+                if (consumeKeyOnUse)
+                    InventorySystem.Instance.RemoveItem(requiredKeyItem);
+            }
+            else
+            {
+                DisplayMessage(lockedMessage, lockedTextColor);
+            }
         }
         else
         {
-            Debug.Log("Door is locked. You need a key.");
+            OpenDoor();
         }
     }
 
-    public override string GetInteractionVerb()
+    private void OpenDoor()
     {
-        return "open";
+        isOpened = true;
+
+        // TODO: Play animation, sound, etc.
+        Debug.Log("[Door] Door opened.");
+        DisplayMessage(successMessage, successTextColor);
+
+        // Disable interaction prompt after opening
+        enabled = false;
     }
 
-    public override string GetObjectID()
+    private void DisplayMessage(string message, Color color)
     {
-        return objectID;
+        if (messageText == null) return;
+
+        messageText.text = message;
+        messageText.color = color;
+        messageText.enabled = true;
+
+        CancelInvoke(nameof(HideMessage));
+        Invoke(nameof(HideMessage), messageDuration);
     }
 
-    public override string GetObjectName()
+    private void HideMessage()
     {
-        return "door";
+        if (messageText != null)
+            messageText.enabled = false;
     }
+
+    // For interaction prompt
+    public string GetInteractionVerb() => "open";
+    public string GetObjectName() => "door";
+    public string GetObjectID() => "Door";
+    public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
 }
-
-
-/*
-public class DoorInteractable : Interactable
-{
-    public override void Interact()
-    {
-        Debug.Log("Door interacted.");
-        // TODO: Open door logic
-    }
-
-    public override string GetInteractionVerb()
-    {
-        return "open";
-    }
-
-    public override string GetObjectName()
-    {
-        return "door";
-    }
-}
-*/
