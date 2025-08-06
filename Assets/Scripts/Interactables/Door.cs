@@ -17,12 +17,26 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
     [SerializeField] private Color lockedTextColor = Color.red;
     [SerializeField] private Color successTextColor = Color.green;
     [SerializeField] private TextMeshProUGUI messageText;
-    [SerializeField] private float messageDuration = 3f;
+    [SerializeField] public float messageDuration = 3f;
+
+    [Header("Animatior")]
+    [SerializeField] private Animator animator;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip unlockSuccessClip;
+    [SerializeField] private AudioClip unlockFailClip;
 
     private bool isOpened = false;
 
     private void Awake()
     {
+        if (animator == null)
+            Debug.LogError("[Door] Animator component not found!");
+
+        if (audioSource == null)
+            Debug.LogError("[Door] AudioSource component not found!");
+
         if (messageText == null)
         {
             GameObject obj = GameObject.Find("SubtitleText");
@@ -51,15 +65,24 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
 
                 if (consumeKeyOnUse)
                     InventorySystem.Instance.RemoveItem(requiredKeyItem);
+
+                // Play success sound
+                PlaySound(unlockSuccessClip);
             }
             else
             {
                 DisplayMessage(lockedMessage, lockedTextColor);
+
+                // Play fail sound
+                PlaySound(unlockFailClip);
             }
         }
         else
         {
             OpenDoor();
+
+            // Play success sound
+            PlaySound(unlockSuccessClip);
         }
     }
 
@@ -70,6 +93,10 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
         // TODO: Play animation, sound, etc.
         Debug.Log("[Door] Door opened.");
         DisplayMessage(successMessage, successTextColor);
+
+        // Play door opening animation
+        if (animator != null)
+            animator.SetTrigger("OpenDoor");
 
         // Disable interaction prompt after opening
         enabled = false;
@@ -92,6 +119,13 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
         if (messageText != null)
             messageText.enabled = false;
     }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+            audioSource.PlayOneShot(clip);
+    }
+
 
     // For interaction prompt
     public string GetInteractionVerb() => "open";
