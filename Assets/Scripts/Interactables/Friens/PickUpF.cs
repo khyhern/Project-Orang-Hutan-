@@ -12,6 +12,10 @@ public class PickUpF : MonoBehaviour
     public GameObject pickupUIObject;
     public GameObject safepointUIObject;
     [SerializeField] private SitInteractable targetchair;
+    public GameObject videoPlayerParent; // Assign this in the inspector to the VideoPlayer prefab parent
+    public GameObject videoStoreObject; // Assign this in the inspector to the child GameObject with VideoPlayer component
+    public float videoFallbackDuration = 5f; // Fallback duration if no VideoPlayer found
+    public float transitionWaitTime = 1f; // Wait time for transition animation
     public float carrySpeed = 2.5f;
     public float normalSpeed = 3f;
     [SerializeField] private float dropRange = 2f; // Max distance to drop friend
@@ -48,6 +52,8 @@ public class PickUpF : MonoBehaviour
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        if (videoPlayerParent != null)
+            videoPlayerParent.SetActive(false);
     }
 
     void Update()
@@ -203,50 +209,66 @@ public class PickUpF : MonoBehaviour
         PlayerInput playerInput = GetComponent<PlayerInput>();
         if (playerInput != null) playerInput.enabled = false;
         
-        // 2. Activate video GameObject first
-        GameObject videoGameObject = GameObject.Find("VideoPlayer"); // Change this to your video GameObject name
-        if (videoGameObject != null)
+        // 2. Activate video GameObject first (use public reference)
+        Debug.Log("[Cutscene] videoPlayerParent: " + videoPlayerParent);
+        if (videoPlayerParent != null)
         {
-            videoGameObject.SetActive(true);
+            Debug.Log("[Cutscene] Setting videoPlayerParent active");
+            videoPlayerParent.SetActive(true);
             
-            // Get the VideoPlayer component
-            UnityEngine.Video.VideoPlayer videoPlayer = videoGameObject.GetComponent<UnityEngine.Video.VideoPlayer>();
-            if (videoPlayer != null)
+            // Use the assigned child GameObject with the VideoPlayer component
+            Debug.Log("[Cutscene] videoStoreObject: " + videoStoreObject);
+            UnityEngine.Video.VideoPlayer videoPlayer = null;
+            if (videoStoreObject != null)
             {
-                // Wait for video to finish playing
-                while (videoPlayer.isPlaying)
-                {
-                    yield return null;
-                }
-                
-                // Deactivate video GameObject after it finishes
-                videoGameObject.SetActive(false);
+                videoPlayer = videoStoreObject.GetComponent<UnityEngine.Video.VideoPlayer>();
+                Debug.Log("[Cutscene] videoPlayer component: " + videoPlayer);
             }
             else
             {
+                Debug.LogWarning("[Cutscene] videoStoreObject is null!");
+            }
+            
+            if (videoPlayer != null)
+            {
+                Debug.Log("[Cutscene] Waiting 9 seconds before transition");
+                yield return new WaitForSeconds(9f);
+
+                // Play transition
+                GameObject screenTransition = GameObject.Find("ScreenTransition");
+                Animator transitionAnimator = null;
+                if (screenTransition != null)
+                {
+                    transitionAnimator = screenTransition.GetComponent<Animator>();
+                    if (transitionAnimator != null)
+                    {
+                        transitionAnimator.SetTrigger("End");
+                        Debug.Log("[Cutscene] Triggered transition at 9s");
+                    }
+                }
+
+                yield return new WaitForSeconds(1f); // Wait 1 more second (total 10s)
+                Debug.Log("[Cutscene] 10 seconds passed, deactivating videoPlayerParent");
+                videoPlayerParent.SetActive(false);
+
+                // 4. End of animation, teleport player & trigger animation trigger "start"
+                if (transitionAnimator != null)
+                {
+                    SitTeleportService.TeleportAndSitAt(targetchair);
+                    transitionAnimator.SetTrigger("Start");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[Cutscene] No VideoPlayer component found, waiting fallback duration");
                 // If no VideoPlayer component, wait for a default duration
-                yield return new WaitForSeconds(5f); // Adjust time as needed
-                videoGameObject.SetActive(false);
+                yield return new WaitForSeconds(videoFallbackDuration); // Adjust time as needed
+                videoPlayerParent.SetActive(false);
             }
         }
-        
-        // 3. Play transition after video ends
-        GameObject screenTransition = GameObject.Find("ScreenTransition");
-        if (screenTransition != null)
+        else
         {
-            Animator transitionAnimator = screenTransition.GetComponent<Animator>();
-            if (transitionAnimator != null)
-            {
-                transitionAnimator.SetTrigger("End");
-                
-                // Wait for animation to complete (adjust time as needed)
-                yield return new WaitForSeconds(1f);
-                
-                // 4. End of animation, teleport player & trigger animation trigger "start"
-                SitTeleportService.TeleportAndSitAt(targetchair);
-                
-                transitionAnimator.SetTrigger("Start");
-            }
+            Debug.LogWarning("[Cutscene] videoPlayerParent is null!");
         }
         
         // Re-enable player components
