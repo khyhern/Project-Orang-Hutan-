@@ -25,6 +25,7 @@ public class DoorInteractable : MonoBehaviour, IDescriptiveInteractable
     [SerializeField][Range(0f, 1f)] private float doorSFXVolume = 1f;
 
     private bool isUnlocked = false;
+    public EnemyManager EnemyManager;
 
     public void Interact()
     {
@@ -113,6 +114,9 @@ public class DoorInteractable : MonoBehaviour, IDescriptiveInteractable
                 player.transform.position = teleportTarget.position;
                 controller.enabled = true;
                 Debug.Log("[DoorInteractable] Player teleported (CharacterController safe).");
+
+                // Spawn Enemy
+                EnemyManager.RespawnDelay();
             }
             else
             {
