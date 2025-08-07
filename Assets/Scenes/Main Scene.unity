@@ -7795,6 +7795,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 313933143919761625, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}
+      propertyPath: QTESuccess
+      value: 
+      objectReference: {fileID: 8300000, guid: 3850175539704dc42b98d1e17b2c359a, type: 3}
+    - target: {fileID: 313933143919761625, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
       propertyPath: _sfxEnemyFootstep
       value: 
       objectReference: {fileID: 4515769358112751857}
@@ -7853,6 +7858,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4711735572471526504, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4711735572471526504, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5899008276402636711, guid: 62b63636583f90c429748c88b8d9e18c,
+        type: 2}
     - target: {fileID: 8127298785674245819, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}
       propertyPath: m_Name

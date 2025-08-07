@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,19 +19,29 @@ public class QTETrigger : MonoBehaviour
     [Header("Door Animation")]
     public Animator doorAnimator; // Door's own animator
     public string doorAnimationName = "OpenDoor"; // Door animation trigger name
-    
+
+    [Header("Sound Range")]
+    public float soundRange = 15f;
+
     private InputAction interactAction;
     private Camera mainCamera;
     private bool isQTEActive = false;
     private bool isOnCooldown = false;
     private float cooldownTimer = 0f;
     private PointerController pointerController;
+    private bool _playSound;
+
+    // Camera
+    private CinemachineInputAxisController _playerCameraController;
+
+    public static Action<bool> OnQTEActive;
 
     void Awake()
     {
         mainCamera = Camera.main;
         var actions = InputSystem.actions;
         interactAction = actions.FindAction("Interact");
+        _playerCameraController = GameObject.Find("FPCamera").GetComponent<CinemachineInputAxisController>();
     }
 
     void OnEnable()
@@ -82,6 +94,13 @@ public class QTETrigger : MonoBehaviour
 
     void Update()
     {
+        if (_playSound == true)
+        {
+            var sound = new Sound(transform.position, soundRange);
+            Sounds.MakeSound(sound);
+            Debug.Log($"Sound made at {transform.position} with range 10.");
+        }
+
         // Handle cooldown timer
         if (isOnCooldown)
         {
@@ -126,6 +145,13 @@ public class QTETrigger : MonoBehaviour
         }
     }
 
+    // Gizmo
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, soundRange);
+    }
+
     private void OnInteract(InputAction.CallbackContext context)
     {
         if (isQTEActive || isOnCooldown) return; // Don't trigger if QTE is already active or on cooldown
@@ -167,10 +193,16 @@ public class QTETrigger : MonoBehaviour
             // Activate random behaviors for this QTE session
             pointerController.ActivateQTE();
         }
-        
+
         // You can add additional logic here like:
         // - Disable player movement
-        // - Play QTE start sound
+        OnQTEActive?.Invoke(false); // boolean to indicate player movement
+        _playerCameraController.enabled = false; // Disable camera input during QTE
+
+        // Play QTE start sound
+        _playSound = true;
+        AudioManager.Instance.PlaySFXQTE();
+
         // - Start QTE sequence
     }
 
@@ -184,11 +216,6 @@ public class QTETrigger : MonoBehaviour
         {
             qteCanvas.SetActive(false);
         }
-        
-        // You can add additional logic here like:
-        // - Re-enable player movement
-        // - Play QTE end sound
-        // - Handle QTE result
     }
     
     // Method to play door animation (can be called from PointerController or directly)
@@ -208,9 +235,16 @@ public class QTETrigger : MonoBehaviour
         
         // Play door animation
         PlayDoorAnimation();
-        
+
         // You can add additional success actions here like:
+        OnQTEActive?.Invoke(true); // boolean to indicate player movement
+        _playerCameraController.enabled = true; // Enable camera input after QTE
+
         // - Play success sound
+        _playSound = false;
+        AudioManager.Instance.StopSFXQTE();
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.QTESuccess);
+
         // - Show success particles
         // - Unlock achievements
         // - Update game state
@@ -226,9 +260,15 @@ public class QTETrigger : MonoBehaviour
         
         // Start cooldown
         StartCooldown();
-        
+
         // You can add additional exit actions here like:
+        OnQTEActive?.Invoke(true); // boolean to indicate player movement
+        _playerCameraController.enabled = true; // Enable camera input after QTE
+
         // - Play exit sound
+        _playSound = false;
+        AudioManager.Instance.StopSFXQTE();
+
         // - Show exit message
         // - Reset door state
         // - Don't play door animation (since it wasn't completed)

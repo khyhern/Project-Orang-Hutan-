@@ -33,6 +33,25 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &-5899008276402636711
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: QTE
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 3f40f1c899f59fd4c970aabd0c73461e
+  m_Children: []
+  m_Volume: 8e2572f373684ec459754549c556fac3
+  m_Pitch: 5c724a4a095f16f479a17ad524059661
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -782065974810090289}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!243 &-5242750315902441447
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -94,6 +113,7 @@ AudioMixerGroupController:
   - {fileID: -6394684293324967634}
   - {fileID: 8320994573650005166}
   - {fileID: 7575857797782999764}
+  - {fileID: -5899008276402636711}
   m_Volume: 1e0a1e84261477146b7700468bc3b947
   m_Pitch: 33e3bced119b2564d963181ce33e15ad
   m_Send: 00000000000000000000000000000000
@@ -113,6 +133,20 @@ AudioMixerEffectController:
   m_EffectID: 4fc63be091b0e9142a492d3c52364fe2
   m_EffectName: Attenuation
   m_MixLevel: e0aa29c735f8abd4d81ce19b7f4fca08
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &-782065974810090289
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: a8293760a2ce77444838f56b45e1816b
+  m_EffectName: Attenuation
+  m_MixLevel: 8b84f28ea45cc8b4498b4411a111b4c4
   m_Parameters: []
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
@@ -146,6 +180,7 @@ AudioMixerController:
     - 72d5567ca6bf1ba448ec9fe2af52328b
     - 96aa8984e70ec6546a16c1a6e0cd0daf
     - 52d3745a3959de7428f024abb56cb2f2
+    - 3f40f1c899f59fd4c970aabd0c73461e
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -195,6 +230,7 @@ AudioMixerSnapshotController:
   m_SnapshotID: c2c6f25b7d0750e4e8e779996bf69f3f
   m_FloatValues:
     d3c892c33210c4e429dde543b359e307: -4
+    8e2572f373684ec459754549c556fac3: -4
     1e0a1e84261477146b7700468bc3b947: 0
     a72658d66e935634893a5aba7f71570b: 20
     f457101b818dee0418ec9712b1350071: 0

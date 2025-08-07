@@ -14,6 +14,7 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioSource _sfxBlood;
     [SerializeField] private AudioSource _sfxEnemyFootstep;
     [SerializeField] private AudioSource _sfxCutSceneEnemyFootstep;
+    [SerializeField] private AudioSource _sfxQTE;
 
     [Header("Audio Clips")]
     public AudioClip Bgm;
@@ -25,6 +26,8 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip Blood;
     public AudioClip EnemyFootstep;
     public AudioClip ScaryLaugh;
+    public AudioClip QTE;
+    public AudioClip QTESuccess;
 
     private bool firstPlay = true;
 
@@ -33,6 +36,7 @@ public class AudioManager : Singleton<AudioManager>
         PlayBGM();
         PlayHeartBeat();
         _sfxEnemyFootstep = GameObject.Find("SFX - EnemyWalk").GetComponent<AudioSource>();
+        _sfxQTE.clip = QTE;
     }
 
     private void PlayBGM()
@@ -109,5 +113,15 @@ public class AudioManager : Singleton<AudioManager>
     {
         _sfxCutSceneEnemyFootstep.pitch = Random.Range(0.9f, 1.3f);
         _sfxCutSceneEnemyFootstep.PlayOneShot(EnemyFootstep);
+    }
+
+    public void PlaySFXQTE()
+    {
+        _sfxQTE.Play();
+    }
+
+    public void StopSFXQTE()
+    {
+        _sfxQTE.Stop();
     }
 }
