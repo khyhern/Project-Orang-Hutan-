@@ -16,10 +16,6 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
     [SerializeField] private string successMessage = "The door is now unlocked.";
     [SerializeField] private string openMessage = "The door opens.";
     [SerializeField] private string closeMessage = "The door closes.";
-    [SerializeField] private Color lockedTextColor = Color.red;
-    [SerializeField] private Color successTextColor = Color.green;
-    [SerializeField] private TextMeshProUGUI messageText;
-    [SerializeField] public float messageDuration = 3f;
 
     [Header("Animator")]
     [SerializeField] private Animator animator;
@@ -41,15 +37,6 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
 
         if (audioSource == null)
             Debug.LogError("[Door] AudioSource component not found!");
-
-        if (messageText == null)
-        {
-            GameObject obj = GameObject.Find("SubtitleText");
-            if (obj != null && obj.TryGetComponent(out TextMeshProUGUI tmp))
-                messageText = tmp;
-            else
-                Debug.LogWarning("[Door] 'SubtitleText' TextMeshProUGUI not found.");
-        }
     }
 
     public void Interact()
@@ -70,7 +57,7 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
                     isUnlocked = true;
 
                     PlaySound(unlockSuccessClip);
-                    DisplayMessage(successMessage, successTextColor);
+                    DisplayMessage(successMessage);
 
                     if (consumeKeyOnUse)
                         InventorySystem.Instance.RemoveItem(requiredKeyItem);
@@ -79,7 +66,7 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
                 }
                 else
                 {
-                    DisplayMessage(lockedMessage, lockedTextColor);
+                    DisplayMessage(lockedMessage);
                     PlaySound(unlockFailClip);
                     return;
                 }
@@ -89,7 +76,7 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
                 // No key required
                 isUnlocked = true;
                 PlaySound(unlockSuccessClip);
-                DisplayMessage(successMessage, successTextColor);
+                DisplayMessage(successMessage);
                 return;
             }
         }
@@ -110,7 +97,7 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
         isOpened = true;
 
         Debug.Log("[Door] Door opened.");
-        DisplayMessage(openMessage, successTextColor);
+        DisplayMessage(openMessage);
 
         if (animator != null)
             animator.SetTrigger("OpenDoor");
@@ -124,7 +111,7 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
         isOpened = false;
 
         Debug.Log("[Door] Door closed.");
-        DisplayMessage(closeMessage, successTextColor);
+        DisplayMessage(closeMessage);
 
         if (animator != null)
             animator.SetTrigger("CloseDoor");
@@ -132,22 +119,16 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
         PlaySound(closeDoorClip); // <-- Play door closing sound
     }
 
-    private void DisplayMessage(string message, Color color)
+    private void DisplayMessage(string message)
     {
-        if (messageText == null) return;
-
-        messageText.text = message;
-        messageText.color = color;
-        messageText.enabled = true;
-
-        CancelInvoke(nameof(HideMessage));
-        Invoke(nameof(HideMessage), messageDuration);
-    }
-
-    private void HideMessage()
-    {
-        if (messageText != null)
-            messageText.enabled = false;
+        if (SubtitleUI.Instance != null)
+        {
+            SubtitleUI.Instance.ShowSubtitle(message);
+        }
+        else
+        {
+            Debug.Log("[Door] " + message);
+        }
     }
 
     private void PlaySound(AudioClip clip)
