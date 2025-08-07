@@ -2878,7 +2878,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f9cd56d649df745aab477956ed72e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _respawnRange: 30
+  _respawnDelay: 10
+  _respawnRange: 25
   _enemy: {fileID: 120927193}
   _player: {fileID: 1597777537}
   whatIsGround:
@@ -5578,6 +5579,10 @@ MonoBehaviour:
   successTextColor: {r: 0, g: 1, b: 0, a: 1}
   messageText: {fileID: 0}
   messageDuration: 3
+  animator: {fileID: 0}
+  audioSource: {fileID: 0}
+  unlockSuccessClip: {fileID: 0}
+  unlockFailClip: {fileID: 0}
 --- !u!65 &787634505
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15500,7 +15505,7 @@ PrefabInstance:
     - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
         type: 3}
       propertyPath: _escapeRange
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
         type: 3}

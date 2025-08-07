@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class EnemyManager : MonoBehaviour
 {
-    [Header("Settings")]    
+    [Header("Settings")]
+    [SerializeField] private float _respawnDelay = 10f;
     [SerializeField] private float _respawnRange;
     [SerializeField] private GameObject _enemy;
     [SerializeField] private Transform _player;
@@ -35,7 +37,7 @@ public class EnemyManager : MonoBehaviour
 
     private IEnumerator Delay()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(_respawnDelay);
         _respawn = true;
     }
 
@@ -48,7 +50,9 @@ public class EnemyManager : MonoBehaviour
             _enemy.transform.position = _respawnPoint;
             _enemy.SetActive(true);
             _enemyAI.respawn = false;
+            _enemyAI.ResetRunAwayStatus();
             _respawn = false;
+            _respawnPointSet = false;
         }
 
     }
@@ -58,8 +62,8 @@ public class EnemyManager : MonoBehaviour
 
         float randomZ = Random.Range(-_respawnRange, _respawnRange);
         float randomX = Random.Range(-_respawnRange, _respawnRange);
-        randomZ = Mathf.Abs(randomZ) < 25f ? 25f : randomZ; // Ensure minimum distance
-        randomX = Mathf.Abs(randomX) < 25f ? 25f : randomX; // Ensure minimum distance
+        if (Mathf.Abs(randomZ) < 18f || Mathf.Abs(randomX) < 18f) return;
+
         _respawnPoint = new Vector3(_player.position.x + randomX, _enemy.transform.position.y, _player.position.z + randomZ);
         if (Physics.Raycast(_respawnPoint, -transform.up, 2f, whatIsGround))
         {

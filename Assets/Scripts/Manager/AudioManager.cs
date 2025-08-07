@@ -13,6 +13,7 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioSource _sfxBreath;
     [SerializeField] private AudioSource _sfxBlood;
     [SerializeField] private AudioSource _sfxEnemyFootstep;
+    [SerializeField] private AudioSource _sfxCutSceneEnemyFootstep;
 
     [Header("Audio Clips")]
     public AudioClip Bgm;
@@ -102,5 +103,11 @@ public class AudioManager : Singleton<AudioManager>
     {
         _sfxEnemyFootstep.pitch = Random.Range(0.9f, 1.3f);
         _sfxEnemyFootstep.PlayOneShot(EnemyFootstep);
+    }
+
+    public void PlayCutSceneEnemyFootstep()
+    {
+        _sfxCutSceneEnemyFootstep.pitch = Random.Range(0.9f, 1.3f);
+        _sfxCutSceneEnemyFootstep.PlayOneShot(EnemyFootstep);
     }
 }

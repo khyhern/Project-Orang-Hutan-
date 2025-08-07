@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
-//using System.Collections.Generic;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Rendering;
 
 public class EnemyAI : MonoBehaviour, IHear
 {
@@ -104,7 +101,7 @@ public class EnemyAI : MonoBehaviour, IHear
        
 
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
-        if (!_runAway && respawn) Respawn.RespawnDelay();
+        if (!_alreadyAttacked && respawn) Respawn.RespawnDelay();
         if (_runAway) RunAway();
         if (_searching && !_playerInSightRange && !_runAway) SearchSound();
         if (!_playerInSightRange && !_playerInAttackRange && !_searching && !_runAway) Patroling();
@@ -292,18 +289,30 @@ public class EnemyAI : MonoBehaviour, IHear
         if (!_runAwayPointSet) SearchRunAwayPoint();
 
         transform.LookAt(_player);
-        
-        _enemy.speed = _speed * 2.5f;
-        _enemy.SetDestination(_runAwayPoint);
+
+        if (_alreadyAttacked == true)
+        {
+            _enemy.speed = _speed * 2.5f;
+            _enemy.SetDestination(_runAwayPoint);
+        }
+
         Vector3 distanceToRespawnPoint = transform.position - _runAwayPoint;
         if (distanceToRespawnPoint.magnitude < 1.5f)
         {
             _alreadyAttacked = false;
-            _runAway = false;
-            _runAwayPointSet = false;
+            //_runAway = false;
+            //_runAwayPointSet = false;
+            //_enemy.SetDestination(_runAwayPoint);
             _walkPointSet = false;
             _animator.SetBool("Run", false);
+            Debug.Log("Enemy stay");
         }
+    }
+
+    public void ResetRunAwayStatus()
+    {
+        _runAway = false;
+        _runAwayPointSet = false;
     }
 
     private void SearchRunAwayPoint()
@@ -311,8 +320,8 @@ public class EnemyAI : MonoBehaviour, IHear
         
         float randomZ = UnityEngine.Random.Range(-_escapeRange, 0);
         float randomX = UnityEngine.Random.Range(-_escapeRange, _escapeRange);
-        randomZ = Mathf.Abs(randomZ) < 10f ? 10f : randomZ; // Ensure minimum distance
-        randomX = Mathf.Abs(randomX) < 10f ? 10f : randomX; // Ensure minimum distance
+        randomZ = Mathf.Abs(randomZ) < 5f ? 5f : randomZ; // Ensure minimum distance
+        randomX = Mathf.Abs(randomX) < 5f ? 5f : randomX; // Ensure minimum distance
         _runAwayPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
         if (Physics.Raycast(_runAwayPoint, -transform.up, 2f, whatIsGround))
         {

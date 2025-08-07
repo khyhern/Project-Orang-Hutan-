@@ -148,6 +148,6 @@ public class CutsceneEnemyController : MonoBehaviour
     /// </summary>
     public void PlayFootsteps()
     {
-        AudioManager.Instance.PlayEnemyFootstep();
+        AudioManager.Instance.PlayCutSceneEnemyFootstep();
     }
 }
