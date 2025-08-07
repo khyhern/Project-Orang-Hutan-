@@ -45,6 +45,7 @@ public class DoorInteractable : MonoBehaviour, IDescriptiveInteractable
 
         if (InventorySystem.Instance == null || requiredItem == null)
         {
+            SubtitleUI.Instance?.ShowSubtitle("It’s locked...", 3f);
             Debug.LogWarning("[DoorInteractable] Missing InventorySystem or required item.");
             return;
         }
