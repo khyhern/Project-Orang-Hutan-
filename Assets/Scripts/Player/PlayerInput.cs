@@ -47,6 +47,7 @@ public class PlayerInput : MonoBehaviour
         InputSystem.actions.FindAction("Sprint").started += OnSprint;
         InputSystem.actions.FindAction("Sprint").canceled += OnWalk;
         EnemyAI.OnEnemyAttack += MovemntInputController;
+        QTETrigger.OnQTEActive += MovemntInputController;
     }
 
     private void OnDisable()
@@ -54,5 +55,6 @@ public class PlayerInput : MonoBehaviour
         InputSystem.actions.FindAction("Sprint").started -= OnSprint;
         InputSystem.actions.FindAction("Sprint").canceled -= OnWalk;
         EnemyAI.OnEnemyAttack -= MovemntInputController;
+        QTETrigger.OnQTEActive -= MovemntInputController;
     }
 }

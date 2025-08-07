@@ -13,6 +13,7 @@ public static class Sounds
             if (col[i].TryGetComponent(out IHear soundListener))
             {
                 soundListener.RespondToSound(sound);
+                Debug.Log($"Sound made at {sound.Pos} with range {sound.Range}. Responded by: {col[i].name}");
             }
         }
     }

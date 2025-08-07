@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,9 @@ public class PlayerHealth : MonoBehaviour
     [Header("Universal Player Health")]
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private int currentHealth;
+
+    public GameObject BloodOverlay2;
+    public GameObject BlackScreen;
 
     [Header("Per-Body-Part Health")]
     [SerializeField] private List<BodyPartHealth> bodyParts = new();
@@ -58,8 +62,23 @@ public class PlayerHealth : MonoBehaviour
         if (IsDead())
         {
             Debug.Log("Player has died.");
-            // TODO: trigger death logic
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.PlayerDeath);
+            BloodOverlay2.SetActive(true);
+            StartCoroutine(Death());
         }
+    }
+
+    private IEnumerator Death()
+    {
+        yield return new WaitForSeconds(4.5f);
+        BlackScreen.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        AudioManager.Instance.PlayPlayerDeathBlood();
+        
+        yield return new WaitForSeconds(1f);
+        Time.timeScale = 0f; // Pause the game
+
+        // Scene transition here (game over screen)
     }
 
     public void DamagePart(BodyPart part, int amount)
