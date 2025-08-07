@@ -1363,6 +1363,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 144789984}
   m_CullTransparentMesh: 1
+--- !u!1 &147889082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5659388242141367088, guid: 38409917e049ae244b011698e527a4cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 772066874}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &148484211
 GameObject:
   m_ObjectHideFlags: 0
@@ -4330,6 +4336,12 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &504043756 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2318790638390068072, guid: 38409917e049ae244b011698e527a4cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 772066874}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &508374132
 GameObject:
   m_ObjectHideFlags: 0
@@ -7000,7 +7012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &705828664
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12079,7 +12091,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1227858838
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16210,6 +16222,16 @@ PrefabInstance:
       propertyPath: pickupUIObject
       value: 
       objectReference: {fileID: 1735755842}
+    - target: {fileID: 6401322178869448303, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: AnimationObject
+      value: 
+      objectReference: {fileID: 504043756}
+    - target: {fileID: 6401322178869448303, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: transitionObject
+      value: 
+      objectReference: {fileID: 147889082}
     - target: {fileID: 6401322178869448303, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: videoStoreObject
