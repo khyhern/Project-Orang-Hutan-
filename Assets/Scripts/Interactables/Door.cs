@@ -8,25 +8,30 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
 
     [Header("Lock Settings")]
     public bool requiresKey = true;
-    public PuzzleItemData requiredKeyItem; // Assign in Inspector (ScriptableObject)
+    public PuzzleItemData requiredKeyItem;
     public bool consumeKeyOnUse = false;
 
     [Header("Messages")]
     [SerializeField] private string lockedMessage = "The door is locked.";
-    [SerializeField] private string successMessage = "The door opens.";
+    [SerializeField] private string successMessage = "The door is now unlocked.";
+    [SerializeField] private string openMessage = "The door opens.";
+    [SerializeField] private string closeMessage = "The door closes.";
     [SerializeField] private Color lockedTextColor = Color.red;
     [SerializeField] private Color successTextColor = Color.green;
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] public float messageDuration = 3f;
 
-    [Header("Animatior")]
+    [Header("Animator")]
     [SerializeField] private Animator animator;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip unlockSuccessClip;
     [SerializeField] private AudioClip unlockFailClip;
+    [SerializeField] private AudioClip openDoorClip;
+    [SerializeField] private AudioClip closeDoorClip;
 
+    private bool isUnlocked = false;
     private bool isOpened = false;
 
     private void Awake()
@@ -43,46 +48,60 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
             if (obj != null && obj.TryGetComponent(out TextMeshProUGUI tmp))
                 messageText = tmp;
             else
-                Debug.LogWarning("[DOOR] 'SubtitleText' TextMeshProUGUI not found.");
+                Debug.LogWarning("[Door] 'SubtitleText' TextMeshProUGUI not found.");
         }
     }
 
     public void Interact()
     {
-        if (isOpened) return;
-
-        if (requiresKey)
+        if (!isUnlocked)
         {
-            if (requiredKeyItem == null)
+            // First time interaction – check for key
+            if (requiresKey)
             {
-                Debug.LogError("[Door] No PuzzleItemData key assigned.");
-                return;
-            }
+                if (requiredKeyItem == null)
+                {
+                    Debug.LogError("[Door] No PuzzleItemData key assigned.");
+                    return;
+                }
 
-            if (InventorySystem.Instance.HasItem(requiredKeyItem))
-            {
-                OpenDoor();
+                if (InventorySystem.Instance.HasItem(requiredKeyItem))
+                {
+                    isUnlocked = true;
 
-                if (consumeKeyOnUse)
-                    InventorySystem.Instance.RemoveItem(requiredKeyItem);
+                    PlaySound(unlockSuccessClip);
+                    DisplayMessage(successMessage, successTextColor);
 
-                // Play success sound
-                PlaySound(unlockSuccessClip);
+                    if (consumeKeyOnUse)
+                        InventorySystem.Instance.RemoveItem(requiredKeyItem);
+
+                    return; // Stop here. Wait for next interaction to open door
+                }
+                else
+                {
+                    DisplayMessage(lockedMessage, lockedTextColor);
+                    PlaySound(unlockFailClip);
+                    return;
+                }
             }
             else
             {
-                DisplayMessage(lockedMessage, lockedTextColor);
-
-                // Play fail sound
-                PlaySound(unlockFailClip);
+                // No key required
+                isUnlocked = true;
+                PlaySound(unlockSuccessClip);
+                DisplayMessage(successMessage, successTextColor);
+                return;
             }
+        }
+
+        // If unlocked, then open or close the door based on current state
+        if (!isOpened)
+        {
+            OpenDoor();
         }
         else
         {
-            OpenDoor();
-
-            // Play success sound
-            PlaySound(unlockSuccessClip);
+            CloseDoor();
         }
     }
 
@@ -90,16 +109,27 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
     {
         isOpened = true;
 
-        // TODO: Play animation, sound, etc.
         Debug.Log("[Door] Door opened.");
-        DisplayMessage(successMessage, successTextColor);
+        DisplayMessage(openMessage, successTextColor);
 
-        // Play door opening animation
         if (animator != null)
             animator.SetTrigger("OpenDoor");
 
-        // Disable interaction prompt after opening
-        enabled = false;
+        PlaySound(openDoorClip); // <-- Play door opening sound
+    }
+
+
+    private void CloseDoor()
+    {
+        isOpened = false;
+
+        Debug.Log("[Door] Door closed.");
+        DisplayMessage(closeMessage, successTextColor);
+
+        if (animator != null)
+            animator.SetTrigger("CloseDoor");
+
+        PlaySound(closeDoorClip); // <-- Play door closing sound
     }
 
     private void DisplayMessage(string message, Color color)
@@ -126,9 +156,8 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
             audioSource.PlayOneShot(clip);
     }
 
-
-    // For interaction prompt
-    public string GetInteractionVerb() => "open";
+    // Interaction Prompt
+    public string GetInteractionVerb() => isOpened ? "close" : "open";
     public string GetObjectName() => "door";
     public string GetObjectID() => "Door";
     public InteractionGroup GetInteractionGroup() => InteractionGroup.Default;
