@@ -265,12 +265,11 @@ public class EnemyAI : MonoBehaviour, IHear
         RedLight.enabled = false;
         yield return new WaitForSeconds(2f);
         _blink.SetTrigger("Blink");
-        
-        _cameraPanTilt.TiltAxis.Value = -30f;
-        
+        yield return new WaitForSeconds(1f);
         Blood.SetActive(false);
+
+        _cameraPanTilt.TiltAxis.Value = -30f;
         CameraManager.SwitchCamera(CameraPlayer); 
-        
         
         yield return new WaitForSeconds(3f);
         BloodOverlay.SetActive(true);
@@ -281,6 +280,7 @@ public class EnemyAI : MonoBehaviour, IHear
         yield return new WaitForSeconds(1f);
         _playerCameraController.enabled = true;
         respawn = true;
+        _blink.ResetTrigger("Blink");
     }
 
     private void RunAway()
@@ -297,7 +297,7 @@ public class EnemyAI : MonoBehaviour, IHear
         }
 
         Vector3 distanceToRespawnPoint = transform.position - _runAwayPoint;
-        if (distanceToRespawnPoint.magnitude < 1.5f)
+        if (distanceToRespawnPoint.magnitude < 2f)
         {
             _alreadyAttacked = false;
             //_runAway = false;

@@ -28,6 +28,8 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip ScaryLaugh;
     public AudioClip QTE;
     public AudioClip QTESuccess;
+    public AudioClip PlayerDeath;
+    public AudioClip PlayerDeathBlood;
 
     private bool firstPlay = true;
 
@@ -123,5 +125,10 @@ public class AudioManager : Singleton<AudioManager>
     public void StopSFXQTE()
     {
         _sfxQTE.Stop();
+    }
+
+    public void PlayPlayerDeathBlood()
+    {
+        _sfxBlood.PlayOneShot(PlayerDeathBlood);
     }
 }
