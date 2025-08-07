@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 1671446730161352708}
   - component: {fileID: 7540388350614796791}
   - component: {fileID: 1479623664223010343}
-  - component: {fileID: 6167394718011558741}
+  - component: {fileID: 96473654414768018}
   m_Layer: 10
   m_Name: Object
   m_TagString: Untagged
@@ -321,7 +321,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6167394718011558741
+--- !u!114 &96473654414768018
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -334,17 +334,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showPrompt: 1
-  requiresKey: 0
+  requiresKey: 1
   requiredKeyItem: {fileID: 0}
   consumeKeyOnUse: 0
-  lockedMessage: The door is locked. Seems to need a key.
-  successMessage: Open sesame.
+  lockedMessage: The door is locked.
+  successMessage: The door opens.
   openMessage: The door opens.
   closeMessage: The door closes.
   lockedTextColor: {r: 1, g: 0, b: 0, a: 1}
   successTextColor: {r: 0, g: 1, b: 0, a: 1}
   messageText: {fileID: 0}
-  messageDuration: 2
+  messageDuration: 3
   animator: {fileID: 6134631227998373333}
   audioSource: {fileID: 4903783442716616448}
   unlockSuccessClip: {fileID: 8300000, guid: 1460c55c9498eab40bd3d96c7c442160, type: 3}

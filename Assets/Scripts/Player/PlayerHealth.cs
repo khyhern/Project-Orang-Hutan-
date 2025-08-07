@@ -11,6 +11,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private int currentHealth;
 
+    [Header("BloodVFX")]
     public GameObject BloodOverlay2;
     public GameObject BlackScreen;
 
