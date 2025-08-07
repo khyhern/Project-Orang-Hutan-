@@ -17,7 +17,8 @@ public class EnemyAI : MonoBehaviour, IHear
 
     [Header("Camera")]
     [SerializeField] private CinemachineImpulseSource _impulseSource;
-    [SerializeField] private Animator _blink;
+    [SerializeField] private GameObject _faint;
+    private Animator _blink;
     public CinemachineCamera CameraPlayer;
     public CinemachineCamera CameraEnemy;
 
@@ -78,6 +79,7 @@ public class EnemyAI : MonoBehaviour, IHear
         _animator = GetComponent<Animator>();
         _playerCameraController = CameraPlayer.GetComponent<CinemachineInputAxisController>();
         _cameraPanTilt = CameraPlayer.GetComponent<CinemachinePanTilt>();
+        _blink = _faint.transform.GetChild(0).GetComponent<Animator>();
         _speed = _enemy.speed;
     }
 
@@ -150,6 +152,7 @@ public class EnemyAI : MonoBehaviour, IHear
     private void SearchSound()
     {
         _animator.SetBool("Run", false);
+        _animator.SetBool("Look", false);
         if (!_searchPointSet) SearchSoundPoint();
 
         if (_searchPointSet)
@@ -236,6 +239,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
         Blood.SetActive(true);
         AudioManager.Instance.PlaySFXBlood();
+        _faint.SetActive(true);
 
         BodyPart bodyPart = BodyPartsProbability();
         AudioManager.Instance.PlaySFXBreath();
@@ -281,6 +285,7 @@ public class EnemyAI : MonoBehaviour, IHear
         _playerCameraController.enabled = true;
         respawn = true;
         _blink.ResetTrigger("Blink");
+        _faint.SetActive(false);
     }
 
     private void RunAway()
@@ -311,6 +316,7 @@ public class EnemyAI : MonoBehaviour, IHear
 
     public void ResetRunAwayStatus()
     {
+        _searching = false;
         _runAway = false;
         _runAwayPointSet = false;
     }

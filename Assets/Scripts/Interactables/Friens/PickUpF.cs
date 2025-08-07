@@ -20,6 +20,7 @@ public class PickUpF : MonoBehaviour
     public float normalSpeed = 3f;
     [SerializeField] private float dropRange = 2f; // Max distance to drop friend
 
+    [SerializeField] private GameObject _enemy;
     private GameObject carriedFriend = null;
     private PlayerMovement playerMovement;
     private InputAction interactAction;
@@ -205,6 +206,9 @@ public class PickUpF : MonoBehaviour
     {
         isInCutscene = true;
         
+        // Disable enemy
+        _enemy.SetActive(false);
+
         // 1. Disable player input
         PlayerInput playerInput = GetComponent<PlayerInput>();
         if (playerInput != null) playerInput.enabled = false;

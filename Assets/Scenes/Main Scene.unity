@@ -10078,7 +10078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1291238368
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16779,6 +16779,11 @@ PrefabInstance:
       propertyPath: _blink
       value: 
       objectReference: {fileID: 851171646}
+    - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
+        type: 3}
+      propertyPath: _faint
+      value: 
+      objectReference: {fileID: 1291238367}
     - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
         type: 3}
       propertyPath: Respawn

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -61,15 +62,15 @@ public class PlayerHealth : MonoBehaviour
 
         if (IsDead())
         {
-            Debug.Log("Player has died.");
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.PlayerDeath);
-            BloodOverlay2.SetActive(true);
             StartCoroutine(Death());
         }
     }
 
     private IEnumerator Death()
     {
+        Debug.Log("Player has died.");
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.PlayerDeath);
+        BloodOverlay2.SetActive(true);
         yield return new WaitForSeconds(4.5f);
         BlackScreen.SetActive(true);
         yield return new WaitForSeconds(1f);
@@ -84,6 +85,11 @@ public class PlayerHealth : MonoBehaviour
     public void DamagePart(BodyPart part, int amount)
     {
         GetBodyPart(part)?.ApplyDamage(amount);
+
+        if (IsDead())
+        {
+            StartCoroutine(Death());
+        }
     }
 
     public void BandageLimb(BodyPart part)
@@ -98,6 +104,7 @@ public class PlayerHealth : MonoBehaviour
 
     public bool IsPartDestroyed(BodyPart part)
     {
+        
         return GetBodyPart(part)?.IsDestroyed ?? false;
     }
 
