@@ -113,17 +113,17 @@ public class PlayerMovement : MonoBehaviour
 
             if (Body.localPosition.z < 2f && !_conditions.IsCollide)
             {
-                Body.Translate(Vector3.forward * 1.5f * Time.deltaTime);
+                Body.Translate(Vector3.forward * 1f * Time.deltaTime);
             }
         }
         else
         {
             if (Body.localPosition.z > 0f && !_conditions.IsCollide)
             {
-                Body.Translate(Vector3.back * 1f * Time.deltaTime);
+                Body.Translate(Vector3.back * 2f * Time.deltaTime);
             }
 
-            _stamina += 20f * Time.deltaTime;
+            _stamina += 5f * Time.deltaTime;
         }
 
         _stamina = Mathf.Clamp(_stamina, 0f, _maxStamina);

@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour, IHear
 {
     [Header("Settings")]
-    [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsThis;
+    [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsThis, whatIsDoor;
     [SerializeField] private Transform _enemyAttackPoint;
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private float _walkPointRange;
@@ -66,7 +66,7 @@ public class EnemyAI : MonoBehaviour, IHear
     private bool _alreadyAttacked;
 
     // States
-    private bool _playerInSightRange, _playerInAttackRange;
+    private bool _playerInSightRange, _playerInAttackRange, _doorInRange;
 
     // Event
     public static Action<bool> OnEnemyAttack;
@@ -103,6 +103,12 @@ public class EnemyAI : MonoBehaviour, IHear
        
 
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
+        _doorInRange = Physics.CheckSphere(_enemyAttackPoint.position, 0.5f, whatIsDoor);
+
+        if (_doorInRange)
+        {
+            _enemy.speed = 0f;
+        }
         if (!_alreadyAttacked && respawn) Respawn.RespawnDelay();
         if (_runAway) RunAway();
         if (_searching && !_playerInSightRange && !_runAway) SearchSound();
@@ -343,6 +349,9 @@ public class EnemyAI : MonoBehaviour, IHear
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(_enemyAttackPoint.position, _attackRange);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(_enemyAttackPoint.position, 0.5f);
         }
     }
 
