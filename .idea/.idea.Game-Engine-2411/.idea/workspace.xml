@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e79cb51-d4e0-496c-9ab6-be4776a4db50" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Game-Engine-2411/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Game-Engine-2411/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/MainMenu/Main Menu.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/MainMenu/Main Menu.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/MainMenu/ScreenTransition.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/MainMenu/ScreenTransition.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main Scene 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main Scene 1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Enemy/EnemyAI.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Interactables/Friens/PickUpF.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Interactables/Friens/PickUpF.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/PauseMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/PauseMenu.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +98,7 @@
       <workItem from="1751899266084" duration="621000" />
       <workItem from="1751960053836" duration="1488000" />
       <workItem from="1754202717892" duration="325000" />
+      <workItem from="1754537821622" duration="311000" />
     </task>
     <servers />
   </component>

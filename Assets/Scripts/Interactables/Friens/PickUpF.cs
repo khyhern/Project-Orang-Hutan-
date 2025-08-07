@@ -11,6 +11,7 @@ public class PickUpF : MonoBehaviour
     public LayerMask groundLayer;
     public GameObject pickupUIObject;
     public GameObject safepointUIObject;
+    [SerializeField] private SitInteractable targetchair;
     public float carrySpeed = 2.5f;
     public float normalSpeed = 3f;
     [SerializeField] private float dropRange = 2f; // Max distance to drop friend
@@ -242,7 +243,7 @@ public class PickUpF : MonoBehaviour
                 yield return new WaitForSeconds(1f);
                 
                 // 4. End of animation, teleport player & trigger animation trigger "start"
-                transform.position = new Vector3(0, 0, 0);
+                SitTeleportService.TeleportAndSitAt(targetchair);
                 
                 transitionAnimator.SetTrigger("Start");
             }
