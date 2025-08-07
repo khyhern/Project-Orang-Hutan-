@@ -11,6 +11,8 @@ public class PickUpF : MonoBehaviour
     public LayerMask groundLayer;
     public GameObject pickupUIObject;
     public GameObject safepointUIObject;
+    public GameObject AnimationObject;
+    public GameObject transitionObject;
     [SerializeField] private SitInteractable targetchair;
     public GameObject videoPlayerParent; // Assign this in the inspector to the VideoPlayer prefab parent
     public GameObject videoStoreObject; // Assign this in the inspector to the child GameObject with VideoPlayer component
@@ -205,6 +207,8 @@ public class PickUpF : MonoBehaviour
     {
         isInCutscene = true;
         
+        transitionObject.SetActive(true);
+        
         // 1. Disable player input
         PlayerInput playerInput = GetComponent<PlayerInput>();
         if (playerInput != null) playerInput.enabled = false;
@@ -235,11 +239,10 @@ public class PickUpF : MonoBehaviour
                 yield return new WaitForSeconds(9f);
 
                 // Play transition
-                GameObject screenTransition = GameObject.Find("ScreenTransition");
                 Animator transitionAnimator = null;
-                if (screenTransition != null)
+                if (AnimationObject != null)
                 {
-                    transitionAnimator = screenTransition.GetComponent<Animator>();
+                    transitionAnimator = AnimationObject.GetComponent<Animator>();
                     if (transitionAnimator != null)
                     {
                         transitionAnimator.SetTrigger("End");
@@ -273,6 +276,9 @@ public class PickUpF : MonoBehaviour
         
         // Re-enable player components
         if (playerInput != null) playerInput.enabled = true;
+        
+        yield return new WaitForSeconds(2f);
+        transitionObject.SetActive(false);
         
         isInCutscene = false;
     }
