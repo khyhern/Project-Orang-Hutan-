@@ -7589,6 +7589,11 @@ PrefabInstance:
       propertyPath: ScaryLaugh
       value: 
       objectReference: {fileID: 8300000, guid: ffad223d1f6160447a14a89dff841c39, type: 3}
+    - target: {fileID: 313933143919761625, guid: 40a9ecfa33149d748b6326e8ca207af0,
+        type: 3}
+      propertyPath: _sfxEnemyFootstep
+      value: 
+      objectReference: {fileID: 1157102057}
     - target: {fileID: 2707760683211339861, guid: 40a9ecfa33149d748b6326e8ca207af0,
         type: 3}
       propertyPath: m_LocalPosition.x

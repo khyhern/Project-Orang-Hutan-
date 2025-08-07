@@ -77,7 +77,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (_sfxHeartBeat.volume < 0.7f)
         {
-            _sfxHeartBeat.volume += 0.1f * Time.deltaTime;
+            _sfxHeartBeat.volume += 0.2f * Time.deltaTime;
         }
     }
 
@@ -85,7 +85,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (_sfxHeartBeat.volume >= 0.1f)
         {
-            _sfxHeartBeat.volume -= 0.1f * Time.deltaTime;
+            _sfxHeartBeat.volume -= 0.2f * Time.deltaTime;
         }
     }
 
