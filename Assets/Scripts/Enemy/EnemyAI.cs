@@ -15,7 +15,8 @@ public class EnemyAI : MonoBehaviour, IHear
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private float _walkPointRange;
     [SerializeField] private float _searchRange;
-    [SerializeField] private float _respawnRange;
+    [SerializeField] private float _escapeRange;
+    public EnemyManager Respawn;
 
     [Header("Camera")]
     [SerializeField] private CinemachineImpulseSource _impulseSource;
@@ -47,9 +48,10 @@ public class EnemyAI : MonoBehaviour, IHear
     private CinemachinePanTilt _cameraPanTilt;
 
     // Run Away
-    private Vector3 _respawnPoint;
-    private bool _respawnPointSet;
+    private Vector3 _runAwayPoint;
+    private bool _runAwayPointSet;
     private bool _runAway;
+    public bool respawn;
 
     // Searching
     private Vector3 _soundPos;
@@ -102,6 +104,7 @@ public class EnemyAI : MonoBehaviour, IHear
        
 
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
+        if (!_runAway && respawn) Respawn.RespawnDelay();
         if (_runAway) RunAway();
         if (_searching && !_playerInSightRange && !_runAway) SearchSound();
         if (!_playerInSightRange && !_playerInAttackRange && !_searching && !_runAway) Patroling();
@@ -280,41 +283,40 @@ public class EnemyAI : MonoBehaviour, IHear
         OnEnemyAttack?.Invoke(true);
         yield return new WaitForSeconds(1f);
         _playerCameraController.enabled = true;
-
+        respawn = true;
     }
 
     private void RunAway()
     {
         _searching = false;
-        if (!_respawnPointSet) SearchRespawnPoint();
+        if (!_runAwayPointSet) SearchRunAwayPoint();
 
         transform.LookAt(_player);
         
-        _enemy.speed = _speed*3;
-        _enemy.SetDestination(_respawnPoint);
-        Vector3 distanceToRespawnPoint = transform.position - _respawnPoint;
+        _enemy.speed = _speed * 2.5f;
+        _enemy.SetDestination(_runAwayPoint);
+        Vector3 distanceToRespawnPoint = transform.position - _runAwayPoint;
         if (distanceToRespawnPoint.magnitude < 1.5f)
         {
             _alreadyAttacked = false;
             _runAway = false;
-            _respawnPointSet = false;
+            _runAwayPointSet = false;
             _walkPointSet = false;
-            _blink.ResetTrigger("Blink");
             _animator.SetBool("Run", false);
         }
     }
 
-    private void SearchRespawnPoint()
+    private void SearchRunAwayPoint()
     {
         
-        float randomZ = UnityEngine.Random.Range(-_respawnRange, 0);
-        float randomX = UnityEngine.Random.Range(-_respawnRange, _respawnRange);
-        randomZ = Mathf.Abs(randomZ) < 20f ? 20f : randomZ; // Ensure minimum distance
-        randomX = Mathf.Abs(randomX) < 20f ? 20f : randomX; // Ensure minimum distance
-        _respawnPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-        if (Physics.Raycast(_respawnPoint, -transform.up, 2f, whatIsGround))
+        float randomZ = UnityEngine.Random.Range(-_escapeRange, 0);
+        float randomX = UnityEngine.Random.Range(-_escapeRange, _escapeRange);
+        randomZ = Mathf.Abs(randomZ) < 10f ? 10f : randomZ; // Ensure minimum distance
+        randomX = Mathf.Abs(randomX) < 10f ? 10f : randomX; // Ensure minimum distance
+        _runAwayPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+        if (Physics.Raycast(_runAwayPoint, -transform.up, 2f, whatIsGround))
         {
-            _respawnPointSet = true;
+            _runAwayPointSet = true;
         }
     }
 

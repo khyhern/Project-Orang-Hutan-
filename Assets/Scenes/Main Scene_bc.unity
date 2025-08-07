@@ -841,6 +841,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 103509406}
   m_CullTransparentMesh: 1
+--- !u!1 &120927193 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7179561346102693291, guid: b9b14c85e139ee6489634e3a084b92f1,
+    type: 3}
+  m_PrefabInstance: {fileID: 4515769358112751856}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &122649810
 GameObject:
   m_ObjectHideFlags: 0
@@ -2843,6 +2849,56 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339151713}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &368675928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 368675930}
+  - component: {fileID: 368675929}
+  m_Layer: 0
+  m_Name: EnemyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &368675929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368675928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50f9cd56d649df745aab477956ed72e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _respawnRange: 30
+  _enemy: {fileID: 120927193}
+  _player: {fileID: 1597777537}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!4 &368675930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368675928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &379806527
 GameObject:
   m_ObjectHideFlags: 0
@@ -11251,6 +11307,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1597244448}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1597777537 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5149424561190231939, guid: 420acbcd244e33c458689f1c7dd27739,
+    type: 3}
+  m_PrefabInstance: {fileID: 1644669750}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1603259176
 GameObject:
   m_ObjectHideFlags: 0
@@ -15417,6 +15479,11 @@ PrefabInstance:
       objectReference: {fileID: 782980207}
     - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
         type: 3}
+      propertyPath: Respawn
+      value: 
+      objectReference: {fileID: 368675929}
+    - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
+        type: 3}
       propertyPath: CameraEnemy
       value: 
       objectReference: {fileID: 268608288}
@@ -15430,6 +15497,11 @@ PrefabInstance:
       propertyPath: CameraPlayer
       value: 
       objectReference: {fileID: 1727007890}
+    - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
+        type: 3}
+      propertyPath: _escapeRange
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 6724350199996380572, guid: b9b14c85e139ee6489634e3a084b92f1,
         type: 3}
       propertyPath: _respawnRange
@@ -15921,3 +15993,4 @@ SceneRoots:
   - {fileID: 1395071489}
   - {fileID: 945614133}
   - {fileID: 996933211}
+  - {fileID: 368675930}
