@@ -285,6 +285,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!1 &6188931
 GameObject:
   m_ObjectHideFlags: 0
@@ -2510,6 +2511,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!1001 &92761933
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13559,6 +13561,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!1001 &529373631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16785,6 +16788,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!1001 &642426784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22350,6 +22354,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!4 &874837073 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1146743f44f92534a8392a70a359ac14,
@@ -24519,7 +24524,7 @@ Transform:
   m_GameObject: {fileID: 945614132}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 15.362, y: -11.015, z: -23.51}
+  m_LocalPosition: {x: 15.362, y: -9.14, z: -23.51}
   m_LocalScale: {x: 100.09935, y: 200.1987, z: 389.0061}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27190,6 +27195,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!1001 &1058570923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29775,6 +29781,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!1 &1141198894 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3377106427341105277, guid: 420acbcd244e33c458689f1c7dd27739,
@@ -33671,6 +33678,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!65 &1255831519
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43809,6 +43817,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!1001 &1674046444
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48741,6 +48750,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!1001 &1858244596
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52444,6 +52454,7 @@ MonoBehaviour:
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
+  spawnDistanceInFront: 2
 --- !u!1001 &1936067240
 PrefabInstance:
   m_ObjectHideFlags: 0
