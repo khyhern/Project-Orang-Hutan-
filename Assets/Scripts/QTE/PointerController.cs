@@ -171,7 +171,20 @@ public class PointerController : MonoBehaviour
         // Trigger success in QTETrigger (door will handle its own animation)
         if (qteTrigger != null)
         {
-            qteTrigger.OnQTESuccess();
+            // Safety check: only call OnQTESuccess if this trigger is still active
+            if (qteTrigger.IsQTEActive)
+            {
+                qteTrigger.OnQTESuccess();
+                Debug.Log($"QTE Success called for trigger: {qteTrigger.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"QTE Success called for inactive trigger: {qteTrigger.name}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("QTE Success called but qteTrigger is null!");
         }
         
         // Mark QTE as complete
@@ -195,7 +208,20 @@ public class PointerController : MonoBehaviour
         // Notify QTETrigger that QTE was exited (not completed)
         if (qteTrigger != null)
         {
-            qteTrigger.OnQTEExit();
+            // Safety check: only call OnQTEExit if this trigger is still active
+            if (qteTrigger.IsQTEActive)
+            {
+                qteTrigger.OnQTEExit();
+                Debug.Log($"QTE Exit called for trigger: {qteTrigger.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"QTE Exit called for inactive trigger: {qteTrigger.name}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("QTE Exit called but qteTrigger is null!");
         }
         
         // Cleanup behavior-specific actions

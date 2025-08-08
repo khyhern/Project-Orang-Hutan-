@@ -29,6 +29,8 @@ public class QTETrigger : MonoBehaviour
     public float spawnRadius = 2f; // Distance from trigger to spawn
     public float spawnHeight = 0f; // Height offset for spawn
     public bool hasSpawned = false; // Track if this trigger has already spawned
+    [Tooltip("Distance in front of the QTE trigger to spawn items")]
+    public float spawnDistanceInFront = 2f; // Distance in front of trigger to spawn
 
     private InputAction interactAction;
     private Camera mainCamera;
@@ -46,6 +48,9 @@ public class QTETrigger : MonoBehaviour
     // Static variables to manage multiple QTE triggers
     private static QTETrigger currentActiveTrigger = null;
     private static List<QTETrigger> allTriggers = new List<QTETrigger>();
+    
+    // Public property to check if QTE is active
+    public bool IsQTEActive => isQTEActive;
 
     void Awake()
     {
@@ -126,6 +131,11 @@ public class QTETrigger : MonoBehaviour
         {
             // Set the QTETrigger reference so PointerController can call individual door methods
             pointerController.qteTrigger = this;
+            Debug.Log($"PointerController reference set for {gameObject.name}");
+        }
+        else
+        {
+            Debug.LogWarning($"PointerController not found for {gameObject.name}");
         }
     }
 
@@ -148,6 +158,18 @@ public class QTETrigger : MonoBehaviour
                 cooldownTimer = 0f;
                 Debug.Log("QTE cooldown finished for door: " + gameObject.name);
             }
+        }
+        
+        // If this trigger has already spawned, disable it completely
+        if (hasSpawned)
+        {
+            // Hide UI if it was showing
+            if (currentActiveTrigger == this)
+            {
+                currentActiveTrigger = null;
+                HideInteractUI();
+            }
+            return;
         }
         
         if (isQTEActive || isOnCooldown) return; // Don't show interact UI if QTE is active or on cooldown
@@ -254,6 +276,13 @@ public class QTETrigger : MonoBehaviour
 
     private void OnInteract(InputAction.CallbackContext context)
     {
+        // If this trigger has already spawned, don't allow interaction
+        if (hasSpawned)
+        {
+            Debug.Log($"QTE trigger {gameObject.name} has already spawned items - interaction disabled");
+            return;
+        }
+        
         if (isQTEActive || isOnCooldown) return; // Don't trigger if QTE is already active or on cooldown
         
         if (mainCamera == null)
@@ -278,6 +307,13 @@ public class QTETrigger : MonoBehaviour
 
     private void StartQTE()
     {
+        // If this trigger has already spawned, don't start QTE
+        if (hasSpawned)
+        {
+            Debug.Log($"QTE trigger {gameObject.name} has already spawned items - QTE not started");
+            return;
+        }
+        
         Debug.Log("QTE Started for door: " + gameObject.name);
         isQTEActive = true;
         
@@ -299,9 +335,12 @@ public class QTETrigger : MonoBehaviour
         // Reset PointerController state if it exists (for reactivation)
         if (pointerController != null)
         {
+            // Set this trigger as the active one for the PointerController
+            pointerController.qteTrigger = this;
             pointerController.ResetQTEState();
             // Activate random behaviors for this QTE session
             pointerController.ActivateQTE();
+            Debug.Log($"QTE started for {gameObject.name} - PointerController reference set");
         }
 
         // You can add additional logic here like:
@@ -338,7 +377,7 @@ public class QTETrigger : MonoBehaviour
         }
     }
 
-    // Spawn success object around this trigger
+    // Spawn success object in front of the QTE trigger
     private void SpawnSuccessObject()
     {
         if (hasSpawned || successSpawnPrefabs == null || successSpawnPrefabs.Length == 0) return;
@@ -348,11 +387,21 @@ public class QTETrigger : MonoBehaviour
         
         if (selectedPrefab == null) return;
 
-        // Calculate random position around the trigger
-        Vector2 randomCircle = UnityEngine.Random.insideUnitCircle.normalized * spawnRadius;
-        Vector3 spawnPosition = transform.position + new Vector3(randomCircle.x, spawnHeight, randomCircle.y);
+        // Spawn in front of the QTE trigger
+        Vector3 spawnPosition;
         
-        // Spawn the randomly selected object
+        // Get the trigger's forward direction (assuming the trigger faces forward)
+        Vector3 triggerForward = transform.forward;
+        // Remove the Y component to keep it at ground level
+        triggerForward.y = 0;
+        triggerForward.Normalize();
+        
+        // Spawn at the specified distance in front of the trigger
+        spawnPosition = transform.position + (triggerForward * spawnDistanceInFront);
+        // Keep the same Y position as the trigger (or use spawnHeight)
+        spawnPosition.y = transform.position.y + spawnHeight;
+        
+        // Spawn the object
         GameObject spawnedObject = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
         
         // Mark this trigger as having spawned
@@ -453,6 +502,8 @@ public class QTETrigger : MonoBehaviour
         Debug.Log($"Player Layer Mask: {playerLayer.value}");
         Debug.Log($"Is QTE Active: {isQTEActive}");
         Debug.Log($"Is On Cooldown: {isOnCooldown}");
+        Debug.Log($"Has Spawned: {hasSpawned}");
+        Debug.Log($"Spawn Distance In Front: {spawnDistanceInFront}");
         Debug.Log($"Interact UI Object: {(interactUIObject != null ? interactUIObject.name : "NULL")}");
         Debug.Log($"QTE Canvas: {(qteCanvas != null ? qteCanvas.name : "NULL")}");
         Debug.Log($"Main Camera: {(mainCamera != null ? mainCamera.name : "NULL")}");
