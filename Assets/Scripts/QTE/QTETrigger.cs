@@ -24,7 +24,8 @@ public class QTETrigger : MonoBehaviour
     public float soundRange = 15f;
 
     [Header("Success Spawn")]
-    public GameObject successSpawnPrefab; // Prefab to spawn on success
+    [Tooltip("Array of prefabs to randomly choose from when spawning on success")]
+    public GameObject[] successSpawnPrefabs; // Array of prefabs to spawn on success
     public float spawnRadius = 2f; // Distance from trigger to spawn
     public float spawnHeight = 0f; // Height offset for spawn
     public bool hasSpawned = false; // Track if this trigger has already spawned
@@ -237,19 +238,24 @@ public class QTETrigger : MonoBehaviour
     // Spawn success object around this trigger
     private void SpawnSuccessObject()
     {
-        if (hasSpawned || successSpawnPrefab == null) return;
+        if (hasSpawned || successSpawnPrefabs == null || successSpawnPrefabs.Length == 0) return;
+
+        // Randomly choose a prefab from the array
+        GameObject selectedPrefab = successSpawnPrefabs[UnityEngine.Random.Range(0, successSpawnPrefabs.Length)];
+        
+        if (selectedPrefab == null) return;
 
         // Calculate random position around the trigger
         Vector2 randomCircle = UnityEngine.Random.insideUnitCircle.normalized * spawnRadius;
         Vector3 spawnPosition = transform.position + new Vector3(randomCircle.x, spawnHeight, randomCircle.y);
         
-        // Spawn the object
-        GameObject spawnedObject = Instantiate(successSpawnPrefab, spawnPosition, Quaternion.identity);
+        // Spawn the randomly selected object
+        GameObject spawnedObject = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
         
         // Mark this trigger as having spawned
         hasSpawned = true;
         
-        Debug.Log($"Success object spawned at {spawnPosition} for trigger: {gameObject.name}");
+        Debug.Log($"Success object '{selectedPrefab.name}' spawned at {spawnPosition} for trigger: {gameObject.name}");
     }
     
     // Called when QTE succeeds

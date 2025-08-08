@@ -2311,7 +2311,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268608284}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0065665855, y: 0.9514522, z: 0.020347586, w: 0.30705327}
+  m_LocalRotation: {x: -0.008801406, y: 0.9511244, z: 0.027225325, w: 0.3074796}
   m_LocalPosition: {x: -18.34, y: -9.48, z: 6.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2926,8 +2926,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 379806527}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -86.49559}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2936,7 +2936,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -93.6, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &379806529
@@ -5575,14 +5575,14 @@ MonoBehaviour:
   consumeKeyOnUse: 0
   lockedMessage: The door is locked.
   successMessage: The door opens.
-  lockedTextColor: {r: 1, g: 0, b: 0, a: 1}
-  successTextColor: {r: 0, g: 1, b: 0, a: 1}
-  messageText: {fileID: 0}
-  messageDuration: 3
+  openMessage: The door opens.
+  closeMessage: The door closes.
   animator: {fileID: 0}
   audioSource: {fileID: 0}
   unlockSuccessClip: {fileID: 0}
   unlockFailClip: {fileID: 0}
+  openDoorClip: {fileID: 0}
+  closeDoorClip: {fileID: 0}
 --- !u!65 &787634505
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8390,6 +8390,11 @@ MonoBehaviour:
   interactUIObject: {fileID: 1311664197}
   doorAnimator: {fileID: 0}
   doorAnimationName: OpenDoor
+  soundRange: 15
+  successSpawnPrefabs: []
+  spawnRadius: 2
+  spawnHeight: 0
+  hasSpawned: 0
 --- !u!1 &1141198894 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3377106427341105277, guid: 420acbcd244e33c458689f1c7dd27739,
@@ -15906,6 +15911,7 @@ MonoBehaviour:
   audioSource: {fileID: 1896299304}
   doorOpenSFX: {fileID: 8300000, guid: 9308ede5cdef9854596e22d14b0552f2, type: 3}
   doorSFXVolume: 1
+  EnemyManager: {fileID: 0}
 --- !u!4 &8443682952402186024
 Transform:
   m_ObjectHideFlags: 0

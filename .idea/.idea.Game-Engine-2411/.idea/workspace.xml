@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e79cb51-d4e0-496c-9ab6-be4776a4db50" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/QTE/QTETrigger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/QTE/QTETrigger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Game-Engine-2411/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Game-Engine-2411/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +31,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;UI__I&amp;&amp;BF-2&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Main__New&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -102,6 +102,9 @@
       <workItem from="1754554676008" duration="4233000" />
       <workItem from="1754579072569" duration="1923000" />
       <workItem from="1754620205459" duration="570000" />
+      <workItem from="1754628874819" duration="16000" />
+      <workItem from="1754628916832" duration="19000" />
+      <workItem from="1754629188048" duration="99000" />
     </task>
     <servers />
   </component>
