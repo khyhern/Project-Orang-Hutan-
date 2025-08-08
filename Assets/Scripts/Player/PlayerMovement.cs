@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
                 Body.Translate(Vector3.back * 2f * Time.deltaTime);
             }
 
-            _stamina += 5f * Time.deltaTime;
+            _stamina += 3f * Time.deltaTime;
         }
 
         _stamina = Mathf.Clamp(_stamina, 0f, _maxStamina);
