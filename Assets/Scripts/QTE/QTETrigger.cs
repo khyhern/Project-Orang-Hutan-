@@ -422,7 +422,9 @@ public class QTETrigger : MonoBehaviour
         
         // Mark this trigger as having spawned
         hasSpawned = true;
-        
+        _playSound = false;
+
+
         Debug.Log($"Success object '{selectedPrefab.name}' spawned at {spawnPosition} for trigger: {gameObject.name}");
     }
     
