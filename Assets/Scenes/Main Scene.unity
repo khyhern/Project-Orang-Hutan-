@@ -19986,6 +19986,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38409917e049ae244b011698e527a4cf, type: 3}
+--- !u!1 &772066875 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5407043207950789559, guid: 38409917e049ae244b011698e527a4cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 772066874}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &774706326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43283,7 +43289,7 @@ PrefabInstance:
         type: 3}
       propertyPath: DeathMenu
       value: 
-      objectReference: {fileID: 504043756}
+      objectReference: {fileID: 772066875}
     - target: {fileID: 5969082494536676894, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: BlackScreen
