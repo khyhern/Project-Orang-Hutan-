@@ -18,6 +18,9 @@ public class PlayerHealth : MonoBehaviour
     [Header("Per-Body-Part Health")]
     [SerializeField] private List<BodyPartHealth> bodyParts = new();
 
+    [Header("")]
+    public GameObject DeathMenu;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -79,6 +82,9 @@ public class PlayerHealth : MonoBehaviour
         
         yield return new WaitForSeconds(1f);
         Time.timeScale = 0f; // Pause the game
+        DeathMenu.setActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
         // Scene transition here (game over screen)
     }
@@ -129,7 +135,7 @@ public class PlayerHealth : MonoBehaviour
         if (brokenLegs == 2)
             return 0.8f; // 80% speed if both legs broken
 
-        return 1f; // full speed if 0–1 leg broken
+        return 1f; // full speed if 0ï¿½1 leg broken
     }
 
     public float InstanceHealthPercent()
