@@ -240,7 +240,7 @@ public class PickUpF : MonoBehaviour
             if (videoPlayer != null)
             {
                 Debug.Log("[Cutscene] Waiting 3.5 seconds before transition");
-                yield return new WaitForSeconds(2.5f);
+                yield return new WaitForSeconds(1.5f);
 
                 // Play transition
                 Animator transitionAnimator = null;
@@ -254,7 +254,7 @@ public class PickUpF : MonoBehaviour
                     }
                 }
 
-                yield return new WaitForSeconds(1f); // Wait 1 more second (total 10s)
+                yield return new WaitForSeconds(2f); // Wait 1 more second (total 10s)
                 Debug.Log("[Cutscene] 10 seconds passed, deactivating videoPlayerParent");
                 videoPlayerParent.SetActive(false);
 

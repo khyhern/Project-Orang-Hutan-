@@ -14,7 +14,7 @@ public class TransitionUi : MonoBehaviour
         {
             Animator animator = animatorLO.GetComponent<Animator>();
             animator.SetTrigger("Active");
-            StartCoroutine(HideAfterDelay(1f));
+            StartCoroutine(HideAfterDelay(1.5f));
         }
         else
         {
