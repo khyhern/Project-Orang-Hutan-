@@ -19966,6 +19966,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2952321696170055634, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1.1499023
+      objectReference: {fileID: 0}
     - target: {fileID: 3464413341758413126, guid: 38409917e049ae244b011698e527a4cf,
         type: 3}
       propertyPath: m_IsActive
@@ -43274,6 +43279,11 @@ PrefabInstance:
       propertyPath: raycastCamera
       value: 
       objectReference: {fileID: 5598416578654791249}
+    - target: {fileID: 5969082494536676894, guid: 420acbcd244e33c458689f1c7dd27739,
+        type: 3}
+      propertyPath: DeathMenu
+      value: 
+      objectReference: {fileID: 504043756}
     - target: {fileID: 5969082494536676894, guid: 420acbcd244e33c458689f1c7dd27739,
         type: 3}
       propertyPath: BlackScreen
