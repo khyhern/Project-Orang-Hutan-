@@ -42,6 +42,10 @@ public class QTETrigger : MonoBehaviour
     private CinemachineInputAxisController _playerCameraController;
 
     public static Action<bool> OnQTEActive;
+    
+    // Static variables to manage multiple QTE triggers
+    private static QTETrigger currentActiveTrigger = null;
+    private static List<QTETrigger> allTriggers = new List<QTETrigger>();
 
     void Awake()
     {
@@ -54,11 +58,37 @@ public class QTETrigger : MonoBehaviour
     void OnEnable()
     {
         if (interactAction != null) interactAction.performed += OnInteract;
+        
+        // Register this trigger
+        if (!allTriggers.Contains(this))
+        {
+            allTriggers.Add(this);
+        }
     }
 
     void OnDisable()
     {
         if (interactAction != null) interactAction.performed -= OnInteract;
+        
+        // Unregister this trigger
+        allTriggers.Remove(this);
+        
+        // If this was the current active trigger, clear it
+        if (currentActiveTrigger == this)
+        {
+            currentActiveTrigger = null;
+            HideAllInteractUI();
+        }
+    }
+    
+    void OnDestroy()
+    {
+        // Clean up when object is destroyed
+        allTriggers.Remove(this);
+        if (currentActiveTrigger == this)
+        {
+            currentActiveTrigger = null;
+        }
     }
 
     void Start()
@@ -122,34 +152,97 @@ public class QTETrigger : MonoBehaviour
         
         if (isQTEActive || isOnCooldown) return; // Don't show interact UI if QTE is active or on cooldown
         
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+            if (mainCamera == null) return;
+        }
+        
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactRange, playerLayer))
+        // Use a simple approach - raycast against everything and check if we hit this object
+        if (Physics.Raycast(ray, out hit, interactRange))
         {
             // Check if the hit object is this QTE trigger (door)
             if (hit.collider.gameObject == gameObject)
             {
-                if (interactUIObject != null)
+                // This trigger is being looked at
+                if (currentActiveTrigger != this)
                 {
-                    interactUIObject.SetActive(true);
+                    // Hide UI from previous trigger and show this one's UI
+                    if (currentActiveTrigger != null)
+                    {
+                        currentActiveTrigger.HideInteractUI();
+                    }
+                    currentActiveTrigger = this;
+                    ShowInteractUI();
+                    Debug.Log($"QTE UI shown for {gameObject.name} - Distance: {hit.distance}, Layer: {gameObject.layer}");
                 }
             }
             else
             {
-                if (interactUIObject != null)
+                // This trigger is not being looked at
+                if (currentActiveTrigger == this)
                 {
-                    interactUIObject.SetActive(false);
+                    currentActiveTrigger = null;
+                    HideInteractUI();
                 }
             }
         }
         else
         {
-            if (interactUIObject != null)
+            // No hit detected
+            if (currentActiveTrigger == this)
             {
-                interactUIObject.SetActive(false);
+                currentActiveTrigger = null;
+                HideInteractUI();
             }
         }
+    }
+    
+    // Helper methods for UI management
+    private void ShowInteractUI()
+    {
+        if (interactUIObject != null)
+        {
+            interactUIObject.SetActive(true);
+        }
+    }
+    
+    private void HideInteractUI()
+    {
+        if (interactUIObject != null)
+        {
+            interactUIObject.SetActive(false);
+        }
+    }
+    
+    private static void HideAllInteractUI()
+    {
+        foreach (var trigger in allTriggers)
+        {
+            if (trigger != null)
+            {
+                trigger.HideInteractUI();
+            }
+        }
+    }
+    
+    // Method to check if this trigger should be the active one
+    private bool ShouldBeActiveTrigger()
+    {
+        if (mainCamera == null) return false;
+        
+        Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+        RaycastHit hit;
+        
+        if (Physics.Raycast(ray, out hit, interactRange))
+        {
+            return hit.collider.gameObject == gameObject;
+        }
+        
+        return false;
     }
 
     // Gizmo
@@ -163,10 +256,17 @@ public class QTETrigger : MonoBehaviour
     {
         if (isQTEActive || isOnCooldown) return; // Don't trigger if QTE is already active or on cooldown
         
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+            if (mainCamera == null) return;
+        }
+        
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         RaycastHit hit;
         
-        if (Physics.Raycast(ray, out hit, interactRange, playerLayer))
+        // Use a simple approach - raycast against everything and check if we hit this object
+        if (Physics.Raycast(ray, out hit, interactRange))
         {
             // Check if the hit object is this QTE trigger (door)
             if (hit.collider.gameObject == gameObject)
@@ -181,10 +281,13 @@ public class QTETrigger : MonoBehaviour
         Debug.Log("QTE Started for door: " + gameObject.name);
         isQTEActive = true;
         
-        // Hide interact UI
-        if (interactUIObject != null)
+        // Hide interact UI for this trigger
+        HideInteractUI();
+        
+        // Clear the current active trigger since we're starting QTE
+        if (currentActiveTrigger == this)
         {
-            interactUIObject.SetActive(false);
+            currentActiveTrigger = null;
         }
         
         // Show QTE canvas
@@ -269,6 +372,9 @@ public class QTETrigger : MonoBehaviour
         // Spawn success object (only if not already spawned)
         SpawnSuccessObject();
 
+        // End QTE and restore UI state
+        EndQTE();
+
         // You can add additional success actions here like:
         OnQTEActive?.Invoke(true); // boolean to indicate player movement
         _playerCameraController.enabled = true; // Enable camera input after QTE
@@ -293,6 +399,9 @@ public class QTETrigger : MonoBehaviour
         
         // Start cooldown
         StartCooldown();
+
+        // End QTE and restore UI state
+        EndQTE();
 
         // You can add additional exit actions here like:
         OnQTEActive?.Invoke(true); // boolean to indicate player movement
@@ -332,5 +441,48 @@ public class QTETrigger : MonoBehaviour
     {
         hasSpawned = false;
         Debug.Log($"Spawn state reset for trigger: {gameObject.name}");
+    }
+
+    // Debug method to check QTE trigger state
+    [ContextMenu("Debug QTE Trigger State")]
+    public void DebugQTEState()
+    {
+        Debug.Log($"=== QTE Trigger Debug for {gameObject.name} ===");
+        Debug.Log($"Layer: {gameObject.layer} (Layer name: {LayerMask.LayerToName(gameObject.layer)})");
+        Debug.Log($"Interact Range: {interactRange}");
+        Debug.Log($"Player Layer Mask: {playerLayer.value}");
+        Debug.Log($"Is QTE Active: {isQTEActive}");
+        Debug.Log($"Is On Cooldown: {isOnCooldown}");
+        Debug.Log($"Interact UI Object: {(interactUIObject != null ? interactUIObject.name : "NULL")}");
+        Debug.Log($"QTE Canvas: {(qteCanvas != null ? qteCanvas.name : "NULL")}");
+        Debug.Log($"Main Camera: {(mainCamera != null ? mainCamera.name : "NULL")}");
+        Debug.Log($"Has Collider: {GetComponent<Collider>() != null}");
+        Debug.Log($"Collider is trigger: {(GetComponent<Collider>() != null ? GetComponent<Collider>().isTrigger : "N/A")}");
+        Debug.Log($"Is Current Active Trigger: {currentActiveTrigger == this}");
+        Debug.Log($"Total Triggers Registered: {allTriggers.Count}");
+        Debug.Log("==========================================");
+    }
+    
+    // Static debug method to check all triggers
+    [ContextMenu("Debug All QTE Triggers")]
+    public static void DebugAllTriggers()
+    {
+        Debug.Log($"=== All QTE Triggers Debug ===");
+        Debug.Log($"Total Triggers: {allTriggers.Count}");
+        Debug.Log($"Current Active Trigger: {(currentActiveTrigger != null ? currentActiveTrigger.name : "None")}");
+        
+        for (int i = 0; i < allTriggers.Count; i++)
+        {
+            var trigger = allTriggers[i];
+            if (trigger != null)
+            {
+                Debug.Log($"Trigger {i}: {trigger.name} - Active: {trigger.IsQTEAvailable() == false}, Cooldown: {trigger.GetRemainingCooldown() > 0}");
+            }
+            else
+            {
+                Debug.Log($"Trigger {i}: NULL (destroyed)");
+            }
+        }
+        Debug.Log("===============================");
     }
 }
