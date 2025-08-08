@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour, IHear
     [Header("Settings")]
     [SerializeField] LayerMask whatIsGround, whatIsPlayer, whatIsThis, whatIsDoor;
     [SerializeField] private Transform _enemyAttackPoint;
+    [SerializeField] private Transform _enemyDoorPoint;
     [SerializeField] private float _sightRange, _attackRange;
     [SerializeField] private float _walkPointRange;
     [SerializeField] private float _searchRange;
@@ -40,6 +41,11 @@ public class EnemyAI : MonoBehaviour, IHear
     private Vector3 _dirToPlayer;
     private float[] _probs = { 0.2f, 0.2f, 0.2f, 0.2f, 0.15f, 0.05f };
     private int _bodyPartLeft = 4;
+    private Vector3 _rayOrigin;
+    
+    // Door
+    private Door _door;
+    private bool _openDoor;
 
     // Camera
     private CinemachineInputAxisController _playerCameraController;
@@ -80,13 +86,14 @@ public class EnemyAI : MonoBehaviour, IHear
         _playerCameraController = CameraPlayer.GetComponent<CinemachineInputAxisController>();
         _cameraPanTilt = CameraPlayer.GetComponent<CinemachinePanTilt>();
         _blink = _faint.transform.GetChild(0).GetComponent<Animator>();
-        _speed = _enemy.speed;
+        _speed = _enemy.speed;  
     }
 
     private void Update()
     {
         // Check for sight and attack ranges
         _dirToPlayer = _player.position - transform.position;
+        //_rayOrigin = new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z);
         Ray ray = new Ray(transform.position, _dirToPlayer.normalized);
         if (Physics.Raycast(ray, out RaycastHit hit, _sightRange, whatIsThis))
         {
@@ -103,19 +110,54 @@ public class EnemyAI : MonoBehaviour, IHear
        
 
         _playerInAttackRange = Physics.CheckSphere(_enemyAttackPoint.position, _attackRange, whatIsPlayer);
-        _doorInRange = Physics.CheckSphere(_enemyAttackPoint.position, 0.5f, whatIsDoor);
-
-        if (_doorInRange)
+        Collider[] hitColliders = Physics.OverlapSphere(_enemyDoorPoint.position, 0.7f, whatIsDoor);
+        
+        foreach (var hitCollider in hitColliders)
         {
-            _enemy.speed = 0f;
+            if (hitCollider.CompareTag("Door"))
+            {
+                _doorInRange = true;
+                _door = hitCollider.GetComponentInChildren<Door>();
+                break;
+            }
         }
+
+        if (_doorInRange && !_runAway) OpenDoor();
         if (!_alreadyAttacked && respawn) Respawn.RespawnDelay();
         if (_runAway) RunAway();
-        if (_searching && !_playerInSightRange && !_runAway) SearchSound();
+        if (_searching && !_playerInSightRange && !_runAway && !_doorInRange) SearchSound();
         if (!_playerInSightRange && !_playerInAttackRange && !_searching && !_runAway) Patroling();
         if (_playerInSightRange && !_playerInAttackRange && !_runAway) ChasePlayer();
         if (_playerInAttackRange && _playerInSightRange && !_runAway) AttackPlayer();
         
+    }
+
+    private void OpenDoor()
+    {
+        if (!_openDoor)
+        {
+            _enemy.speed = 0f;
+            StartCoroutine(OpenDelay());
+            _openDoor = true;
+        }
+    }
+
+    private IEnumerator OpenDelay()
+    {
+        
+        yield return new WaitForSeconds(3f); // Force open delay
+        _door.ForceOpen();
+        yield return new WaitForSeconds(1f);
+
+        if (!_animator.GetBool("Look"))
+        {
+            Debug.Log("enemy didn't look"); 
+            _enemy.speed = _speed;
+        }
+
+        yield return new WaitForSeconds(2f);
+        _doorInRange = false;
+        _openDoor = false;
     }
 
     private void Patroling()
@@ -351,7 +393,7 @@ public class EnemyAI : MonoBehaviour, IHear
             Gizmos.DrawWireSphere(_enemyAttackPoint.position, _attackRange);
 
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(_enemyAttackPoint.position, 0.5f);
+            Gizmos.DrawWireSphere(_enemyDoorPoint.position, 0.7f);
         }
     }
 

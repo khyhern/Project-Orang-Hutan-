@@ -7,6 +7,7 @@ TagManager:
   - Stopper
   - Enemy
   - Consumable
+  - Door
   layers:
   - Default
   - TransparentFX

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 [RequireComponent(typeof(Collider))]
 public class Door : MonoBehaviour, IDescriptiveInteractable
@@ -84,20 +85,39 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
         // If unlocked, then open or close the door based on current state
         if (!isOpened)
         {
-            OpenDoor();
+            OpenDoor(false);
         }
         else
         {
-            CloseDoor();
+            CloseDoor(false);
         }
     }
 
-    private void OpenDoor()
+    // For enemy used
+    public void ForceOpen()
+    {
+        PlaySound(unlockSuccessClip);
+        
+        if (!isOpened)
+        {
+            OpenDoor(true);
+            StartCoroutine(CloseDelay());
+        }
+    }
+
+    private IEnumerator CloseDelay()
+    {
+        yield return new WaitForSeconds(3f);
+        CloseDoor(true);
+    }
+
+    private void OpenDoor(bool enemy)
     {
         isOpened = true;
 
         Debug.Log("[Door] Door opened.");
-        DisplayMessage(openMessage);
+
+        if (!enemy) DisplayMessage(openMessage);
 
         if (animator != null)
             animator.SetTrigger("OpenDoor");
@@ -106,12 +126,12 @@ public class Door : MonoBehaviour, IDescriptiveInteractable
     }
 
 
-    private void CloseDoor()
+    private void CloseDoor(bool enemy)
     {
         isOpened = false;
 
         Debug.Log("[Door] Door closed.");
-        DisplayMessage(closeMessage);
+        if (!enemy) DisplayMessage(closeMessage);
 
         if (animator != null)
             animator.SetTrigger("CloseDoor");
