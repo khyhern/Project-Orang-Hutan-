@@ -23,6 +23,12 @@ public class QTETrigger : MonoBehaviour
     [Header("Sound Range")]
     public float soundRange = 15f;
 
+    [Header("Success Spawn")]
+    public GameObject successSpawnPrefab; // Prefab to spawn on success
+    public float spawnRadius = 2f; // Distance from trigger to spawn
+    public float spawnHeight = 0f; // Height offset for spawn
+    public bool hasSpawned = false; // Track if this trigger has already spawned
+
     private InputAction interactAction;
     private Camera mainCamera;
     private bool isQTEActive = false;
@@ -227,6 +233,24 @@ public class QTETrigger : MonoBehaviour
             Debug.Log("Door animation triggered: " + doorAnimationName + " on door: " + gameObject.name);
         }
     }
+
+    // Spawn success object around this trigger
+    private void SpawnSuccessObject()
+    {
+        if (hasSpawned || successSpawnPrefab == null) return;
+
+        // Calculate random position around the trigger
+        Vector2 randomCircle = UnityEngine.Random.insideUnitCircle.normalized * spawnRadius;
+        Vector3 spawnPosition = transform.position + new Vector3(randomCircle.x, spawnHeight, randomCircle.y);
+        
+        // Spawn the object
+        GameObject spawnedObject = Instantiate(successSpawnPrefab, spawnPosition, Quaternion.identity);
+        
+        // Mark this trigger as having spawned
+        hasSpawned = true;
+        
+        Debug.Log($"Success object spawned at {spawnPosition} for trigger: {gameObject.name}");
+    }
     
     // Called when QTE succeeds
     public void OnQTESuccess()
@@ -235,6 +259,9 @@ public class QTETrigger : MonoBehaviour
         
         // Play door animation
         PlayDoorAnimation();
+
+        // Spawn success object (only if not already spawned)
+        SpawnSuccessObject();
 
         // You can add additional success actions here like:
         OnQTEActive?.Invoke(true); // boolean to indicate player movement
@@ -292,5 +319,12 @@ public class QTETrigger : MonoBehaviour
     public float GetRemainingCooldown()
     {
         return isOnCooldown ? cooldownTimer : 0f;
+    }
+
+    // Reset spawn state (useful for testing or if you want to allow respawning)
+    public void ResetSpawnState()
+    {
+        hasSpawned = false;
+        Debug.Log($"Spawn state reset for trigger: {gameObject.name}");
     }
 }

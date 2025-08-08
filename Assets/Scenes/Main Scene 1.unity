@@ -4824,14 +4824,14 @@ MonoBehaviour:
   consumeKeyOnUse: 0
   lockedMessage: The door is locked.
   successMessage: The door opens.
-  lockedTextColor: {r: 1, g: 0, b: 0, a: 1}
-  successTextColor: {r: 0, g: 1, b: 0, a: 1}
-  messageText: {fileID: 0}
-  messageDuration: 3
+  openMessage: The door opens.
+  closeMessage: The door closes.
   animator: {fileID: 0}
   audioSource: {fileID: 0}
   unlockSuccessClip: {fileID: 0}
   unlockFailClip: {fileID: 0}
+  openDoorClip: {fileID: 0}
+  closeDoorClip: {fileID: 0}
 --- !u!65 &787634505
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7065,6 +7065,10 @@ MonoBehaviour:
   doorAnimator: {fileID: 0}
   doorAnimationName: OpenDoor
   soundRange: 15
+  successSpawnPrefab: {fileID: 0}
+  spawnRadius: 2
+  spawnHeight: 0
+  hasSpawned: 0
 --- !u!1 &1141198894 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3377106427341105277, guid: 420acbcd244e33c458689f1c7dd27739,
