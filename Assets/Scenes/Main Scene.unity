@@ -19964,6 +19964,16 @@ PrefabInstance:
     - target: {fileID: 2318790638390068072, guid: 38409917e049ae244b011698e527a4cf,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464413341758413126, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407043207950789559, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
