@@ -17,7 +17,7 @@ public class BtnManager : MonoBehaviour
 	
 	public void PlayButton() 
 	{
-		SceneManager.LoadScene(""); //change to select save file / Level selection
+		SceneManager.LoadScene("Main Scene"); //change to select save file / Level selection
 	}
 	
 	public void OptionButton() 
@@ -33,7 +33,7 @@ public class BtnManager : MonoBehaviour
     
     public void RestartButton()
     {
-        SceneManager.LoadScene(""); // Replace "level 0" with your actual scene name
+        SceneManager.LoadScene("Main Scene"); // Replace "level 0" with your actual scene name
     }
 
        
