@@ -254,7 +254,7 @@ public class PickUpF : MonoBehaviour
                     }
                 }
 
-                yield return new WaitForSeconds(2f); // Wait 1 more second (total 10s)
+                yield return new WaitForSeconds(4f); // Wait 1 more second (total 10s)
                 Debug.Log("[Cutscene] 10 seconds passed, deactivating videoPlayerParent");
                 videoPlayerParent.SetActive(false);
 
