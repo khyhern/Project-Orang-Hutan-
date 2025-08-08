@@ -198,7 +198,7 @@ public class PointerController : MonoBehaviour
     {
         Debug.Log("QTE Exited by ESC key!");
         
-        // Close the QTE canvas
+        // Close the QTE canvas immediately
         if (qteCanvas != null)
         {
             qteCanvas.SetActive(false);

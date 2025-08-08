@@ -51,6 +51,22 @@ public class QTETrigger : MonoBehaviour
     
     // Public property to check if QTE is active
     public bool IsQTEActive => isQTEActive;
+    
+    // Static property to check if any QTE is currently active
+    public static bool IsAnyQTEActive
+    {
+        get
+        {
+            foreach (var trigger in allTriggers)
+            {
+                if (trigger != null && trigger.IsQTEActive)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 
     void Awake()
     {

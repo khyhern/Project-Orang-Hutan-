@@ -21,6 +21,13 @@ public class PauseMenuUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (NoteUIManager.IsNoteOpen) return; // Don't allow pausing when note is open
+            
+            // Don't allow pausing when QTE is active - check both the static property and any active QTE canvas
+            if (QTETrigger.IsAnyQTEActive || IsAnyQTECanvasActive())
+            {
+                Debug.Log("Pause menu blocked - QTE is currently active");
+                return;
+            }
 
             if (isPaused)
             {
@@ -32,8 +39,7 @@ public class PauseMenuUI : MonoBehaviour
             }
         }
     }
-
-
+    
     public void PauseGame()
 	{
 		PauseMenu.SetActive(true);
@@ -54,4 +60,19 @@ public class PauseMenuUI : MonoBehaviour
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 	}
+
+    // Helper method to check if any QTE canvas is currently active
+    private bool IsAnyQTECanvasActive()
+    {
+        // Find all QTE canvases in the scene and check if any are active
+        QTETrigger[] allTriggers = FindObjectsOfType<QTETrigger>();
+        foreach (var trigger in allTriggers)
+        {
+            if (trigger.qteCanvas != null && trigger.qteCanvas.activeInHierarchy)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
