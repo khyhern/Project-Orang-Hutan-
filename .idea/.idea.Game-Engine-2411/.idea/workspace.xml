@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e79cb51-d4e0-496c-9ab6-be4776a4db50" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Game-Engine-2411/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Game-Engine-2411/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/External/KnightFerret/Simple Modular Pillars/URP/URP-Mats-SimpleModularPillars.unitypackage.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/MainMenu/Main Menu.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/MainMenu/Main Menu.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/MainMenu/ScreenTransition.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/MainMenu/ScreenTransition.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main Scene_bc.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main Scene_bc.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Manager/BtnManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Manager/BtnManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerHealth.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerHealth.cs" afterDir="false" />
-    </list>
+    <list default="true" id="5e79cb51-d4e0-496c-9ab6-be4776a4db50" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -112,7 +104,7 @@
       <workItem from="1754628916832" duration="19000" />
       <workItem from="1754629188048" duration="99000" />
       <workItem from="1754630063060" duration="469000" />
-      <workItem from="1754653877302" duration="1828000" />
+      <workItem from="1754653877302" duration="2492000" />
     </task>
     <servers />
   </component>

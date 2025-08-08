@@ -7065,7 +7065,7 @@ MonoBehaviour:
   doorAnimator: {fileID: 0}
   doorAnimationName: OpenDoor
   soundRange: 15
-  successSpawnPrefab: {fileID: 0}
+  successSpawnPrefabs: []
   spawnRadius: 2
   spawnHeight: 0
   hasSpawned: 0
@@ -13241,6 +13241,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407043207950789559, guid: 38409917e049ae244b011698e527a4cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5659388242141367088, guid: 38409917e049ae244b011698e527a4cf,
         type: 3}
