@@ -240,7 +240,7 @@ public class PickUpF : MonoBehaviour
             if (videoPlayer != null)
             {
                 Debug.Log("[Cutscene] Waiting 3.5 seconds before transition");
-                yield return new WaitForSeconds(3.5f);
+                yield return new WaitForSeconds(2.5f);
 
                 // Play transition
                 Animator transitionAnimator = null;

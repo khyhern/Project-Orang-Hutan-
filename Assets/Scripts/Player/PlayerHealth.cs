@@ -82,7 +82,7 @@ public class PlayerHealth : MonoBehaviour
         
         yield return new WaitForSeconds(1f);
         Time.timeScale = 0f; // Pause the game
-        DeathMenu.setActive(true);
+        DeathMenu.SetActive(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
